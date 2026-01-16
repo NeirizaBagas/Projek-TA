@@ -23,16 +23,23 @@ public class FreeLook : MonoBehaviour
     {
         inputActions.Player.Enable();
         inputActions.Player.Look.Enable();
+        
     }
 
     private void OnDisable()
     {
         inputActions.Player.Disable();
 
+
     }
 
     // Update is called once per frame
     void Update()
+    {
+        Look();
+    }
+
+    public void Look()
     {
         Vector2 mouseDelta = inputActions.Player.Look.ReadValue<Vector2>(); // Ngebaca input vektor dari mouse
 
@@ -46,10 +53,5 @@ public class FreeLook : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0f, currentLook.x, 0f); // Terapkan rotasi horizontal ke player
         playerCam.localRotation = Quaternion.Euler(currentLook.y, 0f, 0f); // Terapkan rotasi vertikal ke kamera
-    }
-
-    public void FreeLookActions(InputAction.CallbackContext context)
-    {
-        
     }
 }
