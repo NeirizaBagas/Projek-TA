@@ -9,6 +9,7 @@ public class FreeLook : MonoBehaviour
     private Vector3 currentLook;
     private PlayerInput playerInput;
     private PlayerInputActions inputActions;
+    public bool canLook;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -17,6 +18,7 @@ public class FreeLook : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         inputActions = new PlayerInputActions();
         inputActions.UI.Disable();
+        canLook = true;
     }
 
     private void OnEnable()
@@ -36,7 +38,10 @@ public class FreeLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Look();
+        if (canLook)
+        {
+            Look();
+        }
     }
 
     public void Look()

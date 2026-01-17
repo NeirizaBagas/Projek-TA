@@ -32,11 +32,13 @@ public class InteractToObject : MonoBehaviour
     {
         inputActions.Player.Enable();
         inputActions.Player.Interact.Enable();
+        UIManager.OnCloseButtonPressed += StopInteractObject;
     }
 
     private void OnDisable()
     {
         inputActions.Player.Disable();
+        UIManager.OnCloseButtonPressed -= StopInteractObject;
     }
 
     private void Update()
@@ -72,9 +74,19 @@ public class InteractToObject : MonoBehaviour
         {
             Debug.Log("Interacted with object!");
             // Sistem interaksi disini
+            freeLook.canLook = false;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
             interactAbleObject.GetComponent<IInteractableObject>().Interact();
 
         }
+    }
+
+    private void StopInteractObject()
+    {
+        freeLook.canLook = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void OnDrawGizmos()

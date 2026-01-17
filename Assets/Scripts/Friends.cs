@@ -1,19 +1,28 @@
+using System;
 using UnityEngine;
 
 public class Friends : MonoBehaviour, IInteractableObject
 {
-    [SerializeField] private GameObject canvasPlayer;
+    public static event Action OnInteractionStarted;
+
+    private void OnEnable()
+    {
+        UIManager.OnCloseButtonPressed += StopInteract;
+    }
+
+    private void OnDisable()
+    {
+        UIManager.OnCloseButtonPressed -= StopInteract;
+    }
 
     public void Interact()
     {
-        canvasPlayer.SetActive(false);
-        Cursor.lockState = CursorLockMode.Confined;
-        Debug.Log("Interacting with Friends object.");
+        
+        OnInteractionStarted?.Invoke();
     }
 
     public void StopInteract()
     {
-        canvasPlayer.SetActive(true);
-        Cursor.lockState = CursorLockMode.Locked;
+        Debug.Log("Stopped interacting with Friends object.");
     }
 }
