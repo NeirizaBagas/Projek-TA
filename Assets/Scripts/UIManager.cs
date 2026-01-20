@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using System;
 using UnityEngine;
 
@@ -6,6 +7,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject uiContainer;
     [SerializeField] private GameObject interactContainer;
     public static event Action OnCloseButtonPressed;
+    private TypingManager typingManager;
+
+    private void Awake()
+    {
+        uiContainer.SetActive(false);
+        interactContainer.SetActive(false);
+        typingManager = interactContainer.GetComponentInChildren<TypingManager>();
+        typingManager.gameObject.SetActive(false);
+    }
 
     private void OnEnable()
     {
@@ -17,22 +27,19 @@ public class UIManager : MonoBehaviour
         Friends.OnInteractionStarted -= OpenUiInteract;
     }
 
-    private void Awake()
-    {
-        uiContainer.SetActive(false);
-        interactContainer.SetActive(false);
-    }
 
     public void OpenUiInteract()
     {
         uiContainer.SetActive(false);
         interactContainer.SetActive(true);
+        typingManager.gameObject.SetActive(true);
     }
 
     public void CloseUiInteract()
     {
         interactContainer.SetActive(false);
         uiContainer.SetActive(true);
+        typingManager.gameObject.SetActive(false);
         OnCloseButtonPressed?.Invoke();
     }
 }

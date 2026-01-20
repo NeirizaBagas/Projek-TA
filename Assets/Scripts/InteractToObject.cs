@@ -6,6 +6,7 @@ public class InteractToObject : MonoBehaviour
 {
     [SerializeField] private float interactDistance = 3f;
     [SerializeField] private bool canInteract = false;
+    private bool isInteracting = false;
     private PlayerInput playerInput;
     private PlayerInputActions inputActions;
     private Transform camPos;
@@ -53,12 +54,13 @@ public class InteractToObject : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(r, out hit, interactDistance))
         {
-            if (hit.collider != null && hit.collider.CompareTag("Interactable"))
+            if (hit.collider != null && hit.collider.CompareTag("Interactable") && !isInteracting)
             {
                 interactAbleObject = hit.collider.gameObject;
                 canInteract = true;
                 uiContainer.SetActive(true);
                 textInteract.text = "Press 'E' to interact with " + hit.collider.name;
+                
             }
         }
         else
@@ -72,13 +74,14 @@ public class InteractToObject : MonoBehaviour
     {
         if (canInteract)
         {
+            isInteracting = true;
             Debug.Log("Interacted with object!");
+            uiContainer.SetActive(false);
             // Sistem interaksi disini
             freeLook.canLook = false;
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             interactAbleObject.GetComponent<IInteractableObject>().Interact();
-
         }
     }
 
@@ -87,6 +90,7 @@ public class InteractToObject : MonoBehaviour
         freeLook.canLook = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        isInteracting = false;
     }
 
     private void OnDrawGizmos()
