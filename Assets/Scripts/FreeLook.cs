@@ -31,7 +31,7 @@ public class FreeLook : MonoBehaviour
     private void OnDisable()
     {
         inputActions.Player.Disable();
-
+        inputActions.Player.Look.Disable();
 
     }
 
