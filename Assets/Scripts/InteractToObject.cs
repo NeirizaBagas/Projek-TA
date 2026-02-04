@@ -26,19 +26,24 @@ public class InteractToObject : MonoBehaviour
         camPos = Camera.main.transform;
         inputActions.UI.Disable();
         Cursor.lockState = CursorLockMode.Locked;
-        inputActions.Player.Interact.performed += InteracttoObject;
+        
     }
 
     private void OnEnable()
     {
         inputActions.Player.Enable();
-        inputActions.Player.Interact.Enable();
+        //inputActions.Player.Interact.Enable();
+        //inputActions.Player.HoldInteract.Enable();
+        inputActions.Player.Interact.performed += InteracttoObject;
+        inputActions.Player.HoldInteract.performed += InteracttoObject;
         UIManager.OnCloseButtonPressed += StopInteractObject;
     }
 
     private void OnDisable()
     {
         inputActions.Player.Disable();
+        inputActions.Player.Interact.performed -= InteracttoObject;
+        inputActions.Player.HoldInteract.performed -= InteracttoObject;
         UIManager.OnCloseButtonPressed -= StopInteractObject;
     }
 
@@ -72,16 +77,72 @@ public class InteractToObject : MonoBehaviour
 
     public void InteracttoObject(InputAction.CallbackContext context)
     {
-        if (canInteract)
+        Friends friend = interactAbleObject.GetComponent<Friends>();
+
+        //if (canInteract)
+        //{
+        //    isInteracting = true;
+        //    Debug.Log("Interacted with object!");
+        //    uiContainer.SetActive(false);
+        //    // Sistem interaksi disini
+        //    freeLook.canLook = false;
+        //    Cursor.lockState = CursorLockMode.Confined;
+        //    Cursor.visible = true;
+        //    interactAbleObject.GetComponent<IInteractableObject>().Interact();
+        //}
+
+        // Hanya eksekusi jika statusnya 'performed' (aksi selesai dilakukan)
+        if (!context.performed) return;
+
+        if (canInteract && !isInteracting)
         {
-            isInteracting = true;
-            Debug.Log("Interacted with object!");
-            uiContainer.SetActive(false);
-            // Sistem interaksi disini
-            freeLook.canLook = false;
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-            interactAbleObject.GetComponent<IInteractableObject>().Interact();
+            // DEBUG: Cek action mana yang masuk
+            Debug.Log($"Action dipicu oleh: {context.action.name}");
+
+            // Logika pembeda
+            if (context.action.name == "HoldInteract")
+            {
+                Debug.Log("Memicu interaksi TAHAN (Hold)");
+                // Jalankan fungsi khusus hold di sini jika perlu
+            }
+            else
+            {
+                Debug.Log("Memicu interaksi KLIK (Press)");
+            }
+
+            // Jalankan logika umum interaksi
+            ExecuteInteraction();
+        }
+    }
+
+    //public void HoldInteractObject(InputAction.CallbackContext context)
+    //{
+    //    if (canInteract)
+    //    {
+    //        isInteracting = true;
+    //        Debug.Log("Interacted with object!");
+    //        uiContainer.SetActive(false);
+    //        // Sistem interaksi disini
+    //        freeLook.canLook = false;
+    //        Cursor.lockState = CursorLockMode.Confined;
+    //        Cursor.visible = true;
+    //        interactAbleObject.GetComponent<IInteractableObject>().Interact();
+    //    }
+    //}
+
+    private void ExecuteInteraction()
+    {
+        isInteracting = true;
+        uiContainer.SetActive(false);
+
+        freeLook.canLook = false;
+        Cursor.lockState = CursorLockMode.None; // None lebih baik untuk UI daripada Confined
+        Cursor.visible = true;
+
+        IInteractableObject interactable = interactAbleObject.GetComponent<IInteractableObject>();
+        if (interactable != null)
+        {
+            interactable.Interact();
         }
     }
 

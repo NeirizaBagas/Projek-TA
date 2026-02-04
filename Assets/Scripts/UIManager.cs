@@ -32,14 +32,15 @@ public class UIManager : MonoBehaviour
     {
         uiContainer.SetActive(false);
         interactContainer.SetActive(true);
-        typingManager.gameObject.SetActive(true);
+        //typingManager.gameObject.SetActive(true);
     }
 
     public void CloseUiInteract()
     {
         interactContainer.SetActive(false);
         uiContainer.SetActive(true);
-        typingManager.gameObject.SetActive(false);
+        //typingManager.gameObject.SetActive(false);
         OnCloseButtonPressed?.Invoke();
+        Debug.Log("Tes");
     }
 }

@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerInputActions inputActions;
     [SerializeField] private float speed = 5f;
+    public ForceMode forceMode = ForceMode.Force;
 
     private void Awake()
     {
@@ -29,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 input = inputActions.Player.Move.ReadValue<Vector2>();
         Vector3 moveDir = (transform.right * input.x + transform.forward * input.y).normalized;
-        rb.AddForce(moveDir * speed, ForceMode.Force);
+        rb.AddForce(moveDir * speed, forceMode);
 
     }
 }
