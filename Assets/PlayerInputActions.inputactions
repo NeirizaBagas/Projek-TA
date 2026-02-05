@@ -43,12 +43,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Hold Interact",
+                    "name": "HoldInteract",
                     "type": "Button",
                     "id": "08508fe7-e939-4569-af55-1e993611e487",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -468,7 +468,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Hold Interact",
+                    "action": "HoldInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -479,7 +479,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Hold Interact",
+                    "action": "HoldInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

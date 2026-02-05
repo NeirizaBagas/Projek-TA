@@ -4,58 +4,81 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.InputSystem;
 
-public class TrapInteract : MonoBehaviour
+public class TrapInteract : MonoBehaviour, IHoldInteractable
 {
+    [Header("Trap Settings")]
+    [SerializeField] private float fillSpeed = 3f;
+    [SerializeField] private float maxValue = 10f;
+
+    [Header("Trap Defuse UI")]
     [SerializeField] private GameObject trapContainerUI;
     [SerializeField] private Slider trapSliderProgres;
-    int trapProgress = 0;
 
-    public static Action OnTrapInteract;
+    [SerializeField] private bool isDefused;
+    private bool isHolding;
+
+    public static event Action OnTrapDefused;
 
     private void Awake()
     {
-        
+
+        trapSliderProgres.minValue = 0f;
+        trapSliderProgres.maxValue = maxValue;
+        trapSliderProgres.value = 0f;
+        trapContainerUI.SetActive(false);
+        isHolding = false;
+        isDefused = false;
     }
 
-    private void Start()
+    public void OnHoverEnter()
     {
-        trapSliderProgres.value = trapProgress;
+        Debug.Log("Hovering over Trap.");
+    }
+
+    public void OnHoverExit()
+    {
+        OnHoldCancel();
+    }
+
+    public void OnHoldStart()
+    {
+        if (isDefused) return;
+        isHolding = true;
+        trapContainerUI.SetActive(true);
     }
 
     private void Update()
     {
-        if (Keyboard.current.eKey.isPressed)
+        if (isHolding && !isDefused)
         {
-            UpdateProgress();
+            trapSliderProgres.value += fillSpeed * Time.deltaTime;
+            if (trapSliderProgres.value >= maxValue)
+            {
+                TrapDefused();
+            }
         }
     }
 
-    private void OnEnable()
+    private void TrapDefused()
     {
-        Friends.OnInteractionStarted += UpdateProgress;
+        isDefused = true;
+        isHolding = false;
+        trapContainerUI.SetActive(false);
+        Debug.Log("Bom defused, mission success!");
+        OnTrapDefused?.Invoke();
+        transform.gameObject.SetActive(false);
     }
 
-    private void OnDisable()
+    public void OnHoldCancel()
+    {
+        isHolding = false;
+        trapContainerUI.SetActive(false);
+    }
+
+    public void OnHoldSuccess()
     {
         
     }
 
-    public void Interact()
-    {
-        
-    }
-
-    public void UpdateProgress()
-    {
-        trapContainerUI.SetActive(true);
-        trapProgress++;
-        trapSliderProgres.value = trapProgress;
-        if (trapProgress >= 100)
-        {
-            Destroy(this.gameObject);
-            trapContainerUI.SetActive(false);
-        }
-    }
-
-
+    
 }
