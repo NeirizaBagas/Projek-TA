@@ -39,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
         // Batasi kecepatan horizontal saja (X dan Z)
         Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         int roundedSpeed = Mathf.RoundToInt(horizontalVelocity.magnitude);
-        Debug.Log(roundedSpeed);
 
         if (horizontalVelocity.magnitude > speed)
         {
