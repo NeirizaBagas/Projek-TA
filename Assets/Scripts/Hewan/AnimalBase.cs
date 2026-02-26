@@ -36,6 +36,11 @@ public abstract class AnimalBase : MonoBehaviour, IAnimals
         return !agent.pathPending && agent.remainingDistance <= stopDistance;
     }
 
+    public void UpdateCurrentIndex(int index)
+    {
+        currentWaypointIndex = index;
+    }
+
     public abstract void PerformIdle();
     public abstract void PerformWalk();
     public abstract void PerformRun();

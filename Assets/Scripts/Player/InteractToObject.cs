@@ -18,6 +18,7 @@ public class InteractToObject : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textInteract;
 
     public static event Action OnInteractionStarted;
+    public static event Action OnJournalTriggered;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -43,6 +44,7 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.started += OnHoldInteract;
         inputActions.Player.HoldInteract.performed += OnHoldInteract;
         inputActions.Player.HoldInteract.canceled += OnHoldInteract;
+        inputActions.Player.Journal.performed += triggerJournal;
         UIManager.OnStopInteract += StopInteractObject;
     }
 
@@ -50,8 +52,12 @@ public class InteractToObject : MonoBehaviour
     {
         inputActions.Player.Disable();
         inputActions.Player.Interact.performed -= OnTapInteract;
+        inputActions.Player.HoldInteract.started -= OnHoldInteract;
         inputActions.Player.HoldInteract.performed -= OnHoldInteract;
+        inputActions.Player.HoldInteract.canceled -= OnHoldInteract;
+        inputActions.Player.Journal.performed -= triggerJournal;
         UIManager.OnStopInteract -= StopInteractObject;
+
     }
 
     private void Update()
@@ -141,6 +147,19 @@ public class InteractToObject : MonoBehaviour
                 holdObj.OnHoldCancel();
                 Debug.Log("Hold Canceled");
             }
+        }
+    }
+
+    public void triggerJournal(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            //isInteracting = true; // Kunci status interaksi
+            freeLook.canLook = false; // Matikan kamera
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Debug.Log(Cursor.lockState);
+            OnJournalTriggered?.Invoke();
         }
     }
 

@@ -6,6 +6,8 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject uiContainer;
     [SerializeField] private GameObject interactContainer;
+    [SerializeField] private GameObject journalContainer;
+    public bool isJournalOpen;
 
     public static event Action OnStopInteract;
 
@@ -18,15 +20,18 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         InteractToObject.OnInteractionStarted += OpenUiInteract;
+        InteractToObject.OnJournalTriggered += TriggerJournal;
         TrapInteract.OnTrapDefused += CloseUiInteract;
+        JournalManager.OnJournalPageClosed += CloseUiInteract;
     }
 
     private void OnDisable()
     {
         InteractToObject.OnInteractionStarted -= OpenUiInteract;
         TrapInteract.OnTrapDefused -= CloseUiInteract;
-    }
+        JournalManager.OnJournalPageClosed -= CloseUiInteract;
 
+    }
 
     public void OpenUiInteract()
     {
@@ -36,9 +41,20 @@ public class UIManager : MonoBehaviour
 
     public void CloseUiInteract()
     {
+        isJournalOpen = false;
         interactContainer.SetActive(false);
         uiContainer.SetActive(true);
+        journalContainer.SetActive(false);
         Debug.Log("Tes");
         OnStopInteract?.Invoke();
+    }
+
+    public void TriggerJournal()
+    {
+        if (!isJournalOpen)
+        {
+            journalContainer.SetActive(true);
+            isJournalOpen = true;
+        }
     }
 }

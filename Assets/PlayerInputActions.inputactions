@@ -43,6 +43,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Journal",
+                    "type": "Button",
+                    "id": "7ae0f4fe-43a5-4b56-abef-c25fc1f6cff4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "HoldInteract",
                     "type": "Button",
                     "id": "08508fe7-e939-4569-af55-1e993611e487",
@@ -458,6 +467,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "286c4b02-5998-4e71-883e-0f24420b854e",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Journal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0640ab4f-d6a5-44c5-a59e-4607c948359a",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Journal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

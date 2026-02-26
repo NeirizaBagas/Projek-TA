@@ -43,13 +43,14 @@ public class AnimalAIController : MonoBehaviour
     private void TransitionToState(AnimalState nextState)
     {
         currentState = nextState;
-        if (nextState == AnimalState.Idle)
+        if (currentState == AnimalState.Idle)
         {
             timer = idleDuration;
         }
-        else if (nextState == AnimalState.Walk)
+        else if (currentState == AnimalState.Walk)
         {
             int nextWayPoint = animal.GetRandomWayPointIndex();
+            animal.UpdateCurrentIndex(nextWayPoint);
             NavMeshAgent agent = animal.GetComponent<NavMeshAgent>();
             agent.SetDestination(animal.waypoints[nextWayPoint].position);
             agent.speed = animal.walkSpeed;
