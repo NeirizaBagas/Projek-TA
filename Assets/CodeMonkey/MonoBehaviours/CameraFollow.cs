@@ -17,7 +17,7 @@ using UnityEngine;
 namespace CodeMonkey.MonoBehaviours {
 
     /*
-     * Script to handle Camera Movement and Zoom
+     * Script to handle Camera HandleMovement and Zoom
      * Place on Camera GameObject
      * */
     public class CameraFollow : MonoBehaviour {

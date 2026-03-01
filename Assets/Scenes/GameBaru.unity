@@ -5505,6 +5505,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1880309376}
+  - component: {fileID: 1880309377}
   m_Layer: 5
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -5532,6 +5533,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1880309377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880309375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f913682aae7c4745866fe6f2d770b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnergyUI
+  energySlider: {fileID: 0}
 --- !u!1 &1896014718
 GameObject:
   m_ObjectHideFlags: 0
@@ -5932,8 +5946,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6d5aeadb9cf9a4c958406561337090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  speed: 15
+  walkSpeed: 15
+  runSpeed: 30
   isGrounded: 0
+  isSprinting: 0
   jumpForce: 5
 --- !u!114 &2033516400
 MonoBehaviour:
@@ -5947,9 +5963,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 557feff24c8ac4b41a6ae0b80b98fcc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnergySystem
-  maxEnergy: 100
-  currentEnergy: 0
+  maxEnergy: 50
   energyRegenRate: 5
+  energyRegenTimer: 2
+  isPlayerMoving: 0
 --- !u!1 &2042768688
 GameObject:
   m_ObjectHideFlags: 0

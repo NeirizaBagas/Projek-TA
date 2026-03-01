@@ -1,14 +1,19 @@
+using System;
 using UnityEngine;
 
 public class EnergySystem : MonoBehaviour
 {
     [Header("Energy Value")]
-    public float maxEnergy = 100f; // Jumlah energi maksimal
-    public float currentEnergy; // Jumlah energi saat ini
+    [SerializeField] private float maxEnergy = 100f; // Jumlah energi maksimal
+    private float currentEnergy; // Jumlah energi saat ini
     [Header("Energy Regeneration")] 
-    public float energyRegenRate = 5f; // Kecepatan regenerasi energi per detik
-    //private float energyRegenTimer = 0f; // Timer untuk mengatur regenerasi energi
+    [SerializeField] private float energyRegenRate = 5f; // Kecepatan regenerasi energi per detik
+    [SerializeField] private float energyRegenTimer = 0f; // Timer untuk mengatur regenerasi energi
+    private float regenTimer;
+
     public bool isPlayerMoving; // Status apakah player sedang bergerak    
+
+    public static event Action<float> OnEnergyChanged; // Event untuk memberitahu perubahan energi
 
     private void Start()
     {
@@ -20,17 +25,20 @@ public class EnergySystem : MonoBehaviour
         RegenEnergy();
     }
 
-    public bool ConsumeEnergy(float amount)
+    public bool ConsumeEnergy(float amount, float minEnergy = 0f)
     {
-        
+        if (currentEnergy < minEnergy)
+        {
+            return false; // Tidak cukup energi untuk mencapai level minimum
+        }
+
         if (currentEnergy >= amount)
         {
             currentEnergy -= amount;
-            if (currentEnergy < 0)
-            {
-                currentEnergy = 0; // Pastikan energi tidak negatif
-                
-            }
+            regenTimer = energyRegenTimer; // Reset timer regenerasi saat energi dikonsumsi
+            
+            if (currentEnergy < 0) currentEnergy = 0; // Pastikan energi tidak negatif
+            OnEnergyChanged?.Invoke(currentEnergy / maxEnergy); // Trigger event perubahan energi
             return true; // Energi berhasil dikonsumsi
         }
         else        {
@@ -41,9 +49,18 @@ public class EnergySystem : MonoBehaviour
 
     private void RegenEnergy()
     {
+        if (regenTimer > 0)
+        {
+            regenTimer -= Time.deltaTime; // Kurangi timer regenerasi
+            if (regenTimer < 0 ) regenTimer = 0; // Pastikan timer tidak negatif
+            return; // Tunggu hingga timer habis sebelum mulai regenerasi
+        }
+
         if (currentEnergy < maxEnergy && !isPlayerMoving)
         {
             currentEnergy += energyRegenRate * Time.deltaTime;
+            if (currentEnergy > maxEnergy) currentEnergy = maxEnergy; // Pastikan energi tidak melebihi maksimum
+            OnEnergyChanged?.Invoke(currentEnergy / maxEnergy); // Trigger event perubahan energi
         }
     }
 }
