@@ -64,7 +64,6 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
         isDefused = true;
         isHolding = false;
         trapContainerUI.SetActive(false);
-        Debug.Log("Bom defused, mission success!");
         OnTrapDefused?.Invoke();
         transform.gameObject.SetActive(false);
     }

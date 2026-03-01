@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using System.Collections;
 
 public class InteractToObject : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class InteractToObject : MonoBehaviour
     private Transform camPos;
     private IInteractableObject currentTarget; // Data target interaksi saat ini
     private FreeLook freeLook;
+    private PlayerMovement playerMovement;
 
     [SerializeField] private GameObject uiContainer;
     [SerializeField] private TextMeshProUGUI textInteract;
@@ -27,12 +29,18 @@ public class InteractToObject : MonoBehaviour
         canInteract = false;
         isInteracting = false;
         inputActions = new PlayerInputActions();
-        playerInput = GetComponent<PlayerInput>();
-        freeLook = GetComponent<FreeLook>();
-        camPos = Camera.main.transform;
+        
         inputActions.UI.Disable();
         Cursor.lockState = CursorLockMode.Locked;
         
+    }
+
+    private void Start()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        playerMovement = GetComponent<PlayerMovement>();
+        freeLook = GetComponent<FreeLook>();
+        camPos = Camera.main.transform;
     }
 
     private void OnEnable()
@@ -118,6 +126,7 @@ public class InteractToObject : MonoBehaviour
         if (currentTarget is ITapInteractable tapObj && canInteract)
         {
             Debug.Log("Tap Interaction Triggered");
+            StartCoroutine(WaitForInteract());
             freeLook.canLook = false;
             isInteracting = true;
             OnInteractionStarted?.Invoke();
@@ -129,23 +138,24 @@ public class InteractToObject : MonoBehaviour
     public void OnHoldInteract(InputAction.CallbackContext context)
     {
         Debug.Log("Hold Interaction Detected");
+        
         if (currentTarget is IHoldInteractable holdObj && canInteract)
         {
             Debug.Log("Hold Interaction Triggered" + context);
             if (context.started)
             {
                 isInteracting = true; // Kunci status interaksi
+                playerMovement.isAllowToMove = false;
                 freeLook.canLook = false; // Matikan kamera
                 OnInteractionStarted?.Invoke();
                 holdObj.OnHoldStart();
-                Debug.Log("Hold Started");
             }
             else if (context.canceled)
             {
                 isInteracting = false; // Buka kunci agar bisa jalan/interaksi lagi
+                playerMovement.isAllowToMove = true;
                 freeLook.canLook = true; // Aktifkan kamera lagi
                 holdObj.OnHoldCancel();
-                Debug.Log("Hold Canceled");
             }
         }
     }
@@ -156,6 +166,7 @@ public class InteractToObject : MonoBehaviour
         {
             //isInteracting = true; // Kunci status interaksi
             freeLook.canLook = false; // Matikan kamera
+            playerMovement.isAllowToMove = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Debug.Log(Cursor.lockState);
@@ -166,10 +177,18 @@ public class InteractToObject : MonoBehaviour
     private void StopInteractObject()
     {
         currentTarget = null;
+        playerMovement.isAllowToMove = true;
         freeLook.canLook = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         isInteracting = false;
+    }
+
+    IEnumerator WaitForInteract()
+    {
+        playerMovement.isAllowToMove = false;
+        yield return new WaitForSeconds(1f);
+        playerMovement.isAllowToMove = true;
     }
 
     private void OnDrawGizmos()

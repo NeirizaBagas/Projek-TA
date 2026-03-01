@@ -45,7 +45,6 @@ public class UIManager : MonoBehaviour
         interactContainer.SetActive(false);
         uiContainer.SetActive(true);
         journalContainer.SetActive(false);
-        Debug.Log("Tes");
         OnStopInteract?.Invoke();
     }
 

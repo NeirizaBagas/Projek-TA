@@ -5545,7 +5545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f913682aae7c4745866fe6f2d770b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnergyUI
-  energySlider: {fileID: 0}
+  energySlider: {fileID: 1576129143}
 --- !u!1 &1896014718
 GameObject:
   m_ObjectHideFlags: 0
@@ -5951,6 +5951,7 @@ MonoBehaviour:
   isGrounded: 0
   isSprinting: 0
   jumpForce: 5
+  isAllowToMove: 0
 --- !u!114 &2033516400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5966,6 +5967,7 @@ MonoBehaviour:
   maxEnergy: 50
   energyRegenRate: 5
   energyRegenTimer: 2
+  uiUpdateInterval: 0.03
   isPlayerMoving: 0
 --- !u!1 &2042768688
 GameObject:

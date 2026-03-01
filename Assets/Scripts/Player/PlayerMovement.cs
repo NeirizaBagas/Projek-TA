@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 5f;
 
     private bool isMoving;
+    public bool isAllowToMove;
 
     private void Awake()
     {
@@ -27,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
-        
+        isAllowToMove = true;
         energySystem = GetComponent<EnergySystem>();
         currentSpeed = walkSpeed;
     }
@@ -71,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        if (isGrounded)
+        if (isGrounded && isAllowToMove)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
@@ -80,32 +81,35 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        Vector2 input = inputActions.Player.Move.ReadValue<Vector2>();
-        isMoving = input.magnitude > 0.1f; // Cek apakah ada input gerakan
-        bool isRunning = isSprinting && isMoving && energySystem.ConsumeEnergy(10 * Time.deltaTime, 1);
-        energySystem.isPlayerMoving = isSprinting; // Set status bergerak berdasarkan input
-        //Debug.Log($"isSprinting: {isSprinting}, isMoving: {isMoving}, isRunning: {isRunning}, Current Energy: {energySystem.currentEnergy}");
-        if (isRunning)
+        if (isAllowToMove)
         {
-            currentSpeed = runSpeed;
-        }
-        else
-        {
-            currentSpeed = walkSpeed;
-        }
+            Vector2 input = inputActions.Player.Move.ReadValue<Vector2>();
+            isMoving = input.magnitude > 0.1f; // Cek apakah ada input gerakan
+            bool isRunning = isSprinting && isMoving && energySystem.ConsumeEnergy(10 * Time.deltaTime, 1);
+            energySystem.isPlayerMoving = isSprinting; // Set status bergerak berdasarkan input
+                                                       //Debug.Log($"isSprinting: {isSprinting}, isMoving: {isMoving}, isRunning: {isRunning}, Current Energy: {energySystem.currentEnergy}");
+            if (isRunning)
+            {
+                currentSpeed = runSpeed;
+            }
+            else
+            {
+                currentSpeed = walkSpeed;
+            }
 
-        Vector3 moveDir = (transform.right * input.x + transform.forward * input.y).normalized;
+            Vector3 moveDir = (transform.right * input.x + transform.forward * input.y).normalized;
 
-        rb.AddForce(moveDir * currentSpeed, ForceMode.Force);
+            rb.AddForce(moveDir * currentSpeed, ForceMode.Force);
 
-        //Batasi kecepatan horizontal saja (X dan Z)
-        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        int roundedSpeed = Mathf.RoundToInt(horizontalVelocity.magnitude);
+            //Batasi kecepatan horizontal saja (X dan Z)
+            Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            int roundedSpeed = Mathf.RoundToInt(horizontalVelocity.magnitude);
 
-        if (horizontalVelocity.magnitude > currentSpeed)
-        {
-            Vector3 limitedVelocity = horizontalVelocity.normalized * currentSpeed;
-            rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
+            if (horizontalVelocity.magnitude > currentSpeed)
+            {
+                Vector3 limitedVelocity = horizontalVelocity.normalized * currentSpeed;
+                rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
+            }
         }
     }
 }

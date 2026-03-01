@@ -11,6 +11,10 @@ public class EnergySystem : MonoBehaviour
     [SerializeField] private float energyRegenTimer = 0f; // Timer untuk mengatur regenerasi energi
     private float regenTimer;
 
+    private float lastSentPercentage = -1f; // Variabel untuk menyimpan persentase energi terakhir yang dikirim ke UI
+    private float uiUpdateTimer;
+    [SerializeField] private float uiUpdateInterval = 0.03f; // Sekitar 30 FPS untuk UI
+
     public bool isPlayerMoving; // Status apakah player sedang bergerak    
 
     public static event Action<float> OnEnergyChanged; // Event untuk memberitahu perubahan energi
@@ -23,6 +27,14 @@ public class EnergySystem : MonoBehaviour
     private void Update()
     {
         RegenEnergy();
+
+        // Terapkan Rate Limiting (Hanya cek update UI setiap interval tertentu)
+        uiUpdateTimer += Time.deltaTime;
+        if (uiUpdateTimer >= uiUpdateInterval)
+        {
+            UpdateUI();
+            uiUpdateTimer = 0;
+        }
     }
 
     public bool ConsumeEnergy(float amount, float minEnergy = 0f)
@@ -38,7 +50,7 @@ public class EnergySystem : MonoBehaviour
             regenTimer = energyRegenTimer; // Reset timer regenerasi saat energi dikonsumsi
             
             if (currentEnergy < 0) currentEnergy = 0; // Pastikan energi tidak negatif
-            OnEnergyChanged?.Invoke(currentEnergy / maxEnergy); // Trigger event perubahan energi
+            //UpdateUI(); // Update UI setiap kali energi berubah
             return true; // Energi berhasil dikonsumsi
         }
         else        {
@@ -60,7 +72,18 @@ public class EnergySystem : MonoBehaviour
         {
             currentEnergy += energyRegenRate * Time.deltaTime;
             if (currentEnergy > maxEnergy) currentEnergy = maxEnergy; // Pastikan energi tidak melebihi maksimum
-            OnEnergyChanged?.Invoke(currentEnergy / maxEnergy); // Trigger event perubahan energi
+            //UpdateUI(); // Update UI setiap kali energi berubah
+        }
+    }
+
+    private void UpdateUI()
+    {
+        float currentPercentage = currentEnergy / maxEnergy; // Hitung persentase energi saat ini
+
+        if (Mathf.Abs(currentPercentage - lastSentPercentage) >= 0.01f) // Hanya kirim update jika persentase berubah signifikan (misalnya 1%)
+        {
+            OnEnergyChanged?.Invoke(currentPercentage); // Kirim event dengan persentase energi saat ini
+            lastSentPercentage = currentPercentage; // Simpan persentase terakhir yang dikirim
         }
     }
 }
