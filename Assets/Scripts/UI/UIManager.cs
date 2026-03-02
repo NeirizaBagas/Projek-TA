@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private GameObject[] uiElements;
+
     [SerializeField] private GameObject uiContainer;
     [SerializeField] private GameObject interactContainer;
     [SerializeField] private GameObject journalContainer;
@@ -11,10 +13,9 @@ public class UIManager : MonoBehaviour
 
     public static event Action OnStopInteract;
 
-    private void Awake()
+    private void Start()
     {
-        uiContainer.SetActive(false);
-        interactContainer.SetActive(false);
+        CloseAllUI();
     }
 
     private void OnEnable()
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour
         InteractToObject.OnInteractionStarted += OpenUiInteract;
         InteractToObject.OnJournalTriggered += TriggerJournal;
         TrapInteract.OnTrapDefused += CloseUiInteract;
+        TrapInteract.OnTrapDefuseFailed += CloseUiInteract;
         JournalManager.OnJournalPageClosed += CloseUiInteract;
     }
 
@@ -33,27 +35,33 @@ public class UIManager : MonoBehaviour
 
     }
 
+    private void CloseAllUI()
+    {
+        foreach (GameObject ui in uiElements)
+        {
+            ui.SetActive(false);
+        }
+    }
+
     public void OpenUiInteract()
     {
-        uiContainer.SetActive(false);
+        CloseAllUI();
         interactContainer.SetActive(true);
     }
 
     public void CloseUiInteract()
     {
         isJournalOpen = false;
-        interactContainer.SetActive(false);
+        CloseAllUI();
         uiContainer.SetActive(true);
-        journalContainer.SetActive(false);
         OnStopInteract?.Invoke();
     }
 
     public void TriggerJournal()
     {
-        if (!isJournalOpen)
-        {
-            journalContainer.SetActive(true);
-            isJournalOpen = true;
-        }
+        journalContainer.SetActive(true);
+        isJournalOpen = true;
     }
+
+    
 }

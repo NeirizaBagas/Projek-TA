@@ -18,6 +18,7 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
     private bool isHolding;
 
     public static event Action OnTrapDefused;
+    public static event Action OnTrapDefuseFailed;
 
     private void Awake()
     {
@@ -72,6 +73,7 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
     {
         isHolding = false;
         trapContainerUI.SetActive(false);
+        OnTrapDefuseFailed?.Invoke();
     }
 
     public void OnHoldSuccess()

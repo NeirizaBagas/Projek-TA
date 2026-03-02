@@ -2,19 +2,29 @@ using UnityEngine;
 
 public class Harimau : AnimalBase
 {
+    private Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponentInChildren<Animator>();
+    }
+
     public override void PerformIdle()
     {
-        Debug.Log("Idle");
+        animator.SetFloat("Vert", 0);
+        animator.SetFloat("State", 0);
     }
 
     public override void PerformRun()
     {
-        Debug.Log("Run");
+        animator.SetFloat("Vert", 1);
+        animator.SetFloat("State", 1);
     }
 
     public override void PerformWalk()
     {
-        Debug.Log("Walk");
+        animator.SetFloat("Vert", 1);
+        animator.SetFloat("State", 0);
     }
 
 }

@@ -32,7 +32,8 @@ public class InteractToObject : MonoBehaviour
         
         inputActions.UI.Disable();
         Cursor.lockState = CursorLockMode.Locked;
-        
+        Cursor.visible = false;
+
     }
 
     private void Start()
@@ -146,6 +147,7 @@ public class InteractToObject : MonoBehaviour
             {
                 isInteracting = true; // Kunci status interaksi
                 playerMovement.isAllowToMove = false;
+                freeLook.ResetTargetLook(); // Reset rotasi kamera saat mulai interaksi
                 freeLook.canLook = false; // Matikan kamera
                 OnInteractionStarted?.Invoke();
                 holdObj.OnHoldStart();
@@ -164,7 +166,7 @@ public class InteractToObject : MonoBehaviour
     {
         if (context.performed)
         {
-            //isInteracting = true; // Kunci status interaksi
+            isInteracting = true; // Kunci status interaksi
             freeLook.canLook = false; // Matikan kamera
             playerMovement.isAllowToMove = false;
             Cursor.lockState = CursorLockMode.None;

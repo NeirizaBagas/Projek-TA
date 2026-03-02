@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerInputActions inputActions;
     private EnergySystem energySystem;
+    private PlayerAnimator playerAnimator;
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float runSpeed = 10f;
     private float currentSpeed;
@@ -16,7 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool isSprinting;
     [SerializeField] private float jumpForce = 5f;
 
-    private bool isMoving;
+    public bool isMoving;
+    public bool isJumping;
     public bool isAllowToMove;
 
     private void Awake()
@@ -28,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
+        playerAnimator = GetComponent<PlayerAnimator>();
         isAllowToMove = true;
         energySystem = GetComponent<EnergySystem>();
         currentSpeed = walkSpeed;
@@ -61,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+            isJumping = false;
         }
     }
 
@@ -74,6 +78,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded && isAllowToMove)
         {
+            isJumping = true;
+            playerAnimator.HandleJumping(isJumping);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
@@ -86,17 +92,9 @@ public class PlayerMovement : MonoBehaviour
             Vector2 input = inputActions.Player.Move.ReadValue<Vector2>();
             isMoving = input.magnitude > 0.1f; // Cek apakah ada input gerakan
             bool isRunning = isSprinting && isMoving && energySystem.ConsumeEnergy(10 * Time.deltaTime, 1);
+            currentSpeed = isRunning ? runSpeed : walkSpeed;
+            playerAnimator.HandlePlayerAnimator(isMoving, isRunning);
             energySystem.isPlayerMoving = isSprinting; // Set status bergerak berdasarkan input
-                                                       //Debug.Log($"isSprinting: {isSprinting}, isMoving: {isMoving}, isRunning: {isRunning}, Current Energy: {energySystem.currentEnergy}");
-            if (isRunning)
-            {
-                currentSpeed = runSpeed;
-            }
-            else
-            {
-                currentSpeed = walkSpeed;
-            }
-
             Vector3 moveDir = (transform.right * input.x + transform.forward * input.y).normalized;
 
             rb.AddForce(moveDir * currentSpeed, ForceMode.Force);
