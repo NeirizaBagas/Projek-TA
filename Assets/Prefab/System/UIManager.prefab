@@ -48,7 +48,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  uiContainer: {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  uiHoveringContainer: {fileID: 0}
   interactContainer: {fileID: 0}
   journalContainer: {fileID: 0}
+  photoModeContainer: {fileID: 0}
+  playerIndicator: {fileID: 0}
+  photoReviewUI: {fileID: 0}
   isJournalOpen: 0

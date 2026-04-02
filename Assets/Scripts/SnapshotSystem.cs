@@ -18,6 +18,9 @@ public class SnapshotSystem : MonoBehaviour
     [SerializeField] private GameObject flashlight;
     [SerializeField] private float flashTime = 0.5f;
 
+    [Header("Photo Fade Effect")]
+    [SerializeField] private Animator fadingAnimation;
+
     public static event Action<bool> OnPhotoModeReadyToCapture;
     public static event Action<bool> OnPhotoReadyToView;
     public static event Action OnAnimalPhotoUpdated;
@@ -41,13 +44,16 @@ public class SnapshotSystem : MonoBehaviour
     {
         OnPhotoModeReadyToCapture?.Invoke(false); // Beri tahu UI untuk tutup mode foto saat mulai proses pengambilan snapshot
         yield return new WaitForEndOfFrame(); // Tunggu hingga frame selesai untuk memastikan semua sudah dirender
+
         int width = Screen.width;
         int height = Screen.height;
-        snapshot = new Texture2D(width, height, TextureFormat.RGB24, false);
+
+        Texture2D currentSnapshot = new Texture2D(width, height, TextureFormat.RGB24, false);
         Rect regionToRead = new Rect(0, 0, width, height);
-        snapshot.ReadPixels(regionToRead, 0, 0);
-        snapshot.Apply();
-        SavingPhoto();
+        currentSnapshot.ReadPixels(regionToRead, 0, 0);
+        currentSnapshot.Apply();
+
+        SavingPhoto(currentSnapshot);
     }
 
     public void ChangeAnimalPhotoIndex(int index)
@@ -55,22 +61,18 @@ public class SnapshotSystem : MonoBehaviour
         animalSnapshotIndex = index;
     }
 
-    public void SavingPhoto() // Fungsi untuk menyimpan snapshot ke database dan update UI, dipanggil setelah snapshot diambil
+    public void SavingPhoto(Texture2D capturedTex) // Fungsi untuk menyimpan snapshot ke database dan update UI, dipanggil setelah snapshot diambil
     {
         if (animalSnapshotIndex < 0 || animalSnapshotIndex >= journalDatabase.animalDatabase.Length) return;
 
-        if (snapshotReviewImage.sprite != null)
-        {
-            Destroy(snapshotReviewImage.sprite.texture); // Hapus snapshot sebelumnya untuk menghindari memory leak
-        }
+        snapshotSprite = Sprite.Create(capturedTex, new Rect(0, 0, capturedTex.width, capturedTex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        snapshotReviewImage.sprite = snapshotSprite;
+        
 
-        snapshotSprite = Sprite.Create(snapshot, new Rect(0, 0, snapshot.width, snapshot.height), new Vector2(0.5f, 0.5f), 100.0f);
 
-        snapshotReviewImage.sprite = snapshotSprite; // Tampilkan snapshot di UI review
-
-        OnPhotoReadyToView?.Invoke(true); // Beri tahu UI untuk tampilkan review snapshot yang baru diambil
-
-        StartCoroutine(CameraFlashEffect()); // Mulai efek flash kamera
+        OnPhotoReadyToView?.Invoke(true);
+        StartCoroutine(CameraFlashEffect());
+        fadingAnimation.Play("PhotoFade"); // Trigger animasi fade saat snapshot diambil
     }
 
 
@@ -93,6 +95,7 @@ public class SnapshotSystem : MonoBehaviour
             //    Destroy(targetHewan.animalSprite.texture); // Hapus sprite sebelumnya untuk menghindari memory leak
             //}
             // Tambahkan (UnityEngine.Sprite) di depan variabelnya
+            snapshotSprite.name = "Snapshot_Review " + targetHewan.animalName; // Beri nama agar mudah diidentifikasi
             targetHewan.animalSprite = (UnityEngine.Sprite)snapshotSprite;
             OnAnimalPhotoUpdated?.Invoke();
             Debug.Log($"Slot hewan index {animalSnapshotIndex} berhasil diisi");

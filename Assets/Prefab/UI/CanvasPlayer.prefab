@@ -33,7 +33,7 @@ RectTransform:
   m_Father: {fileID: 2189631237744884648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -248,13 +248,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4805505954060600445}
+  - component: {fileID: 8691645822561785281}
   m_Layer: 5
   m_Name: Jurnal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4805505954060600445
 RectTransform:
   m_ObjectHideFlags: 0
@@ -275,6 +276,31 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8691645822561785281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288722125424365278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc7179467d36eaf4f9635457fde84aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JournalManager
+  journalDatabase: {fileID: 11400000, guid: c1faaee5f201ef04ba8103bc8e32487d, type: 2}
+  leftAnimalName: {fileID: 8698216276022944370}
+  leftAnimalDescription: {fileID: 8818584118402959418}
+  leftPageNumber: {fileID: 2101953529941302845}
+  prevButton: {fileID: 6513698110182016081}
+  leftPhotoButton: {fileID: 4638124365732748254}
+  leftAnimalPhoto: {fileID: 3047387822003411519}
+  rightAnimalName: {fileID: 6967292106249899301}
+  rightAnimalDescription: {fileID: 2119494554628343687}
+  rightPageNumber: {fileID: 9096243083685997431}
+  nextButton: {fileID: 1545402094575118285}
+  rightPhotoButton: {fileID: 8467776913963722808}
+  rightAnimalPhoto: {fileID: 5454876438522691338}
 --- !u!1 &487007769212378225
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,7 +493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1721669900515203628
 RectTransform:
   m_ObjectHideFlags: 0
@@ -716,7 +742,7 @@ GameObject:
   - component: {fileID: 6854912175564915169}
   - component: {fileID: 6967292106249899301}
   m_Layer: 5
-  m_Name: NamaHewan (1)
+  m_Name: NamaHewan Kanan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -855,7 +881,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1007254256263980428
 RectTransform:
   m_ObjectHideFlags: 0
@@ -997,7 +1023,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1208981762097834918}
+      - m_Target: {fileID: 8691645822561785281}
         m_TargetAssemblyTypeName: JournalManager, Assembly-CSharp
         m_MethodName: CloseJournal
         m_Mode: 1
@@ -1429,7 +1455,7 @@ GameObject:
   - component: {fileID: 3455680666362984628}
   - component: {fileID: 2101953529941302845}
   m_Layer: 5
-  m_Name: NomorHalaman
+  m_Name: NomorHalaman Kiri
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1897,7 +1923,7 @@ GameObject:
   - component: {fileID: 3589320624133242288}
   - component: {fileID: 8818584118402959418}
   m_Layer: 5
-  m_Name: DeskripsiHewan
+  m_Name: DeskripsiHewan Kiri
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2070,7 +2096,7 @@ GameObject:
   - component: {fileID: 6546364368513011151}
   - component: {fileID: 8698216276022944370}
   m_Layer: 5
-  m_Name: NamaHewan
+  m_Name: NamaHewan Kiri
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2723,7 +2749,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1208981762097834918}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: JournalManager, Assembly-CSharp
         m_MethodName: PreviousPage
         m_Mode: 1
@@ -2747,7 +2773,7 @@ GameObject:
   - component: {fileID: 1875049449970102331}
   - component: {fileID: 2119494554628343687}
   m_Layer: 5
-  m_Name: DeskripsiHewan (1)
+  m_Name: DeskripsiHewan Kanan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3036,14 +3062,13 @@ GameObject:
   - component: {fileID: 7124342893787755465}
   - component: {fileID: 2161369619244996026}
   - component: {fileID: 802116147762698420}
-  - component: {fileID: 1208981762097834918}
   m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7371598819106599881
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3158,27 +3183,6 @@ MonoBehaviour:
   rightSide: {fileID: 2119494554628343687}
   leftPagination: {fileID: 2101953529941302845}
   rightPagination: {fileID: 9096243083685997431}
---- !u!114 &1208981762097834918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6070633175443967250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc7179467d36eaf4f9635457fde84aeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JournalManager
-  journalDatabase: {fileID: 11400000, guid: c1faaee5f201ef04ba8103bc8e32487d, type: 2}
-  leftAnimalName: {fileID: 8698216276022944370}
-  leftAnimalDescription: {fileID: 8818584118402959418}
-  leftPageNumber: {fileID: 2101953529941302845}
-  prevButton: {fileID: 6513698110182016081}
-  rightAnimalName: {fileID: 6967292106249899301}
-  rightAnimalDescription: {fileID: 2119494554628343687}
-  rightPageNumber: {fileID: 9096243083685997431}
-  nextButton: {fileID: 1545402094575118285}
 --- !u!1 &6861174904332623369
 GameObject:
   m_ObjectHideFlags: 0
@@ -3190,8 +3194,10 @@ GameObject:
   - component: {fileID: 5048424383712350758}
   - component: {fileID: 5989541552863518322}
   - component: {fileID: 5454876438522691338}
+  - component: {fileID: 463198398885726546}
+  - component: {fileID: 8467776913963722808}
   m_Layer: 5
-  m_Name: FotoHewan (1)
+  m_Name: FotoHewan Kanan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3238,7 +3244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3254,6 +3260,75 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &463198398885726546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6861174904332623369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 5454876438522691338}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8467776913963722808}
+        m_TargetAssemblyTypeName: JournalCamButton, Assembly-CSharp
+        m_MethodName: StartTakePhoto
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8467776913963722808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6861174904332623369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df88b41945be564f9109daf440f3914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JournalCamButton
+  animalIndexPhoto: 0
 --- !u!1 &7588712851285569688
 GameObject:
   m_ObjectHideFlags: 0
@@ -3266,7 +3341,7 @@ GameObject:
   - component: {fileID: 3542255266003021160}
   - component: {fileID: 9096243083685997431}
   m_Layer: 5
-  m_Name: NomorHalaman (1)
+  m_Name: NomorHalaman Kanan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3677,7 +3752,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6839564395345755328
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3956,7 +4031,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1208981762097834918}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: JournalManager, Assembly-CSharp
         m_MethodName: NextPage
         m_Mode: 1
@@ -4001,7 +4076,7 @@ RectTransform:
   m_Father: {fileID: 700384581061986979}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4054,8 +4129,10 @@ GameObject:
   - component: {fileID: 1993434666734289632}
   - component: {fileID: 6629973444034900309}
   - component: {fileID: 3047387822003411519}
+  - component: {fileID: 3921350834585235915}
+  - component: {fileID: 4638124365732748254}
   m_Layer: 5
-  m_Name: FotoHewan
+  m_Name: FotoHewan Kiri
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4102,7 +4179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4118,6 +4195,75 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3921350834585235915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8887225942343760372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 3047387822003411519}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4638124365732748254}
+        m_TargetAssemblyTypeName: JournalCamButton, Assembly-CSharp
+        m_MethodName: StartTakePhoto
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4638124365732748254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8887225942343760372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df88b41945be564f9109daf440f3914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JournalCamButton
+  animalIndexPhoto: 0
 --- !u!1 &9023196780032118486
 GameObject:
   m_ObjectHideFlags: 0
