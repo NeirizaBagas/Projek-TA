@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ec268aed1b5ef49818cb3762145400, type: 3}
   m_Name: Kukang
   m_EditorClassIdentifier: Assembly-CSharp::SODataHewan
-  animalID: 3
+  animalID: 2
   animalName: Kukang
   animalDescription: ooo
   animalSprite: {fileID: 0}

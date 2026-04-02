@@ -12,14 +12,16 @@ public class JournalManager : MonoBehaviour
     [SerializeField] private TMP_Text leftAnimalDescription;
     [SerializeField] private TMP_Text leftPageNumber;
     [SerializeField] private Button prevButton;
+    [SerializeField] private JournalCamButton leftPhotoButton;
+    [SerializeField] private Image leftAnimalPhoto;
 
     [Header("Right Page Settings")]
     [SerializeField] private TMP_Text rightAnimalName;
     [SerializeField] private TMP_Text rightAnimalDescription;
     [SerializeField] private TMP_Text rightPageNumber;
     [SerializeField] private Button nextButton;
-    //[SerializeField] private Image photoDisplay;
-    //[SerializeField] private Button photoButton;
+    [SerializeField] private JournalCamButton rightPhotoButton;
+    [SerializeField] private Image rightAnimalPhoto;
 
     private int currentPage = 0;
 
@@ -29,6 +31,18 @@ public class JournalManager : MonoBehaviour
     {
         prevButton.onClick.AddListener(PreviousPage);
         nextButton.onClick.AddListener(NextPage);
+    }
+
+    private void OnEnable()
+    {
+        SnapshotSystem.OnAnimalPhotoUpdated += UpdateJournalPage;
+        UIManager.OnTriggerUpdateJournal += UpdateJournalPage;
+    }
+
+    private void OnDisable()
+    {
+        SnapshotSystem.OnAnimalPhotoUpdated -= UpdateJournalPage;
+        UIManager.OnTriggerUpdateJournal -= UpdateJournalPage;
     }
 
     void Start()
@@ -82,16 +96,22 @@ public class JournalManager : MonoBehaviour
 
     private void UpdateJournalPage()
     {
+        Debug.Log("Update");
         SODataHewan leftAnimal = journalDatabase.animalDatabase[currentPage];
         SODataHewan rightAnimal = journalDatabase.animalDatabase[currentPage + 1];
+
+        leftPhotoButton.animalIndexPhoto = currentPage;
+        rightPhotoButton.animalIndexPhoto = currentPage + 1;
 
         leftAnimalName.text = leftAnimal.animalName;
         leftAnimalDescription.text = leftAnimal.animalDescription;
         leftPageNumber.text = (currentPage + 1).ToString();
+        leftAnimalPhoto.sprite = leftAnimal.animalSprite;
 
         rightAnimalName.text = rightAnimal.animalName;
         rightAnimalDescription.text = rightAnimal.animalDescription;
         rightPageNumber.text = (currentPage + 2).ToString();
+        rightAnimalPhoto.sprite = rightAnimal.animalSprite;
     }
 
     public void CloseJournal()

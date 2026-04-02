@@ -6,29 +6,30 @@ using UnityEngine.InputSystem;
 
 public class TrapInteract : MonoBehaviour, IHoldInteractable
 {
-    [Header("Trap Settings")]
-    [SerializeField] private float fillSpeed = 3f;
-    [SerializeField] private float maxValue = 10f;
-
-    [Header("Trap Defuse UI")]
-    [SerializeField] private GameObject trapContainerUI;
-    [SerializeField] private Slider trapSliderProgres;
-
     [SerializeField] private bool isDefused;
     private bool isHolding;
 
+    public static event Action OnOpenTrapUI;
+    public static event Action OnCloseTrapUI;
     public static event Action OnTrapDefused;
+    public static event Action OnTrapDefuseStarted;
     public static event Action OnTrapDefuseFailed;
 
     private void Awake()
     {
-
-        trapSliderProgres.minValue = 0f;
-        trapSliderProgres.maxValue = maxValue;
-        trapSliderProgres.value = 0f;
-        trapContainerUI.SetActive(false);
+        OnCloseTrapUI?.Invoke();
         isHolding = false;
         isDefused = false;
+    }
+
+    private void OnEnable()
+    {
+        TrapProgresTracker.OnTrapDefuseComplete += TrapDefused;
+    }
+
+    private void OnDisable()
+    {
+        TrapProgresTracker.OnTrapDefuseComplete -= TrapDefused;
     }
 
     public void OnHoverEnter()
@@ -45,18 +46,14 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
     {
         if (isDefused) return;
         isHolding = true;
-        trapContainerUI.SetActive(true);
+        OnOpenTrapUI?.Invoke();
     }
 
     private void Update()
     {
         if (isHolding && !isDefused)
         {
-            trapSliderProgres.value += fillSpeed * Time.deltaTime;
-            if (trapSliderProgres.value >= maxValue)
-            {
-                TrapDefused();
-            }
+            OnTrapDefuseStarted?.Invoke();
         }
     }
 
@@ -64,7 +61,7 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
     {
         isDefused = true;
         isHolding = false;
-        trapContainerUI.SetActive(false);
+        OnCloseTrapUI?.Invoke();
         OnTrapDefused?.Invoke();
         transform.gameObject.SetActive(false);
     }
@@ -72,7 +69,7 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
     public void OnHoldCancel()
     {
         isHolding = false;
-        trapContainerUI.SetActive(false);
+        OnCloseTrapUI?.Invoke();
         OnTrapDefuseFailed?.Invoke();
     }
 

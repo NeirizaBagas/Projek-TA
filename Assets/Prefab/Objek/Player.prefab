@@ -2500,6 +2500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   mouseSensitivity: 0.1
+  lerpSpeed: 10
   canLook: 0
 --- !u!114 &6356067200622103949
 MonoBehaviour:
@@ -2610,6 +2611,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 08508fe7-e939-4569-af55-1e993611e487
     m_ActionName: 'Player/HoldInteract[/Keyboard/e]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a4bb7144-a90d-41cb-9925-5d2cc553641a
+    m_ActionName: Player/TakePhoto
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2643,8 +2648,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6d5aeadb9cf9a4c958406561337090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  walkSpeed: 15
-  runSpeed: 30
+  walkSpeed: 10
+  runSpeed: 25
   isGrounded: 0
   isSprinting: 0
   jumpForce: 5
