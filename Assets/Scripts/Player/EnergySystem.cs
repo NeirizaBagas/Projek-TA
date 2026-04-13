@@ -26,14 +26,22 @@ public class EnergySystem : MonoBehaviour
 
     private void Update()
     {
-        RegenEnergy();
+        //RegenEnergy();
 
         // Terapkan Rate Limiting (Hanya cek update UI setiap interval tertentu)
-        uiUpdateTimer += Time.deltaTime;
-        if (uiUpdateTimer >= uiUpdateInterval)
+        //uiUpdateTimer += Time.deltaTime;
+        //if (uiUpdateTimer >= uiUpdateInterval)
+        //{
+        //    UpdateUI();
+        //    uiUpdateTimer = 0;
+        //}
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Base"))
         {
-            UpdateUI();
-            uiUpdateTimer = 0;
+            RegenEnergy(); // Mulai regenerasi energi saat masuk ke area base
         }
     }
 
@@ -47,10 +55,10 @@ public class EnergySystem : MonoBehaviour
         if (currentEnergy >= amount)
         {
             currentEnergy -= amount;
-            regenTimer = energyRegenTimer; // Reset timer regenerasi saat energi dikonsumsi
+            /*regenTimer = energyRegenTimer;*/ // Reset timer regenerasi saat energi dikonsumsi
             
             if (currentEnergy < 0) currentEnergy = 0; // Pastikan energi tidak negatif
-            //UpdateUI(); // Update UI setiap kali energi berubah
+            UpdateUI(); // Update UI setiap kali energi berubah
             return true; // Energi berhasil dikonsumsi
         }
         else        {
@@ -61,18 +69,18 @@ public class EnergySystem : MonoBehaviour
 
     private void RegenEnergy()
     {
-        if (regenTimer > 0)
-        {
-            regenTimer -= Time.deltaTime; // Kurangi timer regenerasi
-            if (regenTimer < 0 ) regenTimer = 0; // Pastikan timer tidak negatif
-            return; // Tunggu hingga timer habis sebelum mulai regenerasi
-        }
+        //if (regenTimer > 0)
+        //{
+        //    regenTimer -= Time.deltaTime; // Kurangi timer regenerasi
+        //    if (regenTimer < 0 ) regenTimer = 0; // Pastikan timer tidak negatif
+        //    return; // Tunggu hingga timer habis sebelum mulai regenerasi
+        //}
 
-        if (currentEnergy < maxEnergy && !isPlayerMoving)
+        if (currentEnergy < maxEnergy/* && !isPlayerMoving*/)
         {
             currentEnergy += energyRegenRate * Time.deltaTime;
             if (currentEnergy > maxEnergy) currentEnergy = maxEnergy; // Pastikan energi tidak melebihi maksimum
-            //UpdateUI(); // Update UI setiap kali energi berubah
+            UpdateUI(); // Update UI setiap kali energi berubah
         }
     }
 
