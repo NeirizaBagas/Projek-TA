@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8657156751789472333}
   - component: {fileID: 2470274277924740754}
+  - component: {fileID: -417316058748587587}
   m_Layer: 0
   m_Name: Log Swamp
   m_TagString: Untagged
@@ -60,6 +61,27 @@ LODGroup:
     renderers:
     - renderer: {fileID: 6951290975736308585}
   m_Enabled: 1
+--- !u!65 &-417316058748587587
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4709367054262481172}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.15567, y: 1.2004523, z: 1.1357651}
+  m_Center: {x: -8.91, y: -1, z: -9.77}
 --- !u!1001 &2333331986832562721
 PrefabInstance:
   m_ObjectHideFlags: 0

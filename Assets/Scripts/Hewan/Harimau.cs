@@ -12,7 +12,6 @@ public class Harimau : AnimalBase
     public override void PerformIdle()
     {
         animator.SetFloat("Vert", 0);
-        Debug.Log("Idle");
     }
 
     //public override void PerformRun()
@@ -24,7 +23,6 @@ public class Harimau : AnimalBase
     public override void PerformWalk()
     {
         animator.SetFloat("Vert", 1);
-        Debug.Log("Walk");
     }
 
 }

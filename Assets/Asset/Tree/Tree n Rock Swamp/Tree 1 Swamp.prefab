@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2715044427763520790}
   - component: {fileID: 2408872593523823403}
+  - component: {fileID: -3903191326693315791}
   m_Layer: 0
   m_Name: Tree 1 Swamp
   m_TagString: Untagged
@@ -60,6 +61,29 @@ LODGroup:
     renderers:
     - renderer: {fileID: 8016735459803838590}
   m_Enabled: 1
+--- !u!136 &-3903191326693315791
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334560347454975773}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.74
+  m_Height: 17.12
+  m_Direction: 1
+  m_Center: {x: -21.91, y: 5.85, z: -17.61}
 --- !u!1001 &4635393339567997343
 PrefabInstance:
   m_ObjectHideFlags: 0

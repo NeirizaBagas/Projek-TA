@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1994829272638378164}
   - component: {fileID: 7301026958316629899}
+  - component: {fileID: -8055457577886889425}
+  - component: {fileID: 2252458993352528031}
   m_Layer: 0
   m_Name: Rock 3 Swamp
   m_TagString: Untagged
@@ -60,6 +62,48 @@ LODGroup:
     renderers:
     - renderer: {fileID: 3688471737572926965}
   m_Enabled: 1
+--- !u!65 &-8055457577886889425
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2429819727698772175}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.844284, y: 7.2076035, z: 8.078995}
+  m_Center: {x: -12.71, y: 1.58, z: -26.6}
+--- !u!65 &2252458993352528031
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2429819727698772175}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.3168335, y: 3.9147954, z: 5.4}
+  m_Center: {x: -16.82, y: -0.26, z: -25.7}
 --- !u!1001 &8070297871388993779
 PrefabInstance:
   m_ObjectHideFlags: 0

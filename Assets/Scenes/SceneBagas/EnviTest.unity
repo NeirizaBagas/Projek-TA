@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0.7
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 1cf6f4c6e6e0518419839d3f5448dd99, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 8dd2f17b6e3f8174390967bc55ead836, type: 2}
   m_HaloStrength: 0.157
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -6548,6 +6548,18 @@ PrefabInstance:
       propertyPath: sunLight
       value: 
       objectReference: {fileID: 852641422}
+    - target: {fileID: 7827600736612647206, guid: aca69e85cfdd0194eb33c7ec25bee868, type: 3}
+      propertyPath: daySkybox
+      value: 
+      objectReference: {fileID: 2100000, guid: 2bd8959f5fbd3644aa33af1a155fc147, type: 2}
+    - target: {fileID: 7827600736612647206, guid: aca69e85cfdd0194eb33c7ec25bee868, type: 3}
+      propertyPath: blendSkybox
+      value: 
+      objectReference: {fileID: 2100000, guid: 1cf6f4c6e6e0518419839d3f5448dd99, type: 2}
+    - target: {fileID: 7827600736612647206, guid: aca69e85cfdd0194eb33c7ec25bee868, type: 3}
+      propertyPath: nightSkybox
+      value: 
+      objectReference: {fileID: 2100000, guid: cc421da483ed06c49933077a621bff25, type: 2}
     - target: {fileID: 8844448283765695289, guid: aca69e85cfdd0194eb33c7ec25bee868, type: 3}
       propertyPath: m_LocalPosition.x
       value: -271.31378

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 472269660287687745}
   - component: {fileID: 1970691002760175415}
+  - component: {fileID: 437483229122849735}
   m_Layer: 0
   m_Name: Log
   m_TagString: Untagged
@@ -60,6 +61,27 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7286456558401083064}
   m_Enabled: 1
+--- !u!65 &437483229122849735
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939728329128414981}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.15567, y: 1.2004523, z: 1.1357651}
+  m_Center: {x: -0.23277283, y: 0.6272012, z: -14.857883}
 --- !u!1 &9087786663565883245
 GameObject:
   m_ObjectHideFlags: 0

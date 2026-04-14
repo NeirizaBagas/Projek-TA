@@ -96,7 +96,6 @@ public class JournalManager : MonoBehaviour
 
     private void UpdateJournalPage()
     {
-        Debug.Log("Update");
         SODataHewan leftAnimal = journalDatabase.animalDatabase[currentPage];
         SODataHewan rightAnimal = journalDatabase.animalDatabase[currentPage + 1];
 
