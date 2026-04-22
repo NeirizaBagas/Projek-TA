@@ -8,12 +8,12 @@ public class EnergySystem : MonoBehaviour
     private float currentEnergy; // Jumlah energi saat ini
     [Header("Energy Regeneration")] 
     [SerializeField] private float energyRegenRate = 5f; // Kecepatan regenerasi energi per detik
-    [SerializeField] private float energyRegenTimer = 0f; // Timer untuk mengatur regenerasi energi
-    private float regenTimer;
+    /*[SerializeField] private float energyRegenTimer = 0f;*/ // Timer untuk mengatur regenerasi energi
+    //private float regenTimer;
 
     private float lastSentPercentage = -1f; // Variabel untuk menyimpan persentase energi terakhir yang dikirim ke UI
-    private float uiUpdateTimer;
-    [SerializeField] private float uiUpdateInterval = 0.03f; // Sekitar 30 FPS untuk UI
+    //private float uiUpdateTimer;
+    //[SerializeField] private float uiUpdateInterval = 0.03f; // Sekitar 30 FPS untuk UI
 
     public bool isPlayerMoving; // Status apakah player sedang bergerak    
 

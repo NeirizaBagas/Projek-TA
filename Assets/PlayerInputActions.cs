@@ -125,7 +125,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Tap"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenItemMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""d2d14800-f068-4895-80c4-ab9998c7d9ab"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -562,6 +571,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca905a65-31df-455b-99c4-9de7faff6b4b"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""OpenItemMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d921f393-0317-4192-9d01-eb197b2619c1"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""OpenItemMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1230,6 +1261,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_OpenItemMenu = m_Player.FindAction("OpenItemMenu", throwIfNotFound: true);
         m_Player_Journal = m_Player.FindAction("Journal", throwIfNotFound: true);
         m_Player_HoldInteract = m_Player.FindAction("HoldInteract", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
@@ -1335,6 +1367,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_OpenItemMenu;
     private readonly InputAction m_Player_Journal;
     private readonly InputAction m_Player_HoldInteract;
     private readonly InputAction m_Player_Crouch;
@@ -1370,6 +1403,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Interact".
         /// </summary>
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/OpenItemMenu".
+        /// </summary>
+        public InputAction @OpenItemMenu => m_Wrapper.m_Player_OpenItemMenu;
         /// <summary>
         /// Provides access to the underlying input action "Player/Journal".
         /// </summary>
@@ -1440,6 +1477,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @OpenItemMenu.started += instance.OnOpenItemMenu;
+            @OpenItemMenu.performed += instance.OnOpenItemMenu;
+            @OpenItemMenu.canceled += instance.OnOpenItemMenu;
             @Journal.started += instance.OnJournal;
             @Journal.performed += instance.OnJournal;
             @Journal.canceled += instance.OnJournal;
@@ -1487,6 +1527,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @OpenItemMenu.started -= instance.OnOpenItemMenu;
+            @OpenItemMenu.performed -= instance.OnOpenItemMenu;
+            @OpenItemMenu.canceled -= instance.OnOpenItemMenu;
             @Journal.started -= instance.OnJournal;
             @Journal.performed -= instance.OnJournal;
             @Journal.canceled -= instance.OnJournal;
@@ -1839,6 +1882,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenItemMenu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenItemMenu(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Journal" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
