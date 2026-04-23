@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject playerIndicator;
     [SerializeField] private GameObject photoReviewUI;
     [SerializeField] private GameObject itemMenuUI;
+    [SerializeField] private RadialMenu radialMenu;
 
     public bool isJournalOpen;
     private bool isPhotoModeOpen;
@@ -21,6 +22,7 @@ public class UIManager : MonoBehaviour
     public static event Action OnStopInteract;
     public static event Action OnTriggerUpdateJournal;
     public static event Action<bool> OnTogglePhotoUI;
+    public static event Action<bool> OnNullCurrentUI;
 
     private void Start()
     {
@@ -30,7 +32,7 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         InteractToObject.OnInteractionStarted += OpenUiInteract;
-        InteractToObject.OnJournalTriggered += TriggerJournal;
+        //InteractToObject.OnJournalTriggered += ToggleJournalUI;
         InteractToObject.OnUIHoverOn += OpenUiHovering;
         InteractToObject.OnUIHoverOff += CloseAllUI;
         InteractToObject.OnItemMenuToggle += ToggleItemMenu;
@@ -43,13 +45,14 @@ public class UIManager : MonoBehaviour
         SnapshotSystem.OnPhotoModeReadyToCapture += TogglePhotoUI;
         SnapshotSystem.OnPhotoModeReadyToCapture += TogglePlayerIndicatorUI;
         SnapshotSystem.OnPhotoReadyToView += ToggleReviewPhotoUI;
-        SnapshotSystem.OnAnimalPhotoUpdated += TriggerJournal;
+        //SnapshotSystem.OnAnimalPhotoUpdated += ToggleJournalUI;
+        ItemManager.OnTriggerJournal += ToggleJournalUI; 
     }
 
     private void OnDisable()
     {
         InteractToObject.OnInteractionStarted -= OpenUiInteract;
-        InteractToObject.OnJournalTriggered -= TriggerJournal;
+        //InteractToObject.OnJournalTriggered -= ToggleJournalUI;
         InteractToObject.OnUIHoverOn -= OpenUiHovering;
         InteractToObject.OnUIHoverOff -= CloseAllUI;
         InteractToObject.OnItemMenuToggle -= ToggleItemMenu;
@@ -62,7 +65,8 @@ public class UIManager : MonoBehaviour
         SnapshotSystem.OnPhotoModeReadyToCapture -= TogglePhotoUI;
         SnapshotSystem.OnPhotoModeReadyToCapture -= TogglePlayerIndicatorUI;
         SnapshotSystem.OnPhotoReadyToView -= ToggleReviewPhotoUI;
-        SnapshotSystem.OnAnimalPhotoUpdated -= TriggerJournal;
+        //SnapshotSystem.OnAnimalPhotoUpdated -= ToggleJournalUI;
+        ItemManager.OnTriggerJournal -= ToggleJournalUI;
     }
 
     public void OpenUi(GameObject uiToOpen)
@@ -74,6 +78,7 @@ public class UIManager : MonoBehaviour
         if (uiToOpen != null)
         {
             uiToOpen.SetActive(true);
+            OnNullCurrentUI?.Invoke(false);
             currentActiveUI = uiToOpen;
             Debug.Log("Opening UI: " + uiToOpen.name);
         }
@@ -82,8 +87,10 @@ public class UIManager : MonoBehaviour
     public void CloseCurrentUI()
     {
         isPhotoModeOpen = false;
+        isJournalOpen = false;
         if (currentActiveUI != null)
         {
+            OnNullCurrentUI?.Invoke(true);
             currentActiveUI.SetActive(false);
             currentActiveUI = null;
             Debug.Log("Closing Current UI");
@@ -115,10 +122,18 @@ public class UIManager : MonoBehaviour
         TogglePlayerIndicatorUI(true);
     }
 
-    public void TriggerJournal()
+    public void ToggleJournalUI(bool toggleJournal)
     {
-        OpenUi(journalContainer);
-        isJournalOpen = true;
+        if (toggleJournal && !isJournalOpen)
+        {
+            CloseCurrentUI();
+            OpenUi(journalContainer);
+            isJournalOpen= true;
+        }
+        else
+        {
+            CloseCurrentUI();
+        }
     }
 
     public void TogglePhotoUI(bool isVisible)
@@ -151,15 +166,15 @@ public class UIManager : MonoBehaviour
 
     public void ToggleItemMenu(bool isVisible)
     {
-        if (isVisible)
+        if (isVisible && currentActiveUI == null)
         {
-            itemMenuUI.SetActive(isVisible);
-            Debug.Log("Buka");
+            OpenUi(itemMenuUI);
+            radialMenu.Open();
         }
         else
         {
+            radialMenu.Close();
             CloseCurrentUI();
-            Debug.Log("Tutup");
         }
     }
 }

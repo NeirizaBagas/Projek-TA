@@ -19,13 +19,14 @@ public class InteractToObject : MonoBehaviour
     private IInteractableObject currentTarget; // Data target interaksi saat ini
     private bool isInteracting = false; // Status apakah sedang berinteraksi
 
-    [Header("Script Reference")]
-    [SerializeField] private RadialMenu radialMenu;
-
     [Header("Snapshot System")]
     private SnapshotSystem _snapshotSystem;
     private bool _canTakePhoto = false;
     private bool isUIHoveringActive = false;
+
+    [Header("Radial Item Ui")]
+    //[SerializeField] private RadialMenu radialMenu;
+    private bool isItemMenuActive = false;
 
     public static event Action OnInteractionStarted;
     public static event Action OnUIHoverOn;
@@ -62,13 +63,12 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.started += OnHoldInteract;
         inputActions.Player.HoldInteract.performed += OnHoldInteract;
         inputActions.Player.HoldInteract.canceled += OnHoldInteract;
-        inputActions.Player.Journal.performed += triggerJournal;
         inputActions.Player.TakePhoto.performed += TakePicture;
-        inputActions.Player.OpenItemMenu.started += ToggleItemMenu;
-        inputActions.Player.OpenItemMenu.canceled += ToggleItemMenu;
+        inputActions.Player.OpenItemMenu.performed += ToggleItemMenu;
         JournalCamButton.OnPhotoModeStarted += ToggleTakePhotoAccess;
         UIManager.OnStopInteract += StopInteractObject;
         UIManager.OnTogglePhotoUI += ToggleTakePhotoAccess;
+        UIManager.OnNullCurrentUI += TogglePlayerAccess;
         SnapshotSystem.OnPhotoReadyToView += ReviewPhoto;
     }
 
@@ -79,13 +79,13 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.started -= OnHoldInteract;
         inputActions.Player.HoldInteract.performed -= OnHoldInteract;
         inputActions.Player.HoldInteract.canceled -= OnHoldInteract;
-        inputActions.Player.Journal.performed -= triggerJournal;
+        //inputActions.Player.Journal.performed -= triggerJournal;
         inputActions.Player.TakePhoto.performed -= TakePicture;
         inputActions.Player.OpenItemMenu.started -= ToggleItemMenu;
-        inputActions.Player.OpenItemMenu.canceled -= ToggleItemMenu;
         JournalCamButton.OnPhotoModeStarted -= ToggleTakePhotoAccess;
         UIManager.OnStopInteract -= StopInteractObject;
         UIManager.OnTogglePhotoUI -= ToggleTakePhotoAccess;
+        UIManager.OnNullCurrentUI -= TogglePlayerAccess;
 
     }
 
@@ -187,26 +187,24 @@ public class InteractToObject : MonoBehaviour
         }
     }
 
-    public void triggerJournal(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            isInteracting = true; // Kunci status interaksi
-            TogglePlayerAccess(false);
-            //freeLook.canLook = false; // Matikan kamera
-            //playerMovement.isAllowToMove = false;
-            //Cursor.lockState = CursorLockMode.None;
-            //Cursor.visible = true;
-            //Debug.Log(Cursor.lockState);
-            OnJournalTriggered?.Invoke();
-        }
-    }
+    //public void triggerJournal(InputAction.CallbackContext context)
+    //{
+    //    if (context.performed)
+    //    {
+    //        isInteracting = true; // Kunci status interaksi
+    //        TogglePlayerAccess(false);
+    //        //freeLook.canLook = false; // Matikan kamera
+    //        //playerMovement.isAllowToMove = false;
+    //        //Cursor.lockState = CursorLockMode.None;
+    //        //Cursor.visible = true;
+    //        //Debug.Log(Cursor.lockState);
+    //        OnJournalTriggered?.Invoke();
+    //    }
+    //}
 
     private void StopInteractObject()
     {
-        currentTarget = null;
         TogglePlayerAccess(true);
-        isInteracting = false;
     }
 
     IEnumerator WaitForInteract()
@@ -262,28 +260,51 @@ public class InteractToObject : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            isInteracting = true;
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            isInteracting = false;
+            currentTarget = null;
         }
     }
 
     private void ToggleItemMenu(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
         {
-            radialMenu.Open();
             TogglePlayerAccess(false);
             OnItemMenuToggle?.Invoke(true);
+
+            //if (isItemMenuActive)
+            //{
+            //    isItemMenuActive = false;
+            //    TogglePlayerAccess(true);
+            //    OnItemMenuToggle?.Invoke(false);
+            //}
+            //else
+            //{
+            //    isItemMenuActive = true;
+            //    TogglePlayerAccess(false);
+            //    OnItemMenuToggle?.Invoke(true);
+            //}
+
         }
-        else if (context.canceled)
-        {
-            radialMenu.Close();
-            TogglePlayerAccess(true);
-            OnItemMenuToggle?.Invoke(false);
-        }
+
+        //if (context.started)
+        //{
+        //    radialMenu.Open();
+        //    TogglePlayerAccess(false);
+        //    OnItemMenuToggle?.Invoke(true);
+        //}
+        //else if (context.canceled)
+        //{
+        //    radialMenu.Close();
+        //    TogglePlayerAccess(true);
+        //    OnItemMenuToggle?.Invoke(false);
+        //}
     }
 
     private void OnDrawGizmos()

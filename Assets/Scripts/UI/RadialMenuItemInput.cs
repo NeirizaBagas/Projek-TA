@@ -1,10 +1,13 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] private RadialMenu menu;
+    [SerializeField] private UnityEvent onClickAction;
     RadialMenuItem item;
     RectTransform rect;
     Image background;
@@ -52,6 +55,6 @@ public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        
+        onClickAction?.Invoke();
     }
 }
