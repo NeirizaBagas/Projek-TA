@@ -45,8 +45,8 @@ public class SnapshotSystem : MonoBehaviour
         OnPhotoModeReadyToCapture?.Invoke(false); // Beri tahu UI untuk tutup mode foto saat mulai proses pengambilan snapshot
         yield return new WaitForEndOfFrame(); // Tunggu hingga frame selesai untuk memastikan semua sudah dirender
 
-        int width = Screen.width;
-        int height = Screen.height;
+        int width = 720;
+        int height = 720;
 
         Texture2D currentSnapshot = new Texture2D(width, height, TextureFormat.RGB24, false);
         Rect regionToRead = new Rect(0, 0, width, height);

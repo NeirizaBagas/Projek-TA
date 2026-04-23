@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool isGrounded;
     [SerializeField] private bool isSprinting;
     [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float consumeEnergyAmount = 10;
 
     public bool isMoving;
     public bool isJumping;
@@ -91,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector2 input = inputActions.Player.Move.ReadValue<Vector2>();
             isMoving = input.magnitude > 0.1f; // Cek apakah ada input gerakan
-            bool isRunning = isSprinting && isMoving && energySystem.ConsumeEnergy(10 * Time.deltaTime, 1);
+            bool isRunning = isSprinting && isMoving && energySystem.ConsumeEnergy(consumeEnergyAmount * Time.deltaTime, 1);
             currentSpeed = isRunning ? runSpeed : walkSpeed;
             playerAnimator.HandlePlayerAnimator(isMoving, isRunning);
             energySystem.isPlayerMoving = isSprinting; // Set status bergerak berdasarkan input

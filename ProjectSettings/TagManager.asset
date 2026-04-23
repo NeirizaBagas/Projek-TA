@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Interactable
   - Ground
+  - Base
   layers:
   - Default
   - TransparentFX

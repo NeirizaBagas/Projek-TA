@@ -5,6 +5,6 @@ public interface IAnimals
 {
     void PerformIdle();
     void PerformWalk();
-    void PerformRun();
+    //void PerformRun();
 }
 

@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject photoModeContainer;
     [SerializeField] private GameObject playerIndicator;
     [SerializeField] private GameObject photoReviewUI;
+    [SerializeField] private GameObject itemMenuUI;
 
     public bool isJournalOpen;
     private bool isPhotoModeOpen;
@@ -32,6 +33,7 @@ public class UIManager : MonoBehaviour
         InteractToObject.OnJournalTriggered += TriggerJournal;
         InteractToObject.OnUIHoverOn += OpenUiHovering;
         InteractToObject.OnUIHoverOff += CloseAllUI;
+        InteractToObject.OnItemMenuToggle += ToggleItemMenu;
         TrapInteract.OnOpenTrapUI += OpenUiInteract;
         TrapInteract.OnCloseTrapUI += CloseUiInteract;
         TrapInteract.OnTrapDefused += CloseUiInteract;
@@ -50,6 +52,7 @@ public class UIManager : MonoBehaviour
         InteractToObject.OnJournalTriggered -= TriggerJournal;
         InteractToObject.OnUIHoverOn -= OpenUiHovering;
         InteractToObject.OnUIHoverOff -= CloseAllUI;
+        InteractToObject.OnItemMenuToggle -= ToggleItemMenu;
         TrapInteract.OnOpenTrapUI -= OpenUiInteract;
         TrapInteract.OnCloseTrapUI -= CloseUiInteract;
         TrapInteract.OnTrapDefused -= CloseUiInteract;
@@ -144,5 +147,19 @@ public class UIManager : MonoBehaviour
     public void TogglePlayerIndicatorUI(bool isVisible)
     {
         playerIndicator.SetActive(isVisible);
+    }
+
+    public void ToggleItemMenu(bool isVisible)
+    {
+        if (isVisible)
+        {
+            itemMenuUI.SetActive(isVisible);
+            Debug.Log("Buka");
+        }
+        else
+        {
+            CloseCurrentUI();
+            Debug.Log("Tutup");
+        }
     }
 }

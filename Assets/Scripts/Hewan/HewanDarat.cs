@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Harimau : AnimalBase
+public class HewanDarat : AnimalBase
 {
     private Animator animator;
 
@@ -12,19 +12,11 @@ public class Harimau : AnimalBase
     public override void PerformIdle()
     {
         animator.SetFloat("Vert", 0);
-        animator.SetFloat("State", 0);
-    }
-
-    public override void PerformRun()
-    {
-        animator.SetFloat("Vert", 1);
-        animator.SetFloat("State", 1);
     }
 
     public override void PerformWalk()
     {
         animator.SetFloat("Vert", 1);
-        animator.SetFloat("State", 0);
     }
 
 }

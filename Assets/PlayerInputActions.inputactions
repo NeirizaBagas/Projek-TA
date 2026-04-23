@@ -39,7 +39,16 @@
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Tap",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OpenItemMenu",
+                    "type": "Button",
+                    "id": "d2d14800-f068-4895-80c4-ab9998c7d9ab",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -481,6 +490,28 @@
                 },
                 {
                     "name": "",
+                    "id": "ca905a65-31df-455b-99c4-9de7faff6b4b",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "OpenItemMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d921f393-0317-4192-9d01-eb197b2619c1",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "OpenItemMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "286c4b02-5998-4e71-883e-0f24420b854e",
                     "path": "<Keyboard>/j",
                     "interactions": "",
@@ -504,7 +535,7 @@
                 {
                     "name": "",
                     "id": "29e7ca0d-3262-484a-9a37-34b07095a6ce",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",

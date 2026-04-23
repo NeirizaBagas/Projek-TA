@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6869042348081271962}
   - component: {fileID: 5815569718278015255}
+  - component: {fileID: 1980063154842920531}
   m_Layer: 0
   m_Name: Tree 1
   m_TagString: Untagged
@@ -60,6 +61,29 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2055708886699350824}
   m_Enabled: 1
+--- !u!136 &1980063154842920531
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5880549071610317454}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.74
+  m_Height: 17.12
+  m_Direction: 1
+  m_Center: {x: 0, y: 8.6, z: 11.98}
 --- !u!1001 &812563241715009452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86,19 +110,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6202bdb6c7d7764cbbc6615d4db8156, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071067
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6202bdb6c7d7764cbbc6615d4db8156, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000030908616
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6202bdb6c7d7764cbbc6615d4db8156, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000030908623
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6202bdb6c7d7764cbbc6615d4db8156, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6202bdb6c7d7764cbbc6615d4db8156, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

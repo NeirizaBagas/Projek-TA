@@ -19,6 +19,9 @@ public class InteractToObject : MonoBehaviour
     private IInteractableObject currentTarget; // Data target interaksi saat ini
     private bool isInteracting = false; // Status apakah sedang berinteraksi
 
+    [Header("Script Reference")]
+    [SerializeField] private RadialMenu radialMenu;
+
     [Header("Snapshot System")]
     private SnapshotSystem _snapshotSystem;
     private bool _canTakePhoto = false;
@@ -28,6 +31,7 @@ public class InteractToObject : MonoBehaviour
     public static event Action OnUIHoverOn;
     public static event Action OnUIHoverOff;
     public static event Action OnJournalTriggered;
+    public static event Action<bool> OnItemMenuToggle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -60,6 +64,8 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.canceled += OnHoldInteract;
         inputActions.Player.Journal.performed += triggerJournal;
         inputActions.Player.TakePhoto.performed += TakePicture;
+        inputActions.Player.OpenItemMenu.started += ToggleItemMenu;
+        inputActions.Player.OpenItemMenu.canceled += ToggleItemMenu;
         JournalCamButton.OnPhotoModeStarted += ToggleTakePhotoAccess;
         UIManager.OnStopInteract += StopInteractObject;
         UIManager.OnTogglePhotoUI += ToggleTakePhotoAccess;
@@ -75,6 +81,8 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.canceled -= OnHoldInteract;
         inputActions.Player.Journal.performed -= triggerJournal;
         inputActions.Player.TakePhoto.performed -= TakePicture;
+        inputActions.Player.OpenItemMenu.started -= ToggleItemMenu;
+        inputActions.Player.OpenItemMenu.canceled -= ToggleItemMenu;
         JournalCamButton.OnPhotoModeStarted -= ToggleTakePhotoAccess;
         UIManager.OnStopInteract -= StopInteractObject;
         UIManager.OnTogglePhotoUI -= ToggleTakePhotoAccess;
@@ -259,6 +267,22 @@ public class InteractToObject : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        }
+    }
+
+    private void ToggleItemMenu(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            radialMenu.Open();
+            TogglePlayerAccess(false);
+            OnItemMenuToggle?.Invoke(true);
+        }
+        else if (context.canceled)
+        {
+            radialMenu.Close();
+            TogglePlayerAccess(true);
+            OnItemMenuToggle?.Invoke(false);
         }
     }
 
