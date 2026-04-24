@@ -27,12 +27,12 @@ public class SnapshotSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        JournalCamButton.OnAnimalPhotoRequested += ChangeAnimalPhotoIndex;
+        ItemManager.OnAnimalPhotoRequested += ChangeAnimalPhotoIndex;
     }
 
     private void OnDisable()
     {
-        JournalCamButton.OnAnimalPhotoRequested -= ChangeAnimalPhotoIndex;
+        ItemManager.OnAnimalPhotoRequested -= ChangeAnimalPhotoIndex;
     }
 
     public void CaptureSnapshot() // Dipanggil dari skrip interacttoobject saat player menekan tombol foto(klik kanan mouse)
@@ -45,8 +45,8 @@ public class SnapshotSystem : MonoBehaviour
         OnPhotoModeReadyToCapture?.Invoke(false); // Beri tahu UI untuk tutup mode foto saat mulai proses pengambilan snapshot
         yield return new WaitForEndOfFrame(); // Tunggu hingga frame selesai untuk memastikan semua sudah dirender
 
-        int width = 720;
-        int height = 720;
+        int width = Screen.width;
+        int height = Screen.height;
 
         Texture2D currentSnapshot = new Texture2D(width, height, TextureFormat.RGB24, false);
         Rect regionToRead = new Rect(0, 0, width, height);

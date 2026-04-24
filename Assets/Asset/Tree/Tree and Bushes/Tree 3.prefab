@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5815569718278015255}
   - component: {fileID: 1980063154842920531}
   m_Layer: 0
-  m_Name: Tree 1
+  m_Name: Tree 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,10 +80,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.849596
-  m_Height: 18.969326
+  m_Radius: 1.7960529
+  m_Height: 18.925514
   m_Direction: 1
-  m_Center: {x: -0.25890446, y: 7.675337, z: 11.98}
+  m_Center: {x: -0.2, y: 7.6972427, z: 11.945934}
 --- !u!1001 &812563241715009452
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -180,7 +180,7 @@ public class RadialMenu : MonoBehaviour
 
         centerIcon.sprite = sprite;
         centerIcon.enabled = sprite != null;
-        centerIcon.color = color;
+        //centerIcon.color = color;
     }
 
 }
