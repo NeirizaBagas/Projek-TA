@@ -80,10 +80,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3.036663
-  m_Height: 20.95
+  m_Radius: 6.255188
+  m_Height: 26.875095
   m_Direction: 1
-  m_Center: {x: 6.3066597, y: 9, z: -39.49}
+  m_Center: {x: 7.696533, y: 6.0374527, z: -39.709442}
 --- !u!1001 &1263571224520608496
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -32,7 +32,6 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         InteractToObject.OnInteractionStarted += OpenUiInteract;
-        //InteractToObject.OnJournalTriggered += ToggleJournalUI;
         InteractToObject.OnUIHoverOn += OpenUiHovering;
         InteractToObject.OnUIHoverOff += CloseAllUI;
         InteractToObject.OnItemMenuToggle += ToggleItemMenu;
@@ -41,18 +40,17 @@ public class UIManager : MonoBehaviour
         TrapInteract.OnTrapDefused += CloseUiInteract;
         TrapInteract.OnTrapDefuseFailed += CloseUiInteract;
         JournalManager.OnJournalPageClosed += CloseUiInteract;
-        JournalCamButton.OnPhotoUiTriggered += TogglePhotoUI;
+        ItemManager.OnPhotoUiTriggered += TogglePhotoUI;
         SnapshotSystem.OnPhotoModeReadyToCapture += TogglePhotoUI;
         SnapshotSystem.OnPhotoModeReadyToCapture += TogglePlayerIndicatorUI;
         SnapshotSystem.OnPhotoReadyToView += ToggleReviewPhotoUI;
         //SnapshotSystem.OnAnimalPhotoUpdated += ToggleJournalUI;
-        ItemManager.OnTriggerJournal += ToggleJournalUI; 
+        ItemManager.OnTriggerJournal += ToggleJournalUI;
     }
 
     private void OnDisable()
     {
         InteractToObject.OnInteractionStarted -= OpenUiInteract;
-        //InteractToObject.OnJournalTriggered -= ToggleJournalUI;
         InteractToObject.OnUIHoverOn -= OpenUiHovering;
         InteractToObject.OnUIHoverOff -= CloseAllUI;
         InteractToObject.OnItemMenuToggle -= ToggleItemMenu;
@@ -61,7 +59,7 @@ public class UIManager : MonoBehaviour
         TrapInteract.OnTrapDefused -= CloseUiInteract;
         TrapInteract.OnTrapDefuseFailed -= CloseUiInteract;
         JournalManager.OnJournalPageClosed -= CloseUiInteract;
-        JournalCamButton.OnPhotoUiTriggered -= TogglePhotoUI;
+        ItemManager.OnPhotoUiTriggered -= TogglePhotoUI;
         SnapshotSystem.OnPhotoModeReadyToCapture -= TogglePhotoUI;
         SnapshotSystem.OnPhotoModeReadyToCapture -= TogglePlayerIndicatorUI;
         SnapshotSystem.OnPhotoReadyToView -= ToggleReviewPhotoUI;
@@ -78,7 +76,7 @@ public class UIManager : MonoBehaviour
         if (uiToOpen != null)
         {
             uiToOpen.SetActive(true);
-            OnNullCurrentUI?.Invoke(false);
+            if (uiToOpen != uiHoveringContainer) OnNullCurrentUI?.Invoke(false);
             currentActiveUI = uiToOpen;
             Debug.Log("Opening UI: " + uiToOpen.name);
         }
@@ -166,13 +164,16 @@ public class UIManager : MonoBehaviour
 
     public void ToggleItemMenu(bool isVisible)
     {
+        Debug.Log("Tes");
         if (isVisible && currentActiveUI == null)
         {
+            Debug.Log("Open");
             OpenUi(itemMenuUI);
             radialMenu.Open();
         }
         else
         {
+            Debug.Log("Close");
             radialMenu.Close();
             CloseCurrentUI();
         }

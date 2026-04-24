@@ -15,6 +15,7 @@ public class InteractToObject : MonoBehaviour
     [Header("Interaction Settings")]
     [SerializeField] private float interactDistance = 3f; // Jarak maksimal untuk interaksi
     [SerializeField] private bool canInteract; // Status apakah bisa berinteraksi
+    [SerializeField] private bool canDefuse;
     [SerializeField] private TextMeshProUGUI textInteract;
     private IInteractableObject currentTarget; // Data target interaksi saat ini
     private bool isInteracting = false; // Status apakah sedang berinteraksi
@@ -24,14 +25,9 @@ public class InteractToObject : MonoBehaviour
     private bool _canTakePhoto = false;
     private bool isUIHoveringActive = false;
 
-    [Header("Radial Item Ui")]
-    //[SerializeField] private RadialMenu radialMenu;
-    private bool isItemMenuActive = false;
-
     public static event Action OnInteractionStarted;
     public static event Action OnUIHoverOn;
     public static event Action OnUIHoverOff;
-    public static event Action OnJournalTriggered;
     public static event Action<bool> OnItemMenuToggle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -65,11 +61,13 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.canceled += OnHoldInteract;
         inputActions.Player.TakePhoto.performed += TakePicture;
         inputActions.Player.OpenItemMenu.performed += ToggleItemMenu;
-        JournalCamButton.OnPhotoModeStarted += ToggleTakePhotoAccess;
+        ItemManager.OnPhotoModeStarted += ToggleTakePhotoAccess;
+        ItemManager.OnReadyToDefuse += ToggleCanDefuse;
         UIManager.OnStopInteract += StopInteractObject;
         UIManager.OnTogglePhotoUI += ToggleTakePhotoAccess;
         UIManager.OnNullCurrentUI += TogglePlayerAccess;
         SnapshotSystem.OnPhotoReadyToView += ReviewPhoto;
+        TrapInteract.OnCanDefuse += ToggleCanDefuse;
     }
 
     private void OnDisable()
@@ -79,14 +77,14 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.started -= OnHoldInteract;
         inputActions.Player.HoldInteract.performed -= OnHoldInteract;
         inputActions.Player.HoldInteract.canceled -= OnHoldInteract;
-        //inputActions.Player.Journal.performed -= triggerJournal;
         inputActions.Player.TakePhoto.performed -= TakePicture;
         inputActions.Player.OpenItemMenu.started -= ToggleItemMenu;
-        JournalCamButton.OnPhotoModeStarted -= ToggleTakePhotoAccess;
+        ItemManager .OnPhotoModeStarted -= ToggleTakePhotoAccess;
+        ItemManager.OnReadyToDefuse -= ToggleCanDefuse;
         UIManager.OnStopInteract -= StopInteractObject;
         UIManager.OnTogglePhotoUI -= ToggleTakePhotoAccess;
         UIManager.OnNullCurrentUI -= TogglePlayerAccess;
-
+        TrapInteract.OnCanDefuse -= ToggleCanDefuse;
     }
 
     private void Update()
@@ -105,7 +103,7 @@ public class InteractToObject : MonoBehaviour
             {
                 IInteractableObject interactable = hit.collider.GetComponent<IInteractableObject>();
 
-                if (interactable != null && !isInteracting)
+                if (interactable != null && !isInteracting && canDefuse)
                 {
                     if (currentTarget != interactable && !isUIHoveringActive)
                     {
@@ -117,11 +115,11 @@ public class InteractToObject : MonoBehaviour
 
                         if (currentTarget is ITapInteractable)
                         {
-                            textInteract.text = "Press [E] to Interact";
+                            textInteract.text = "Press [F] to Interact";
                         }
                         else if (currentTarget is IHoldInteractable)
                         {
-                            textInteract.text = "Hold [E] to Interact";
+                            textInteract.text = "Hold [F] to Interact";
                         }
                         canInteract = true;
                     }
@@ -152,8 +150,6 @@ public class InteractToObject : MonoBehaviour
             Debug.Log("Tap Interaction Triggered");
             StartCoroutine(WaitForInteract());
             TogglePlayerAccess(false);
-            //freeLook.canLook = false;
-            //isInteracting = true;
             OnInteractionStarted?.Invoke();
             tapObj.OnTap();
 
@@ -170,9 +166,6 @@ public class InteractToObject : MonoBehaviour
             {
                 isInteracting = true; // Kunci status interaksi
                 TogglePlayerAccess(false);
-                //playerMovement.isAllowToMove = false;
-                //freeLook.ResetTargetLook(); // Reset rotasi kamera saat mulai interaksi
-                //freeLook.canLook = false; // Matikan kamera
                 OnInteractionStarted?.Invoke();
                 holdObj.OnHoldStart();
             }
@@ -180,27 +173,10 @@ public class InteractToObject : MonoBehaviour
             {
                 isInteracting = false; // Buka kunci agar bisa jalan/interaksi lagi
                 TogglePlayerAccess(true);
-                //playerMovement.isAllowToMove = true;
-                //freeLook.canLook = true; // Aktifkan kamera lagi
                 holdObj.OnHoldCancel();
             }
         }
     }
-
-    //public void triggerJournal(InputAction.CallbackContext context)
-    //{
-    //    if (context.performed)
-    //    {
-    //        isInteracting = true; // Kunci status interaksi
-    //        TogglePlayerAccess(false);
-    //        //freeLook.canLook = false; // Matikan kamera
-    //        //playerMovement.isAllowToMove = false;
-    //        //Cursor.lockState = CursorLockMode.None;
-    //        //Cursor.visible = true;
-    //        //Debug.Log(Cursor.lockState);
-    //        OnJournalTriggered?.Invoke();
-    //    }
-    //}
 
     private void StopInteractObject()
     {
@@ -261,6 +237,7 @@ public class InteractToObject : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             isInteracting = true;
+            Debug.Log("Beku");
         }
         else
         {
@@ -278,33 +255,13 @@ public class InteractToObject : MonoBehaviour
             TogglePlayerAccess(false);
             OnItemMenuToggle?.Invoke(true);
 
-            //if (isItemMenuActive)
-            //{
-            //    isItemMenuActive = false;
-            //    TogglePlayerAccess(true);
-            //    OnItemMenuToggle?.Invoke(false);
-            //}
-            //else
-            //{
-            //    isItemMenuActive = true;
-            //    TogglePlayerAccess(false);
-            //    OnItemMenuToggle?.Invoke(true);
-            //}
-
         }
+    }
 
-        //if (context.started)
-        //{
-        //    radialMenu.Open();
-        //    TogglePlayerAccess(false);
-        //    OnItemMenuToggle?.Invoke(true);
-        //}
-        //else if (context.canceled)
-        //{
-        //    radialMenu.Close();
-        //    TogglePlayerAccess(true);
-        //    OnItemMenuToggle?.Invoke(false);
-        //}
+    private void ToggleCanDefuse(bool isReadyToDefuse)
+    {
+        Debug.Log(isReadyToDefuse);
+        canDefuse = isReadyToDefuse;
     }
 
     private void OnDrawGizmos()

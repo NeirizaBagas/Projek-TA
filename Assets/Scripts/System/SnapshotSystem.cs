@@ -27,12 +27,12 @@ public class SnapshotSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        JournalCamButton.OnAnimalPhotoRequested += ChangeAnimalPhotoIndex;
+        ItemManager.OnAnimalPhotoRequested += ChangeAnimalPhotoIndex;
     }
 
     private void OnDisable()
     {
-        JournalCamButton.OnAnimalPhotoRequested -= ChangeAnimalPhotoIndex;
+        ItemManager.OnAnimalPhotoRequested -= ChangeAnimalPhotoIndex;
     }
 
     public void CaptureSnapshot() // Dipanggil dari skrip interacttoobject saat player menekan tombol foto(klik kanan mouse)

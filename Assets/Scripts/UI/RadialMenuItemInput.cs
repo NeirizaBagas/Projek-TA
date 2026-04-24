@@ -56,5 +56,12 @@ public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerClick(PointerEventData eventData)
     {
         onClickAction?.Invoke();
+        Reset();
+    }
+
+    private void Reset()
+    {
+        targetScale = baseScale;
+        if (background) background.color = menu.defaultColor;
     }
 }
