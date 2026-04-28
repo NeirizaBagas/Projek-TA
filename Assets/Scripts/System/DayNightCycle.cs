@@ -3,108 +3,101 @@ using UnityEngine;
 public class DayNightCycle : MonoBehaviour
 {
     [Header("Time Settings")]
-    [Range(0, 24)] public float currentTime = 12f; // Jam awal (12 = Siang)
-    public float dayDurationInMinutes = 10f; // 1 hari asli = 10 menit game
-    [SerializeField] private float smoothSpeed = 1.5f; // intensity units per second (tweak as needed)
+    [Range(0, 24)] public float currentTime = 12f; // Jam awal
+    public float dayDurationInMinutes = 10f;
 
     [Header("Lights")]
     public Light sunLight;
     public Light moonLight;
-    public Gradient sunColor; // Warna matahari berubah (Oranye -> Putih -> Oranye)
+
+    [Header("Intensity Curves (X = Jam 0-24, Y = Intensitas)")]
+    [Tooltip("Atur kurva: Naik di jam 6, Puncak jam 12, Turun jam 18")]
+    public AnimationCurve sunIntensityCurve;
+    [Tooltip("Atur kurva: Puncak di jam 0 dan 24, Turun di jam 6 dan 18")]
+    public AnimationCurve moonIntensityCurve;
 
     [Header("Skybox")]
     [SerializeField] private Material daySkybox;
-    [SerializeField] Gradient skyTintGradient; // Warna langit berubah (Biru terang -> Biru gelap)
-    [SerializeField] private float maxExposure;
-    [SerializeField] private float minExposure;
+    [SerializeField] Gradient skyTintGradient;
+    [SerializeField] private float maxExposure = 1f;
+    [SerializeField] private float minExposure = 0.2f;
+
+    private void OnEnable()
+    {
+        BedSystemInteract.OnTimeSkip += SkipTime; // Subscribe ke event untuk memulai timeskip saat tidur
+    }
+
+    private void OnDisable()
+    {
+        BedSystemInteract.OnTimeSkip += SkipTime; // Unsubscribe dari event saat tidak diperlukan
+    }
 
     private void Start()
     {
-        sunLight.intensity = 5f; // Intensitas awal matahari
-        moonLight.intensity = 0f; // Intensitas awal bulan
+        // Pastikan material skybox tersetting
+        RenderSettings.skybox = daySkybox;
     }
 
     private void Update()
     {
         UpdateTime();
-        UpdateSunRotation();
-        UpdateSkyboxColour();
+        UpdateVisuals();
     }
 
     private void UpdateTime()
     {
-        // Menghitung penambahan waktu berdasarkan menit asli
-        float timeMultiplier = 24f / (dayDurationInMinutes * 60f); // 24 jam dibagi total 1 hari dalam menit asli
-        currentTime += Time.deltaTime * timeMultiplier; // Tambahkan waktu berdasarkan waktu nyata yang berlalu
+        float timeMultiplier = 24f / (dayDurationInMinutes * 60f);
+        currentTime += Time.deltaTime * timeMultiplier;
 
-        if (currentTime >= 24) currentTime = 0; // Reset ke hari baru, // event untuk tanda pergantian hari 
+        if (currentTime >= 24)
+        {
+            currentTime -= 24f; // Kurangi 24 agar sisa detiknya tidak hilang (lebih presisi dari = 0)
+            // TODO: Panggil Event Ganti Hari di sini
+        }
     }
 
-    private void UpdateSunRotation()
+    // Gabungkan rotasi dan warna di satu fungsi yang murni bergantung pada currentTime
+    private void UpdateVisuals()
     {
-        // Menghitung rotasi matahari (0-24 jam menjadi 0-360 derajat)
-        // Kita kurangi 90 agar jam 12 siang tepat di atas kepala
+        // 1. ROTASI
         float sunRotation = (currentTime / 24f) * 360f - 90f;
         sunLight.transform.localRotation = Quaternion.Euler(sunRotation, 170f, 0f);
-        float moonRotation = sunRotation + 180f; // Bulan selalu berlawanan dengan matahari
+
+        float moonRotation = sunRotation + 180f;
         moonLight.transform.localRotation = Quaternion.Euler(moonRotation, 170f, 0f);
 
-        // Update warna matahari berdasarkan waktu (Opsional)
-        //sunLight.color = sunColor.Evaluate(currentTime / 24f);
-        /*moonLight.color = sunColor.Evaluate((currentTime + 12f) / 24f);*/ // Warna bulan juga berubah tapi offset 12 jam
+        // 2. INTENSITAS (Langsung instan membaca dari kurva)
+        sunLight.intensity = sunIntensityCurve.Evaluate(currentTime);
+        moonLight.intensity = moonIntensityCurve.Evaluate(currentTime);
 
-        float sunTargetIntensity;
-        float moonTargetIntensity;
-
-        if (currentTime >= 16f && currentTime < 19f)
-        {
-            // Sore ke malam => target 0
-            sunTargetIntensity = 0f;
-            moonTargetIntensity = 3f; // Bulan mulai muncul
-        }
-        else if (currentTime >= 6f && currentTime < 10f)
-        {
-            // Malam ke pagi => target 5
-            sunTargetIntensity = 5f;
-            moonTargetIntensity = 0f; // Bulan mulai menghilang
-        }
-        else if (currentTime >= 8f && currentTime < 17f)
-        {
-            // Siang => full
-            sunTargetIntensity = 5f;
-            moonTargetIntensity = 0f; // Bulan tidak muncul di siang hari
-        }
-        else
-        {
-            // Full malam => off
-            sunTargetIntensity = 0f;
-            moonTargetIntensity = 3f; // Bulan tetap muncul di malam hari
-        }
-
-        DynamicGI.UpdateEnvironment(); // Update GI envi di pohon dan objek lainnya untuk perubahan skybox
-
-
-        // Ngatur intensitas matahari secara halus mendekati target
-        sunLight.intensity = Mathf.MoveTowards(sunLight.intensity, sunTargetIntensity, smoothSpeed * Time.deltaTime);
-        moonLight.intensity = Mathf.MoveTowards(moonLight.intensity, moonTargetIntensity, smoothSpeed * Time.deltaTime);
-
-        // Optional debug near key transition times
-        if (Mathf.Abs(currentTime - 5f) < 0.05f || Mathf.Abs(currentTime - 8f) < 0.05f || Mathf.Abs(currentTime - 16f) < 0.05f)
-        {
-            //Debug.Log($"[SUN DEBUG] time={currentTime:F2} target={sunTargetIntensity:F2} intensity={sunLight.intensity:F2}");
-        }
-    }
-
-    private void UpdateSkyboxColour()
-    {
+        // 3. SKYBOX TINT & EXPOSURE
         float timePercent = currentTime / 24f;
-
-        Color targetSkyTint = skyTintGradient.Evaluate(timePercent);
-
-        RenderSettings.skybox.SetColor("_Tint", targetSkyTint);
+        RenderSettings.skybox.SetColor("_Tint", skyTintGradient.Evaluate(timePercent));
 
         float dotProduct = Vector3.Dot(sunLight.transform.forward, Vector3.down);
         float targetExposure = Mathf.Lerp(minExposure, maxExposure, Mathf.Clamp01(dotProduct));
         RenderSettings.skybox.SetFloat("_Exposure", targetExposure);
+    }
+
+    // ==========================================
+    // FUNGSI UNTUK SISTEM TIDUR / TIMESKIP
+    // ==========================================
+    public void SkipTime(float hoursToSkip)
+    {
+        currentTime += hoursToSkip;
+
+        if (currentTime >= 24f)
+        {
+            currentTime -= 24f;
+            // TODO: Panggil Event Ganti Hari di sini juga
+        }
+
+        // Langsung paksa visual update detik itu juga agar tidak ada delay/transisi aneh
+        UpdateVisuals();
+
+        // Update GI hanya saat terjadi timeskip ekstrim, JANGAN di dalam Update()
+        DynamicGI.UpdateEnvironment();
+
+        Debug.Log($"Waktu diskip sebanyak {hoursToSkip} jam. Sekarang jam: {currentTime}");
     }
 }
