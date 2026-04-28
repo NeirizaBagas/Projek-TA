@@ -16,7 +16,6 @@ public class InteractToObject : MonoBehaviour
     [SerializeField] private float interactDistance = 3f; // Jarak maksimal untuk interaksi
     [SerializeField] private bool canInteract; // Status apakah bisa berinteraksi
     [SerializeField] private bool canDefuse;
-    [SerializeField] private TextMeshProUGUI textInteract;
     private IInteractableObject currentTarget; // Data target interaksi saat ini
     private bool isInteracting = false; // Status apakah sedang berinteraksi
 
@@ -67,7 +66,7 @@ public class InteractToObject : MonoBehaviour
         UIManager.OnTogglePhotoUI += ToggleTakePhotoAccess;
         UIManager.OnNullCurrentUI += TogglePlayerAccess;
         SnapshotSystem.OnPhotoReadyToView += ReviewPhoto;
-        TrapInteract.OnCanDefuse += ToggleCanDefuse;
+        //TrapInteract.OnCanDefuse += ToggleCanDefuse;
     }
 
     private void OnDisable()
@@ -84,7 +83,7 @@ public class InteractToObject : MonoBehaviour
         UIManager.OnStopInteract -= StopInteractObject;
         UIManager.OnTogglePhotoUI -= ToggleTakePhotoAccess;
         UIManager.OnNullCurrentUI -= TogglePlayerAccess;
-        TrapInteract.OnCanDefuse -= ToggleCanDefuse;
+        //TrapInteract.OnCanDefuse -= ToggleCanDefuse;
     }
 
     private void Update()
@@ -112,33 +111,57 @@ public class InteractToObject : MonoBehaviour
                         currentTarget.OnHoverEnter();
 
                         OnUIHoverOn?.Invoke();
-
-                        if (currentTarget is ITapInteractable)
-                        {
-                            textInteract.text = "Press [F] to Interact";
-                        }
-                        else if (currentTarget is IHoldInteractable)
-                        {
-                            textInteract.text = "Hold [F] to Interact";
-                        }
+                        //if (currentTarget is ITapInteractable)
+                        //{
+                        //    textInteract.text = "Press [F] to Interact";
+                        //}
+                        //else if (currentTarget is IHoldInteractable)
+                        //{
+                        //    textInteract.text = "Hold [F] to Interact";
+                        //}
                         canInteract = true;
                     }
                 }
             }
+            else if (hit.collider != null && hit.collider.CompareTag("Equipable") && !isInteracting)
+            {
+                IInteractableObject interactableObject = hit.collider.GetComponent<IInteractableObject>();
+
+                if (interactableObject != null && !isInteracting && !isUIHoveringActive)
+                {
+                    if (currentTarget != interactableObject)
+                    {
+                        if (currentTarget != null) currentTarget.OnHoverExit();
+                        currentTarget = interactableObject;
+                        currentTarget.OnHoverEnter();
+                        OnUIHoverOn?.Invoke();
+                        canInteract = true;
+                    }
+                }
+            }
+            else
+            {
+                ExitHoveringState();
+            }
         }
         else
         {
-            canInteract = false;
-            if (currentTarget != null)
-            {
-                currentTarget.OnHoverExit();
-                currentTarget = null;
-            }
-            if (isUIHoveringActive)
-            {
-                OnUIHoverOff?.Invoke();
-                isUIHoveringActive = false;
-            }
+            ExitHoveringState();
+        }
+    }
+
+    public void ExitHoveringState()
+    {
+        canInteract = false;
+        if (currentTarget != null)
+        {
+            currentTarget.OnHoverExit();
+            currentTarget = null;
+        }
+        if (isUIHoveringActive)
+        {
+            OnUIHoverOff?.Invoke();
+            isUIHoveringActive = false;
         }
     }
 

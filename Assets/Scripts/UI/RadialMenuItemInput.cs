@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] private RadialMenu menu;
-    [SerializeField] private UnityEvent onClickAction;
     RadialMenuItem item;
     RectTransform rect;
     Image background;
@@ -16,6 +15,11 @@ public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointer
     Vector3 targetScale;
 
     [SerializeField] float hoverSmooth = 10f;
+
+    [Header("Events")]
+    [SerializeField] private UnityEvent onHoverEnterEvent; // Slot untuk menyalakan preview
+    [SerializeField] private UnityEvent onHoverExitEvent;  // Slot untuk mematikan preview
+    [SerializeField] private UnityEvent onClickAction;     // Slot untuk equip/klik utama
 
     private void Awake()
     {
@@ -45,12 +49,14 @@ public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointer
         {
             menu.SetCenterIcon(item.IconSprite, item.iconColor);
         }
+        onHoverEnterEvent.Invoke();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         targetScale = baseScale;
         if (background) background.color = menu.defaultColor;
+        onHoverExitEvent.Invoke();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -63,5 +69,6 @@ public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         targetScale = baseScale;
         if (background) background.color = menu.defaultColor;
+        onHoverExitEvent?.Invoke();
     }
 }

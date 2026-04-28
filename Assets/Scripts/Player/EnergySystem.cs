@@ -18,6 +18,17 @@ public class EnergySystem : MonoBehaviour
     public bool isPlayerMoving; // Status apakah player sedang bergerak    
 
     public static event Action<float> OnEnergyChanged; // Event untuk memberitahu perubahan energi
+    public static event Action OnRegen; // Event untuk memberitahu energi sudah penuh (misalnya untuk memicu efek khusus)
+
+    private void OnEnable()
+    {
+        BedSystemInteract.OnStartSleep += RegenEnergy; // Subscribe ke event untuk memulai regenerasi energi saat tidur
+    }
+
+    private void OnDisable()
+    {
+        BedSystemInteract.OnStartSleep -= RegenEnergy; // Unsubscribe dari event saat tidak diperlukan
+    }
 
     private void Start()
     {
@@ -78,9 +89,11 @@ public class EnergySystem : MonoBehaviour
 
         if (currentEnergy < maxEnergy/* && !isPlayerMoving*/)
         {
-            currentEnergy += energyRegenRate * Time.deltaTime;
-            if (currentEnergy > maxEnergy) currentEnergy = maxEnergy; // Pastikan energi tidak melebihi maksimum
-            UpdateUI(); // Update UI setiap kali energi berubah
+            //currentEnergy += energyRegenRate * Time.deltaTime;
+            //if (currentEnergy > maxEnergy) currentEnergy = maxEnergy; // Pastikan energi tidak melebihi maksimum
+            currentEnergy = maxEnergy;
+            /*UpdateUI();*/ // Update UI setiap kali energi berubah
+            OnRegen?.Invoke(); // Kirim event bahwa energi sudah penuh (misalnya untuk memicu efek khusus)
         }
     }
 

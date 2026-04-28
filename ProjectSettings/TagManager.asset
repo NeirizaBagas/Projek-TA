@@ -7,11 +7,12 @@ TagManager:
   - Interactable
   - Ground
   - Base
+  - Equipable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - IgnoreFlashLight
   - Water
   - UI
   - 

@@ -1,4 +1,3 @@
-using Mono.Cecil;
 using System;
 using UnityEngine;
 
@@ -46,6 +45,8 @@ public class UIManager : MonoBehaviour
         SnapshotSystem.OnPhotoReadyToView += ToggleReviewPhotoUI;
         //SnapshotSystem.OnAnimalPhotoUpdated += ToggleJournalUI;
         ItemManager.OnTriggerJournal += ToggleJournalUI;
+        EquippedItem.OnUIInteractHoverOFF += CloseUiInteract;
+        BedSystemInteract.OnCloseSleepUI += CloseUiInteract;
     }
 
     private void OnDisable()
@@ -65,6 +66,8 @@ public class UIManager : MonoBehaviour
         SnapshotSystem.OnPhotoReadyToView -= ToggleReviewPhotoUI;
         //SnapshotSystem.OnAnimalPhotoUpdated -= ToggleJournalUI;
         ItemManager.OnTriggerJournal -= ToggleJournalUI;
+        EquippedItem.OnUIInteractHoverOFF -= CloseUiInteract;
+        BedSystemInteract.OnCloseSleepUI -= CloseUiInteract;
     }
 
     public void OpenUi(GameObject uiToOpen)
@@ -164,18 +167,18 @@ public class UIManager : MonoBehaviour
 
     public void ToggleItemMenu(bool isVisible)
     {
-        Debug.Log("Tes");
         if (isVisible && currentActiveUI == null)
         {
-            Debug.Log("Open");
             OpenUi(itemMenuUI);
             radialMenu.Open();
         }
         else
         {
-            Debug.Log("Close");
             radialMenu.Close();
-            CloseCurrentUI();
+            if (currentActiveUI == itemMenuUI)
+            {
+                CloseCurrentUI();
+            }
         }
     }
 }

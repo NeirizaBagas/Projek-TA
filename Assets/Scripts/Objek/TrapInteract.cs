@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class TrapInteract : MonoBehaviour, IHoldInteractable
 {
     [SerializeField] private bool isDefused;
+    [SerializeField] private TextMeshProUGUI textTrapInteract;
     private bool isHolding;
 
     public static event Action OnOpenTrapUI;
@@ -14,7 +16,7 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
     public static event Action OnTrapDefused;
     public static event Action OnTrapDefuseStarted;
     public static event Action OnTrapDefuseFailed;
-    public static event Action<bool> OnCanDefuse;
+    //public static event Action<bool> OnCanDefuse;
 
     private void Awake()
     {
@@ -36,6 +38,10 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
     public void OnHoverEnter()
     {
         Debug.Log("Hovering over Trap.");
+        if (!isDefused)
+        {
+            textTrapInteract.text = "Hold [F] to Defuse";
+        }
     }
 
     public void OnHoverExit()
@@ -72,7 +78,7 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
         isHolding = false;
         OnCloseTrapUI?.Invoke();
         OnTrapDefuseFailed?.Invoke();
-        OnCanDefuse?.Invoke(false);
+        //OnCanDefuse?.Invoke(false);
     }
 
     public void OnHoldSuccess()

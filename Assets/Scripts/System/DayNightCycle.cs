@@ -91,7 +91,7 @@ public class DayNightCycle : MonoBehaviour
         // Optional debug near key transition times
         if (Mathf.Abs(currentTime - 5f) < 0.05f || Mathf.Abs(currentTime - 8f) < 0.05f || Mathf.Abs(currentTime - 16f) < 0.05f)
         {
-            Debug.Log($"[SUN DEBUG] time={currentTime:F2} target={sunTargetIntensity:F2} intensity={sunLight.intensity:F2}");
+            //Debug.Log($"[SUN DEBUG] time={currentTime:F2} target={sunTargetIntensity:F2} intensity={sunLight.intensity:F2}");
         }
     }
 

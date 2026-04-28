@@ -51,7 +51,7 @@ public class FreeLook : MonoBehaviour
 
             targetLook.x += mouseDelta.x * mouseSensitivity;
             targetLook.y -= mouseDelta.y * mouseSensitivity;
-            targetLook.y = Mathf.Clamp(targetLook.y, -90f, 90f);
+            targetLook.y = Mathf.Clamp(targetLook.y, -90f, 50f);
         }
 
         // Bagian ini HARUS tetap jalan meski canLook false 
