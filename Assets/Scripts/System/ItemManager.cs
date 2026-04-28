@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
+    public static ItemManager Instance { get; private set; }
+
     public int animalIndexPhoto;
 
     [Header("Item Reference")]
@@ -25,6 +27,12 @@ public class ItemManager : MonoBehaviour
     public static event Action<bool> OnPhotoUiTriggered;
     public static event Action<bool> OnReadyToDefuse;
     //public static event Action<bool> OnSenterToggled;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
 
     private void Start()
     {
@@ -63,6 +71,18 @@ public class ItemManager : MonoBehaviour
                 Debug.Log("Defuse Kit Acquired!");
                 break;
         }
+    }
+
+    public bool CheckHasItem(ItemType itemType)
+    {
+        return itemType switch
+        {
+            ItemType.Journal => isHaveJournal,
+            ItemType.Camera => isHaveCamera,
+            ItemType.FlashLight => isHaveSenter,
+            ItemType.DefuseKit => isHaveDefuseKit,
+            _ => false,
+        };
     }
 
     public void OpenJournal()

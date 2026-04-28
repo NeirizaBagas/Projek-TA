@@ -5,12 +5,12 @@ public class ItemVisualHandler : MonoBehaviour
     [SerializeField] private GameObject myVisualObject; // Masukkan objek senter/kamera 3D-nya ke sini
     [SerializeField] private bool isPersistent; // Centang untuk Senter & Defuse Kit
     [SerializeField] private MeshRenderer[] allRenderer;
+    [SerializeField] private ItemType ItemType;
 
     private bool isEquipped = false;
 
     private void Awake()
     {
-        //allRenderer = myVisualObject.GetComponentsInChildren<Renderer>(true);
         SetAllVisualsState(false); // Mulai dengan semua visual dimatikan
     }
 
@@ -25,6 +25,7 @@ public class ItemVisualHandler : MonoBehaviour
     // --- Dipanggil oleh onHoverEnterEvent di UI ---
     public void ShowPreview()
     {
+        if (!ItemManager.Instance.CheckHasItem(ItemType)) return; // Cek dulu apakah player sudah punya item ini
         SetAllVisualsState(true);
         Debug.Log("Preview Shown for " + gameObject.name);
     }
@@ -41,6 +42,7 @@ public class ItemVisualHandler : MonoBehaviour
     // --- Dipanggil oleh onClickAction di UI ---
     public void ToggleEquipItem()
     {
+        if (!ItemManager.Instance.CheckHasItem(ItemType)) return; // Cek dulu apakah player sudah punya item ini
         isEquipped = !isEquipped;
 
         // Paksa visual mengikuti status isEquipped saat diklik

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DayNightCycle : MonoBehaviour
@@ -21,6 +22,8 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] Gradient skyTintGradient;
     [SerializeField] private float maxExposure = 1f;
     [SerializeField] private float minExposure = 0.2f;
+
+    public static event Action OnDayChanged; // Event untuk memberitahu pergantian hari
 
     private void OnEnable()
     {
@@ -53,6 +56,7 @@ public class DayNightCycle : MonoBehaviour
         {
             currentTime -= 24f; // Kurangi 24 agar sisa detiknya tidak hilang (lebih presisi dari = 0)
             // TODO: Panggil Event Ganti Hari di sini
+            OnDayChanged?.Invoke();
         }
     }
 
