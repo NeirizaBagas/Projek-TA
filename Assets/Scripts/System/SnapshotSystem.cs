@@ -15,7 +15,7 @@ public class SnapshotSystem : MonoBehaviour
     private Sprite snapshotSprite;
 
     [Header("Flashlight Settings")]
-    [SerializeField] private GameObject flashlight;
+    [SerializeField] private Light flashlight;
     [SerializeField] private float flashTime = 0.5f;
 
     [Header("Photo Fade Effect")]
@@ -79,9 +79,9 @@ public class SnapshotSystem : MonoBehaviour
     IEnumerator CameraFlashEffect()
     {
         // Audio efek suara foto
-        flashlight.SetActive(true);
+        flashlight.enabled = true;
         yield return new WaitForSeconds(flashTime);
-        flashlight.SetActive(false);
+        flashlight.enabled = false;
     }
 
     public void SavePhotoToJournal()
@@ -90,11 +90,6 @@ public class SnapshotSystem : MonoBehaviour
 
         if (targetHewan != null)
         {
-            //if (targetHewan.animalSprite != null)
-            //{
-            //    Destroy(targetHewan.animalSprite.texture); // Hapus sprite sebelumnya untuk menghindari memory leak
-            //}
-            // Tambahkan (UnityEngine.Sprite) di depan variabelnya
             snapshotSprite.name = "Snapshot_Review " + targetHewan.animalName; // Beri nama agar mudah diidentifikasi
             targetHewan.animalSprite = (UnityEngine.Sprite)snapshotSprite;
             OnAnimalPhotoUpdated?.Invoke();
@@ -109,11 +104,6 @@ public class SnapshotSystem : MonoBehaviour
 
     public void RetakePhoto()
     {
-        //if (snapshotReviewImage.sprite != null)
-        //{
-        //    Destroy(snapshotReviewImage.sprite.texture); // Hapus snapshot sebelumnya untuk menghindari memory leak
-        //    snapshotReviewImage.sprite = null; // Reset gambar review
-        //}
         OnPhotoReadyToView?.Invoke(false); // Beri tahu UI untuk tutup review snapshot saat mulai proses pengambilan snapshot baru
         OnPhotoModeReadyToCapture?.Invoke(true); // Mulai proses pengambilan snapshot baru
     }
@@ -121,7 +111,7 @@ public class SnapshotSystem : MonoBehaviour
     public void ClearSnapshot()
     {
         OnPhotoModeReadyToCapture?.Invoke(true); // Beri tahu UI untuk buka mode foto saat mulai proses pengambilan snapshot
-        OnPhotoReadyToView?.Invoke(true); // Beri tahu UI untuk tampilkan review snapshot yang baru diambil
+        OnPhotoReadyToView?.Invoke(false); // Beri tahu UI untuk tampilkan review snapshot yang baru diambil
     }
 
 }

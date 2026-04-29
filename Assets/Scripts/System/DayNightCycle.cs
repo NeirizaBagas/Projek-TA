@@ -16,6 +16,7 @@ public class DayNightCycle : MonoBehaviour
     public AnimationCurve sunIntensityCurve;
     [Tooltip("Atur kurva: Puncak di jam 0 dan 24, Turun di jam 6 dan 18")]
     public AnimationCurve moonIntensityCurve;
+    public AnimationCurve ambientIntensityCurve;
 
     [Header("Skybox")]
     [SerializeField] private Material daySkybox;
@@ -81,6 +82,8 @@ public class DayNightCycle : MonoBehaviour
         float dotProduct = Vector3.Dot(sunLight.transform.forward, Vector3.down);
         float targetExposure = Mathf.Lerp(minExposure, maxExposure, Mathf.Clamp01(dotProduct));
         RenderSettings.skybox.SetFloat("_Exposure", targetExposure);
+
+        RenderSettings.ambientIntensity = ambientIntensityCurve.Evaluate(currentTime);
     }
 
     // ==========================================

@@ -111,14 +111,6 @@ public class InteractToObject : MonoBehaviour
                         currentTarget.OnHoverEnter();
 
                         OnUIHoverOn?.Invoke();
-                        //if (currentTarget is ITapInteractable)
-                        //{
-                        //    textInteract.text = "Press [F] to Interact";
-                        //}
-                        //else if (currentTarget is IHoldInteractable)
-                        //{
-                        //    textInteract.text = "Hold [F] to Interact";
-                        //}
                         canInteract = true;
                     }
                 }

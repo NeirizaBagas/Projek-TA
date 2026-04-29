@@ -161,11 +161,6 @@ public class RadialMenu : MonoBehaviour
             item.BackgroundImage.sprite = buttonBackground;
             item.BackgroundImage.color = defaultColor;
         }
-
-        //if (item.IconRect)
-        //{
-        //    item.IconRect.sizeDelta = iconSize;
-        //}
     }
 
     public void ToggleItemMenu()

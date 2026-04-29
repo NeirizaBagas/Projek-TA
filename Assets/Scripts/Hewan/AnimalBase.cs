@@ -43,5 +43,4 @@ public abstract class AnimalBase : MonoBehaviour, IAnimals
 
     public abstract void PerformIdle();
     public abstract void PerformWalk();
-    //public abstract void PerformRun();
 }
