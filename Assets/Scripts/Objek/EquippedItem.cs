@@ -6,20 +6,21 @@ public enum ItemType { Journal, Camera, DefuseKit, FlashLight}
 
 public class EquippedItem : MonoBehaviour, ITapInteractable
 {
-    [SerializeField] private TextMeshProUGUI textItemInteract;
     [SerializeField] private ItemType itemType;
 
-    public static event Action OnUIInteractHoverOFF;
+    public string InteractMessage => "Press [F] to Take " + itemType;
+
+    public static event Action<bool> ToggleUIItemEquippable;
     public static event Action<ItemType> OnItemPickedUp;
 
     public void OnHoverEnter()
     {
-        textItemInteract.text = "Press [F] to Take " + itemType;
+
     }
 
     public void OnHoverExit()
     {
-        OnUIInteractHoverOFF?.Invoke();
+        ToggleUIItemEquippable?.Invoke(false);
     }
 
     public void OnTap()
@@ -27,7 +28,7 @@ public class EquippedItem : MonoBehaviour, ITapInteractable
         Debug.Log("Tapped on " + this.name);
         OnItemPickedUp?.Invoke(itemType);
         this.gameObject.SetActive(false);
-        OnUIInteractHoverOFF?.Invoke();
+        ToggleUIItemEquippable?.Invoke(false);
         // Setaktif false item ini, dan instruksi enable ke itemmanagement di player
     }
 }

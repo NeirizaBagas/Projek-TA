@@ -25,7 +25,7 @@ public class JournalManager : MonoBehaviour
 
     private int currentPage = 0;
 
-    public static event Action OnJournalPageClosed;
+    public static event Action<bool> OnJournalPageOpenClose;
 
     private void Awake()
     {
@@ -115,6 +115,6 @@ public class JournalManager : MonoBehaviour
 
     public void CloseJournal()
     {
-        OnJournalPageClosed?.Invoke();
+        OnJournalPageOpenClose?.Invoke(false);
     }
 }

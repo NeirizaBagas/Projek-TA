@@ -9,6 +9,7 @@ public class SnapshotSystem : MonoBehaviour
     private int animalSnapshotIndex;
     public bool canUpdatePhoto = true;
     [SerializeField] private SODataJournal journalDatabase;
+    public static bool isCapturingPhoto { get; private set; }
 
     [Header("Snapshot Review")]
     [SerializeField] private Image snapshotReviewImage;
@@ -42,6 +43,7 @@ public class SnapshotSystem : MonoBehaviour
 
     IEnumerator TakeSnapshot() // Coroutine untuk ngambil snapshot setelah frame selesai dirender
     {
+        isCapturingPhoto = true; // Set flag untuk menandakan proses pengambilan snapshot sedang berlangsung
         OnPhotoModeReadyToCapture?.Invoke(false); // Beri tahu UI untuk tutup mode foto saat mulai proses pengambilan snapshot
         yield return new WaitForEndOfFrame(); // Tunggu hingga frame selesai untuk memastikan semua sudah dirender
 
@@ -54,6 +56,7 @@ public class SnapshotSystem : MonoBehaviour
         currentSnapshot.Apply();
 
         SavingPhoto(currentSnapshot);
+        isCapturingPhoto = false; // Reset flag setelah proses pengambilan snapshot selesai
     }
 
     public void ChangeAnimalPhotoIndex(int index)
@@ -100,6 +103,7 @@ public class SnapshotSystem : MonoBehaviour
             Debug.Log($"Hewan dengan index {animalSnapshotIndex} masih kosong di database");
         }
         OnPhotoReadyToView?.Invoke(false); // Beri tahu UI untuk tutup review snapshot setelah foto disimpan ke jurnal
+        OnPhotoModeReadyToCapture?.Invoke(false); // Beri tahu UI untuk tutup mode foto setelah foto disimpan ke jurnal
     }
 
     public void RetakePhoto()

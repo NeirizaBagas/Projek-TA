@@ -1,47 +1,50 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using UnityEngine.InputSystem;
 using TMPro;
 
 public class TrapInteract : MonoBehaviour, IHoldInteractable
 {
-    [SerializeField] private bool isDefused;
-    [SerializeField] private TextMeshProUGUI textTrapInteract;
-    private bool isHolding;
+    [Header("Trap Settings")]
+    [SerializeField] private float timeToDefuse = 3f;
+    [SerializeField] private float drainSpeedMultiplier = 1.5f;
 
-    public static event Action OnOpenTrapUI;
-    public static event Action OnCloseTrapUI;
+    public string InteractMessage => "Hold [F] to Defuse";
+
+    //[Header("UI Elements")]
+    //[SerializeField] private TextMeshProUGUI textTrapInteract;
+
+    private bool isDefused;
+    private bool isHolding;
+    private float currentProgress = 0f;
+
+    public static event Action<bool> OnToggleUIInteract;
     public static event Action OnTrapDefused;
-    public static event Action OnTrapDefuseStarted;
-    public static event Action OnTrapDefuseFailed;
-    //public static event Action<bool> OnCanDefuse;
+    //public static event Action OnTrapDefuseStarted;
+    //public static event Action OnTrapDefuseFailed;
+    public static event Action<float, float> OnUpdateProgressTrapUI;
 
     private void Awake()
     {
-        OnCloseTrapUI?.Invoke();
-        isHolding = false;
-        isDefused = false;
+        
     }
 
     private void OnEnable()
     {
-        TrapProgresTracker.OnTrapDefuseComplete += TrapDefused;
+        isHolding = false;
+        isDefused = false;
+        currentProgress = 0f;
     }
 
     private void OnDisable()
     {
-        TrapProgresTracker.OnTrapDefuseComplete -= TrapDefused;
+        isHolding = false;
     }
 
     public void OnHoverEnter()
     {
-        Debug.Log("Hovering over Trap.");
-        if (!isDefused)
-        {
-            textTrapInteract.text = "Hold [F] to Defuse";
-        }
+        //if (!isDefused) textTrapInteract.text = "Hold [F] to Defuse";
+        //Debug.Log("Trap Hovered");
     }
 
     public void OnHoverExit()
@@ -53,14 +56,37 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
     {
         if (isDefused) return;
         isHolding = true;
-        OnOpenTrapUI?.Invoke();
+        OnToggleUIInteract?.Invoke(true);
+        Debug.Log("Hold Started");
+
+        //OnTrapDefuseStarted?.Invoke();
     }
 
     private void Update()
     {
-        if (isHolding && !isDefused)
+        if (isDefused) return;
+
+        if (isHolding)
         {
-            OnTrapDefuseStarted?.Invoke();
+            currentProgress += Time.deltaTime;
+            if (currentProgress >= timeToDefuse)
+            {
+                TrapDefused();
+            }
+        }
+        else if (!isHolding && currentProgress > 0f)
+        {
+            currentProgress -= Time.deltaTime * drainSpeedMultiplier;
+            if (currentProgress < 0f) currentProgress = 0f;
+        }
+
+        if (isHolding || currentProgress > 0f)
+        {
+            OnUpdateProgressTrapUI?.Invoke(currentProgress, timeToDefuse);
+        }
+        else if (currentProgress <= 0f && !isHolding)
+        {
+            //OnToggleUIInteract?.Invoke(false);
         }
     }
 
@@ -68,17 +94,17 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
     {
         isDefused = true;
         isHolding = false;
-        OnCloseTrapUI?.Invoke();
+        currentProgress = 0f;
+        OnToggleUIInteract?.Invoke(false);
         OnTrapDefused?.Invoke();
         transform.gameObject.SetActive(false);
     }
 
     public void OnHoldCancel()
     {
+        if (isDefused) return;
         isHolding = false;
-        OnCloseTrapUI?.Invoke();
-        OnTrapDefuseFailed?.Invoke();
-        //OnCanDefuse?.Invoke(false);
+        OnToggleUIInteract?.Invoke(false);
     }
 
     public void OnHoldSuccess()

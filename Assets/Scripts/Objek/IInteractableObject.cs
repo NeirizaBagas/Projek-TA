@@ -1,5 +1,7 @@
 public interface IInteractableObject
 {
+    string InteractMessage { get; }
+
     void OnHoverEnter();
     void OnHoverExit();
 }

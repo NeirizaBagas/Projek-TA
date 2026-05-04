@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RadialMenu radialMenu;
 
     public bool isJournalOpen;
-    private bool isPhotoModeOpen;
+    public static bool isPhotoModeOpen { get; private set; }
     private GameObject currentActiveUI;
 
     public static event Action OnStopInteract;
@@ -26,48 +26,38 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         CloseAllUI();
+
+        TogglePlayerIndicatorUI(true);
     }
 
     private void OnEnable()
     {
-        InteractToObject.OnInteractionStarted += OpenUiInteract;
-        InteractToObject.OnUIHoverOn += OpenUiHovering;
-        InteractToObject.OnUIHoverOff += CloseAllUI;
+        InteractToObject.OnInteractionStarted += ToggleUIInteract;
+        InteractToObject.OnUIHoverToggle += ToggleUIHovering;
         InteractToObject.OnItemMenuToggle += ToggleItemMenu;
-        TrapInteract.OnOpenTrapUI += OpenUiInteract;
-        TrapInteract.OnCloseTrapUI += CloseUiInteract;
-        TrapInteract.OnTrapDefused += CloseUiInteract;
-        TrapInteract.OnTrapDefuseFailed += CloseUiInteract;
-        JournalManager.OnJournalPageClosed += CloseUiInteract;
+        TrapInteract.OnToggleUIInteract += ToggleUIInteract;
+        JournalManager.OnJournalPageOpenClose += ToggleJournalUI;
         ItemManager.OnPhotoUiTriggered += TogglePhotoUI;
         SnapshotSystem.OnPhotoModeReadyToCapture += TogglePhotoUI;
-        SnapshotSystem.OnPhotoModeReadyToCapture += TogglePlayerIndicatorUI;
         SnapshotSystem.OnPhotoReadyToView += ToggleReviewPhotoUI;
-        //SnapshotSystem.OnAnimalPhotoUpdated += ToggleJournalUI;
         ItemManager.OnTriggerJournal += ToggleJournalUI;
-        EquippedItem.OnUIInteractHoverOFF += CloseUiInteract;
-        BedSystemInteract.OnCloseSleepUI += CloseUiInteract;
+        EquippedItem.ToggleUIItemEquippable += ToggleUIInteract;
+        BedSystemInteract.ToggleSleepUI += ToggleUIInteract;
     }
 
     private void OnDisable()
     {
-        InteractToObject.OnInteractionStarted -= OpenUiInteract;
-        InteractToObject.OnUIHoverOn -= OpenUiHovering;
-        InteractToObject.OnUIHoverOff -= CloseAllUI;
+        InteractToObject.OnInteractionStarted -= ToggleUIInteract;
+        InteractToObject.OnUIHoverToggle -= ToggleUIHovering;
         InteractToObject.OnItemMenuToggle -= ToggleItemMenu;
-        TrapInteract.OnOpenTrapUI -= OpenUiInteract;
-        TrapInteract.OnCloseTrapUI -= CloseUiInteract;
-        TrapInteract.OnTrapDefused -= CloseUiInteract;
-        TrapInteract.OnTrapDefuseFailed -= CloseUiInteract;
-        JournalManager.OnJournalPageClosed -= CloseUiInteract;
+        TrapInteract.OnToggleUIInteract -= ToggleUIInteract;
+        JournalManager.OnJournalPageOpenClose -= ToggleJournalUI;
         ItemManager.OnPhotoUiTriggered -= TogglePhotoUI;
         SnapshotSystem.OnPhotoModeReadyToCapture -= TogglePhotoUI;
-        SnapshotSystem.OnPhotoModeReadyToCapture -= TogglePlayerIndicatorUI;
         SnapshotSystem.OnPhotoReadyToView -= ToggleReviewPhotoUI;
-        //SnapshotSystem.OnAnimalPhotoUpdated -= ToggleJournalUI;
         ItemManager.OnTriggerJournal -= ToggleJournalUI;
-        EquippedItem.OnUIInteractHoverOFF -= CloseUiInteract;
-        BedSystemInteract.OnCloseSleepUI -= CloseUiInteract;
+        EquippedItem.ToggleUIItemEquippable -= ToggleUIInteract;
+        BedSystemInteract.ToggleSleepUI -= ToggleUIInteract;
     }
 
     public void OpenUi(GameObject uiToOpen)
@@ -79,9 +69,9 @@ public class UIManager : MonoBehaviour
         if (uiToOpen != null)
         {
             uiToOpen.SetActive(true);
-            if (uiToOpen != uiHoveringContainer) OnNullCurrentUI?.Invoke(false);
+            if (uiToOpen != uiHoveringContainer && uiToOpen != photoModeContainer) OnNullCurrentUI?.Invoke(false);
             currentActiveUI = uiToOpen;
-            Debug.Log("Opening UI: " + uiToOpen.name);
+            //Debug.Log("Opening UI: " + uiToOpen.name);
         }
     }
 
@@ -91,10 +81,11 @@ public class UIManager : MonoBehaviour
         isJournalOpen = false;
         if (currentActiveUI != null)
         {
-            OnNullCurrentUI?.Invoke(true);
+            if (currentActiveUI == photoModeContainer) OnTogglePhotoUI?.Invoke(false);
             currentActiveUI.SetActive(false);
             currentActiveUI = null;
-            Debug.Log("Closing Current UI");
+            OnNullCurrentUI?.Invoke(true);
+            //Debug.Log("Closing Current UI");
         }
     }
 
@@ -106,21 +97,29 @@ public class UIManager : MonoBehaviour
         {
             if (ui != null && ui.activeSelf)
             {
-                ui.SetActive(false);
+                if (ui != playerIndicator)
+                {
+                    ui.SetActive(false);
+                }
             }
         }
         currentActiveUI = null;
     }
 
-    public void OpenUiInteract() => OpenUi(interactContainer);
-
-    public void OpenUiHovering() => OpenUi(uiHoveringContainer);
-
-    public void CloseUiInteract()
+    public void ToggleUIHovering(bool isHovering)
     {
-        CloseCurrentUI();
-        OnStopInteract?.Invoke();
-        TogglePlayerIndicatorUI(true);
+        if (isHovering) OpenUi(uiHoveringContainer);
+        else CloseCurrentUI();
+    }
+
+    public void ToggleUIInteract(bool isInteracting)
+    {
+        if (isInteracting) OpenUi(interactContainer);
+        else
+        {
+            CloseCurrentUI();
+            OnStopInteract?.Invoke();
+        }
     }
 
     public void ToggleJournalUI(bool toggleJournal)
@@ -130,10 +129,13 @@ public class UIManager : MonoBehaviour
             CloseCurrentUI();
             OpenUi(journalContainer);
             isJournalOpen= true;
+            TogglePlayerIndicatorUI(false);
         }
         else
         {
             CloseCurrentUI();
+            OnStopInteract?.Invoke();
+            TogglePlayerIndicatorUI(true);
         }
     }
 
@@ -150,6 +152,10 @@ public class UIManager : MonoBehaviour
             CloseCurrentUI();
             OnTogglePhotoUI?.Invoke(false);
             OnTriggerUpdateJournal?.Invoke();
+            if (!SnapshotSystem.isCapturingPhoto)
+            {
+                TogglePlayerIndicatorUI(true);
+            }
         }
         isPhotoModeOpen = isVisible;
     }
@@ -162,22 +168,44 @@ public class UIManager : MonoBehaviour
 
     public void TogglePlayerIndicatorUI(bool isVisible)
     {
-        playerIndicator.SetActive(isVisible);
+        if (playerIndicator != null)
+        {
+            playerIndicator.SetActive(isVisible);
+        }
+        Debug.Log("Player Indicator " + (isVisible ? "Shown" : "Hidden"));
     }
 
     public void ToggleItemMenu(bool isVisible)
     {
         if (isVisible && currentActiveUI == null)
         {
+            TogglePlayerIndicatorUI(false);
             OpenUi(itemMenuUI);
             radialMenu.Open();
+        }
+        else if (isVisible && currentActiveUI != null)
+        {
+            if (currentActiveUI == itemMenuUI)
+            {
+                CloseCurrentUI();
+                radialMenu.Close();
+                TogglePlayerIndicatorUI(true); 
+            }
+             else
+            {
+                TogglePlayerIndicatorUI(false);
+                OpenUi(itemMenuUI);
+                radialMenu.Open();
+            }
         }
         else
         {
             radialMenu.Close();
+            
             if (currentActiveUI == itemMenuUI)
             {
                 CloseCurrentUI();
+                TogglePlayerIndicatorUI(true);
             }
         }
     }

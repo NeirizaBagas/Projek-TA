@@ -16,17 +16,19 @@ public class InteractToObject : MonoBehaviour
     [SerializeField] private float interactDistance = 3f; // Jarak maksimal untuk interaksi
     [SerializeField] private bool canInteract; // Status apakah bisa berinteraksi
     [SerializeField] private bool canDefuse;
+    [SerializeField] private TextMeshProUGUI textInteract;
     private IInteractableObject currentTarget; // Data target interaksi saat ini
     private bool isInteracting = false; // Status apakah sedang berinteraksi
 
     [Header("Snapshot System")]
     private SnapshotSystem _snapshotSystem;
-    private bool _canTakePhoto = false;
     private bool isUIHoveringActive = false;
 
-    public static event Action OnInteractionStarted;
-    public static event Action OnUIHoverOn;
-    public static event Action OnUIHoverOff;
+    [Header("Bool Check")]
+    private bool isItemMenuActive = false;
+
+    public static event Action<bool> OnInteractionStarted;
+    public static event Action<bool> OnUIHoverToggle;
     public static event Action<bool> OnItemMenuToggle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -56,7 +58,6 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.Enable();
         inputActions.Player.Interact.performed += OnTapInteract;
         inputActions.Player.HoldInteract.started += OnHoldInteract;
-        inputActions.Player.HoldInteract.performed += OnHoldInteract;
         inputActions.Player.HoldInteract.canceled += OnHoldInteract;
         inputActions.Player.TakePhoto.performed += TakePicture;
         inputActions.Player.OpenItemMenu.performed += ToggleItemMenu;
@@ -64,7 +65,8 @@ public class InteractToObject : MonoBehaviour
         ItemManager.OnReadyToDefuse += ToggleCanDefuse;
         UIManager.OnStopInteract += StopInteractObject;
         UIManager.OnTogglePhotoUI += ToggleTakePhotoAccess;
-        UIManager.OnNullCurrentUI += TogglePlayerAccess;
+        UIManager.OnNullCurrentUI += TogglePlayerMovement;
+        //UIManager.OnNullCurrentUI += ToggleAnyUIActive;
         SnapshotSystem.OnPhotoReadyToView += ReviewPhoto;
         //TrapInteract.OnCanDefuse += ToggleCanDefuse;
     }
@@ -74,7 +76,6 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.Disable();
         inputActions.Player.Interact.performed -= OnTapInteract;
         inputActions.Player.HoldInteract.started -= OnHoldInteract;
-        inputActions.Player.HoldInteract.performed -= OnHoldInteract;
         inputActions.Player.HoldInteract.canceled -= OnHoldInteract;
         inputActions.Player.TakePhoto.performed -= TakePicture;
         inputActions.Player.OpenItemMenu.started -= ToggleItemMenu;
@@ -82,7 +83,8 @@ public class InteractToObject : MonoBehaviour
         ItemManager.OnReadyToDefuse -= ToggleCanDefuse;
         UIManager.OnStopInteract -= StopInteractObject;
         UIManager.OnTogglePhotoUI -= ToggleTakePhotoAccess;
-        UIManager.OnNullCurrentUI -= TogglePlayerAccess;
+        UIManager.OnNullCurrentUI -= TogglePlayerMovement;
+        //UIManager.OnAnyUIActive -= ToggleAnyUIActive;
         //TrapInteract.OnCanDefuse -= ToggleCanDefuse;
     }
 
@@ -109,8 +111,8 @@ public class InteractToObject : MonoBehaviour
                         if (currentTarget != null) currentTarget.OnHoverExit();
                         currentTarget = interactable;
                         currentTarget.OnHoverEnter();
-
-                        OnUIHoverOn?.Invoke();
+                        if (textInteract != null) textInteract.text = currentTarget.InteractMessage;
+                        OnUIHoverToggle?.Invoke(true);
                         canInteract = true;
                     }
                 }
@@ -126,14 +128,19 @@ public class InteractToObject : MonoBehaviour
                         if (currentTarget != null) currentTarget.OnHoverExit();
                         currentTarget = interactableObject;
                         currentTarget.OnHoverEnter();
-                        OnUIHoverOn?.Invoke();
+                        if (textInteract != null) textInteract.text = currentTarget.InteractMessage;
+                        OnUIHoverToggle?.Invoke(true);
                         canInteract = true;
                     }
                 }
             }
             else
             {
-                ExitHoveringState();
+                //ExitHoveringState();
+                if (hit.collider != null && !hit.collider.CompareTag("Interactable") && !hit.collider.CompareTag("Equipable"))
+                {
+                    ExitHoveringState();
+                }
             }
         }
         else
@@ -147,12 +154,12 @@ public class InteractToObject : MonoBehaviour
         canInteract = false;
         if (currentTarget != null)
         {
-            currentTarget.OnHoverExit();
+            currentTarget.OnHoverExit();    
             currentTarget = null;
         }
         if (isUIHoveringActive)
         {
-            OnUIHoverOff?.Invoke();
+            OnUIHoverToggle?.Invoke(false);
             isUIHoveringActive = false;
         }
     }
@@ -164,8 +171,10 @@ public class InteractToObject : MonoBehaviour
         {
             Debug.Log("Tap Interaction Triggered");
             StartCoroutine(WaitForInteract());
-            TogglePlayerAccess(false);
-            OnInteractionStarted?.Invoke();
+            //TogglePlayerMovement(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            //OnInteractionStarted?.Invoke(true);
             tapObj.OnTap();
 
         }
@@ -173,21 +182,24 @@ public class InteractToObject : MonoBehaviour
 
     public void OnHoldInteract(InputAction.CallbackContext context)
     {
-        Debug.Log("Hold Interaction Detected");
+        
         
         if (currentTarget is IHoldInteractable holdObj && canInteract)
         {
             if (context.started)
             {
-                isInteracting = true; // Kunci status interaksi
-                TogglePlayerAccess(false);
-                OnInteractionStarted?.Invoke();
+                Debug.Log("Hold Interaction Detected");
+                TogglePlayerMovement(false);
+                OnInteractionStarted?.Invoke(true);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 holdObj.OnHoldStart();
             }
             else if (context.canceled)
             {
-                isInteracting = false; // Buka kunci agar bisa jalan/interaksi lagi
-                TogglePlayerAccess(true);
+                TogglePlayerMovement(true);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 holdObj.OnHoldCancel();
             }
         }
@@ -195,22 +207,29 @@ public class InteractToObject : MonoBehaviour
 
     private void StopInteractObject()
     {
-        TogglePlayerAccess(true);
+        TogglePlayerMovement(true);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        isItemMenuActive = false;
     }
 
     IEnumerator WaitForInteract()
     {
-        playerMovement.isAllowToMove = false;
+        //playerMovement.isAllowToMove = false;
+        TogglePlayerMovement(false);
         yield return new WaitForSeconds(1f);
-        playerMovement.isAllowToMove = true;
+        //playerMovement.isAllowToMove = true;
+        TogglePlayerMovement(true);
     }
 
     private void ToggleTakePhotoAccess(bool isAllowed)
     {
-        _canTakePhoto = isAllowed;
-        if (isAllowed && freeLook.canLook == false && Cursor.visible == true)
+        Debug.Log("Toggle Take Photo Access: " + isAllowed);
+        if (isAllowed/* && freeLook.canLook == false && Cursor.visible == true*/)
         {
-            TogglePlayerAccess(true);
+            TogglePlayerMovement(true);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
         else
         {
@@ -220,7 +239,7 @@ public class InteractToObject : MonoBehaviour
 
     public void TakePicture(InputAction.CallbackContext context)
     {
-        if (context.performed && _canTakePhoto)
+        if (context.performed && UIManager.isPhotoModeOpen == true)
         {
             Debug.Log("Cekrek");
             _snapshotSystem.CaptureSnapshot();
@@ -235,41 +254,58 @@ public class InteractToObject : MonoBehaviour
     {
         if (isReviewingPhoto)
         {
-            TogglePlayerAccess(false);
+            TogglePlayerMovement(false);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
         else
         {
-            TogglePlayerAccess(true);
+            TogglePlayerMovement(true);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
-    public void TogglePlayerAccess(bool isAllowed) // Kalau allow kondisi berkeliling, kalau false kondisi interaksi/journal/photo review
+    public void TogglePlayerMovement(bool isAllowed) // Kalau allow kondisi berkeliling, kalau false kondisi interaksi/journal/photo review
     {
+        //Debug.Log(isAllowed);
         playerMovement.isAllowToMove = isAllowed;
         freeLook.canLook = isAllowed;
         if (!isAllowed)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            //Cursor.lockState = CursorLockMode.None;
+            //Cursor.visible = true;
             isInteracting = true;
             Debug.Log("Beku");
+            //isAnyUIActive = true;
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.visible = false;
             isInteracting = false;
             currentTarget = null;
+            //isAnyUIActive = false;
         }
     }
 
     private void ToggleItemMenu(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !isItemMenuActive)
         {
-            TogglePlayerAccess(false);
+            TogglePlayerMovement(false);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             OnItemMenuToggle?.Invoke(true);
-
+            isItemMenuActive = true;
+        }
+        else
+        {
+            TogglePlayerMovement(true);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            OnItemMenuToggle?.Invoke(false);
+            isItemMenuActive = false;
         }
     }
 

@@ -124,8 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf36889be5da5b4a9791404d67b18a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrapInteract
-  fillSpeed: 3
-  maxValue: 10
-  trapContainerUI: {fileID: 0}
-  trapSliderProgres: {fileID: 0}
-  isDefused: 0
+  timeToDefuse: 3
+  drainSpeedMultiplier: 1.5
+  textTrapInteract: {fileID: 0}

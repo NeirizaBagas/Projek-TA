@@ -6,59 +6,67 @@ public class TrapProgresTracker : MonoBehaviour
 {
 
     [Header("Trap Settings UI")]
-    [SerializeField] private float fillSpeed = 3f;
-    [SerializeField] private float maxValue = 10f;
     [SerializeField] private Slider trapSliderProgres;
 
-    private bool isDecreasing = false;
+    //private bool isDecreasing = false;
+    //private bool isIncreasing = false;
 
-    public static event Action OnTrapDefuseComplete;
+    //public static event Action OnTrapDefuseComplete;
 
     private void Start()
     {
-        trapSliderProgres.minValue = 0f;
-        trapSliderProgres.maxValue = maxValue;
-        trapSliderProgres.value = 0f;
+        
     }
 
     private void OnEnable()
     {
-        TrapInteract.OnTrapDefuseStarted += StartDefusing;
-        TrapInteract.OnTrapDefuseFailed += Decreasing;
+        TrapInteract.OnUpdateProgressTrapUI += UpdateSlider;
     }
 
     private void OnDisable()
     {
-        TrapInteract.OnTrapDefuseStarted -= StartDefusing;
-        TrapInteract.OnTrapDefuseFailed -= Decreasing;
+        TrapInteract.OnUpdateProgressTrapUI -= UpdateSlider;
     }
 
-    private void StartDefusing()
+    //private void StartProgress()
+    //{
+    //    isIncreasing = true;
+    //    isDecreasing = false;
+    //}
+
+    //private void DecreasProgress()
+    //{
+    //    isDecreasing = true;
+    //    isIncreasing = false;
+    //}
+
+    //private void Update()
+    //{
+    //    if (isIncreasing)
+    //    {
+    //        trapSliderProgres.value += fillSpeed * Time.deltaTime; // Mengisi slider secara bertahap
+    //        if (trapSliderProgres.value >= maxValue)
+    //        {
+    //            trapSliderProgres.value = minValue; // Reset slider setelah berhasil
+    //            isIncreasing = false;
+    //            OnTrapDefuseComplete?.Invoke();
+    //        }
+    //    }
+
+    //    if (isDecreasing && trapSliderProgres.value > minValue)
+    //    {
+    //        trapSliderProgres.value -= 1f * Time.deltaTime; // Mengurangi slider secara bertahap
+    //        if (trapSliderProgres.value <= minValue)
+    //        {
+    //            trapSliderProgres.value = minValue;
+    //            isDecreasing = false;
+    //        }
+    //    }
+    //}
+
+    private void UpdateSlider(float currentProgress, float maxProgress)
     {
-        trapSliderProgres.value += fillSpeed * Time.deltaTime; // Mengisi slider secara bertahap
-        if (trapSliderProgres.value >= maxValue)
-        {
-            OnTrapDefuseComplete?.Invoke();
-        }
+        trapSliderProgres.maxValue = maxProgress;
+        trapSliderProgres.value = currentProgress;
     }
-
-    private void Decreasing()
-    {
-        isDecreasing = true;
-    }
-
-    private void Update()
-    {
-        if (isDecreasing && trapSliderProgres.value > trapSliderProgres.minValue)
-        {
-            trapSliderProgres.value -= 1f * Time.deltaTime; // Mengurangi slider secara bertahap
-            if (trapSliderProgres.value <= trapSliderProgres.minValue)
-            {
-                trapSliderProgres.value = trapSliderProgres.minValue;
-                isDecreasing = false;
-            }
-        }
-    }
-
-   
 }

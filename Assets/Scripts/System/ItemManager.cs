@@ -5,6 +5,11 @@ public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance { get; private set; }
 
+    public enum ExclusiveItem { None, Journal, DefuseKit, Camera }
+
+    [Header("Active Item State")]
+    public ExclusiveItem currentExclusiveItem = ExclusiveItem.None;
+
     public int animalIndexPhoto;
 
     [Header("Item Reference")]
@@ -12,7 +17,7 @@ public class ItemManager : MonoBehaviour
 
     [Header("Bool Reference")]
     [SerializeField] private bool isSenterActive = false;
-    [SerializeField] private bool isReadyToDefuse = false;
+    //[SerializeField] private bool isReadyToDefuse = false;
 
     [Header("Bool Item Access")]
     [SerializeField] private bool isHaveJournal;
@@ -51,25 +56,12 @@ public class ItemManager : MonoBehaviour
 
     private void GrantItemAccess(ItemType takenItem)
     {
-        // Cek tipe item yang masuk, lalu set bool yang sesuai jadi true
         switch (takenItem)
         {
-            case ItemType.Journal:
-                isHaveJournal = true;
-                Debug.Log("Journal Acquired!");
-                break;
-            case ItemType.Camera:
-                isHaveCamera = true;
-                Debug.Log("Camera Acquired!");
-                break;
-            case ItemType.FlashLight:
-                isHaveSenter = true;
-                Debug.Log("Senter Acquired!");
-                break;
-            case ItemType.DefuseKit:
-                isHaveDefuseKit = true;
-                Debug.Log("Defuse Kit Acquired!");
-                break;
+            case ItemType.Journal: isHaveJournal = true; break;
+            case ItemType.Camera: isHaveCamera = true; break;
+            case ItemType.FlashLight: isHaveSenter = true; break;
+            case ItemType.DefuseKit: isHaveDefuseKit = true; break;
         }
     }
 
@@ -85,31 +77,94 @@ public class ItemManager : MonoBehaviour
         };
     }
 
-    public void OpenJournal()
+    public void ToggleJournal()
     {
         if (!isHaveJournal) return;
-        OnTriggerJournal?.Invoke(true);
+
+        // Cek: Apakah ada item lain yang sedang aktif?
+        if (currentExclusiveItem != ExclusiveItem.None && currentExclusiveItem != ExclusiveItem.Journal)
+        {
+            Debug.Log($"Gagal buka Journal. {currentExclusiveItem} sedang aktif!");
+            return;
+        }
+
+        // Buka / Tutup Journal
+        if (currentExclusiveItem == ExclusiveItem.Journal)
+        {
+            currentExclusiveItem = ExclusiveItem.None;
+            OnTriggerJournal?.Invoke(false);
+        }
+        else
+        {
+            currentExclusiveItem = ExclusiveItem.Journal;
+            OnTriggerJournal?.Invoke(true);
+        }
     }
 
-    public void OpenDefuseKit()
+    public void ToggleDefuseKit()
     {
         if (!isHaveDefuseKit) return;
-        isReadyToDefuse = !isReadyToDefuse;
-        OnReadyToDefuse?.Invoke(isReadyToDefuse);
+
+        // Cek: Apakah ada item lain yang sedang aktif?
+        if (currentExclusiveItem != ExclusiveItem.None && currentExclusiveItem != ExclusiveItem.DefuseKit)
+        {
+            Debug.Log($"Gagal pakai Defuse Kit. {currentExclusiveItem} sedang aktif!");
+            return;
+        }
+
+        // Buka / Tutup Defuse Kit
+        if (currentExclusiveItem == ExclusiveItem.DefuseKit)
+        {
+            currentExclusiveItem = ExclusiveItem.None;
+            OnReadyToDefuse?.Invoke(false);
+        }
+        else
+        {
+            currentExclusiveItem = ExclusiveItem.DefuseKit;
+            OnReadyToDefuse?.Invoke(true);
+        }
     }
 
-    public void CameraMode()
+    public void ToggleCameraMode()
     {
         if (!isHaveCamera) return;
-        OnAnimalPhotoRequested?.Invoke(animalIndexPhoto);
-        OnPhotoModeStarted?.Invoke(true);
-        OnPhotoUiTriggered?.Invoke(true);
+
+        // Cek: Apakah ada item lain yang sedang aktif?
+        if (currentExclusiveItem != ExclusiveItem.None && currentExclusiveItem != ExclusiveItem.Camera)
+        {
+            Debug.Log($"Gagal pakai Kamera. {currentExclusiveItem} sedang aktif!");
+            return;
+        }
+
+        // Buka / Tutup Kamera
+        if (currentExclusiveItem == ExclusiveItem.Camera)
+        {
+            currentExclusiveItem = ExclusiveItem.None;
+            OnPhotoModeStarted?.Invoke(false);
+            OnPhotoUiTriggered?.Invoke(false);
+        }
+        else
+        {
+            currentExclusiveItem = ExclusiveItem.Camera;
+            OnAnimalPhotoRequested?.Invoke(animalIndexPhoto);
+            OnPhotoModeStarted?.Invoke(true);
+            OnPhotoUiTriggered?.Invoke(true);
+        }
     }
+
+    // --- SENTER (BEBAS NYALA/MATI KAPAN SAJA) ---
 
     public void ToggleSenter()
     {
         if (!isHaveSenter) return;
         isSenterActive = !isSenterActive;
         senter.enabled = isSenterActive;
+    }
+
+    // --- PENGAMAN ---
+    // Dipanggil dari UIManager jika menu tertutup paksa (misal tombol ESC)
+    public void ResetExclusiveItemState()
+    {
+        currentExclusiveItem = ExclusiveItem.None;
     }
 }
