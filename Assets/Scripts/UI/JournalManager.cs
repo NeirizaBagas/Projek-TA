@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class JournalManager : MonoBehaviour
 {
     [SerializeField] private SODataJournal journalDatabase;
+    [SerializeField] private Sprite defaultPhotoSprite;
 
     [Header("Left Page Settings")]
     [SerializeField] private TMP_Text leftAnimalName;
@@ -105,16 +106,37 @@ public class JournalManager : MonoBehaviour
         leftAnimalName.text = leftAnimal.animalName;
         leftAnimalDescription.text = leftAnimal.animalDescription;
         leftPageNumber.text = (currentPage + 1).ToString();
-        leftAnimalPhoto.sprite = leftAnimal.animalSprite;
+        if (leftAnimal.animalSprite == null)
+        {
+            leftAnimalPhoto.sprite = defaultPhotoSprite;
+        }
+        else
+        {
+            leftAnimalPhoto.sprite = leftAnimal.animalSprite;
+        }
 
         rightAnimalName.text = rightAnimal.animalName;
         rightAnimalDescription.text = rightAnimal.animalDescription;
         rightPageNumber.text = (currentPage + 2).ToString();
-        rightAnimalPhoto.sprite = rightAnimal.animalSprite;
+        if (rightAnimal.animalSprite == null)
+        {
+            rightAnimalPhoto.sprite = defaultPhotoSprite;
+        }
+        else
+        {
+            rightAnimalPhoto.sprite = rightAnimal.animalSprite;
+        }
+
+
     }
 
     public void CloseJournal()
     {
         OnJournalPageOpenClose?.Invoke(false);
+    }
+
+    public void UpdatePhoto()
+    {
+
     }
 }

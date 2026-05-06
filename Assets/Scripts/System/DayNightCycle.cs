@@ -24,6 +24,8 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private float maxExposure = 1f;
     [SerializeField] private float minExposure = 0.2f;
 
+    private TimeDayManager timeDayManager; // Referensi ke TimeDayManager untuk mengupdate UI waktu
+
     public static event Action OnDayChanged; // Event untuk memberitahu pergantian hari
 
     private void OnEnable()
@@ -40,6 +42,7 @@ public class DayNightCycle : MonoBehaviour
     {
         // Pastikan material skybox tersetting
         RenderSettings.skybox = daySkybox;
+        timeDayManager = GetComponent<TimeDayManager>(); // Ambil referensi ke TimeDayManager di scene yang sama
     }
 
     private void Update()
@@ -97,6 +100,7 @@ public class DayNightCycle : MonoBehaviour
         {
             currentTime -= 24f;
             // TODO: Panggil Event Ganti Hari di sini juga
+            timeDayManager.UpdateDay();
         }
 
         // Langsung paksa visual update detik itu juga agar tidak ada delay/transisi aneh

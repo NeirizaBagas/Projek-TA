@@ -11,6 +11,10 @@ public class SnapshotSystem : MonoBehaviour
     [SerializeField] private SODataJournal journalDatabase;
     public static bool isCapturingPhoto { get; private set; }
 
+    [Header("Photo Size Settings")]
+    [SerializeField] private int photoWidth = 412;
+    [SerializeField] private int photoHeight = 350;
+
     [Header("Snapshot Review")]
     [SerializeField] private Image snapshotReviewImage;
     private Sprite snapshotSprite;
@@ -47,11 +51,11 @@ public class SnapshotSystem : MonoBehaviour
         OnPhotoModeReadyToCapture?.Invoke(false); // Beri tahu UI untuk tutup mode foto saat mulai proses pengambilan snapshot
         yield return new WaitForEndOfFrame(); // Tunggu hingga frame selesai untuk memastikan semua sudah dirender
 
-        int width = Screen.width;
-        int height = Screen.height;
+        int startX = (Screen.width - photoWidth) / 2 ;
+        int startY = (Screen.height - photoHeight) / 2;
 
-        Texture2D currentSnapshot = new Texture2D(width, height, TextureFormat.RGB24, false);
-        Rect regionToRead = new Rect(0, 0, width, height);
+        Texture2D currentSnapshot = new Texture2D(photoWidth, photoHeight, TextureFormat.RGB24, false);
+        Rect regionToRead = new Rect(startX, startY, photoWidth, photoHeight);
         currentSnapshot.ReadPixels(regionToRead, 0, 0);
         currentSnapshot.Apply();
 

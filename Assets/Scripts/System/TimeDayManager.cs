@@ -40,7 +40,7 @@ public class TimeDayManager : MonoBehaviour
         timeText.text = $"{hours:00}:{minutes:00}"; // Format waktu HH:MM
     }
 
-    private void UpdateDay()
+    public void UpdateDay()
     {
         currentDay++;
         DisplayDay();
