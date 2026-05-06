@@ -158,6 +158,7 @@ public class UIManager : MonoBehaviour
             }
         }
         isPhotoModeOpen = isVisible;
+        Debug.Log("Photo Mode " + (isVisible ? "Opened" : "Closed"));
     }
 
     public void ToggleReviewPhotoUI(bool isVisible)

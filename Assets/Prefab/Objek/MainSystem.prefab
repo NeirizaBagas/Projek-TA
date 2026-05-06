@@ -530,7 +530,7 @@ RectTransform:
   m_GameObject: {fileID: 3227615219231903190}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3719062504580376915}
@@ -804,7 +804,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2128638486511206498}
   - component: {fileID: 5287200779432569202}
-  - component: {fileID: 3267701232540574355}
   - component: {fileID: 2581312235684557720}
   m_Layer: 0
   m_Name: ItemManager
@@ -848,29 +847,6 @@ MonoBehaviour:
   isHaveDefuseKit: 0
   isHaveCamera: 0
   isHaveSenter: 0
---- !u!114 &3267701232540574355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4180212355757945515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c13b7b1505d040d4985884307910fbdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TrapScheduleManager
-  trapPrefab: {fileID: 1727256541548254324, guid: 5cefa721c8086e44cb7fda7352d53454, type: 3}
-  maxTrapsPerDay: 3
-  dailyTrapSchedules:
-  - trapSpawnPoints:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-  - trapSpawnPoints:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
 --- !u!114 &2581312235684557720
 MonoBehaviour:
   m_ObjectHideFlags: 0

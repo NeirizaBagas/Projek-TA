@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ec268aed1b5ef49818cb3762145400, type: 3}
   m_Name: Gajah
   m_EditorClassIdentifier: Assembly-CSharp::SODataHewan
-  animalID: 0
-  animalName: Gajah
-  animalDescription: huaa
+  animalID: 3
+  animalName: Gajah Sumatera
+  animalDescription: Gajah Sumatra adalah gajah berukuran lebih kecil dibandingkan
+    gajah Afrika. Mereka hidup berkelompok dan sangat cerdas. Gajah ini membantu
+    menyebarkan biji tumbuhan di hutan, sehingga penting bagi lingkungan.
   animalSprite: {fileID: 0}

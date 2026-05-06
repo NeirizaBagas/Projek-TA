@@ -104,6 +104,7 @@ public class SnapshotSystem : MonoBehaviour
         }
         OnPhotoReadyToView?.Invoke(false); // Beri tahu UI untuk tutup review snapshot setelah foto disimpan ke jurnal
         OnPhotoModeReadyToCapture?.Invoke(false); // Beri tahu UI untuk tutup mode foto setelah foto disimpan ke jurnal
+        ItemManager.Instance.ResetExclusiveItemState(); // Reset state item eksklusif setelah menyimpan foto ke jurnal
     }
 
     public void RetakePhoto()

@@ -98,6 +98,7 @@ public class ItemManager : MonoBehaviour
         {
             currentExclusiveItem = ExclusiveItem.Journal;
             OnTriggerJournal?.Invoke(true);
+            //ToggleSetActiveRadialMenu();
         }
     }
 
@@ -122,6 +123,7 @@ public class ItemManager : MonoBehaviour
         {
             currentExclusiveItem = ExclusiveItem.DefuseKit;
             OnReadyToDefuse?.Invoke(true);
+            //ToggleSetActiveRadialMenu();
         }
     }
 
@@ -149,6 +151,7 @@ public class ItemManager : MonoBehaviour
             OnAnimalPhotoRequested?.Invoke(animalIndexPhoto);
             OnPhotoModeStarted?.Invoke(true);
             OnPhotoUiTriggered?.Invoke(true);
+            //ToggleSetActiveRadialMenu();
         }
     }
 
@@ -167,4 +170,14 @@ public class ItemManager : MonoBehaviour
     {
         currentExclusiveItem = ExclusiveItem.None;
     }
+
+    //public void ToggleSetActiveRadialMenu()
+    //{
+    //    if (InteractToObject.isItemMenuActive == true)
+    //    {
+    //        InteractToObject.isItemMenuActive = false;
+    //    }
+
+    //    Debug.Log("Toggling Radial Menu. Current State: " + InteractToObject.isItemMenuActive);
+    //}
 }

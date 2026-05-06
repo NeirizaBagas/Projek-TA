@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ec268aed1b5ef49818cb3762145400, type: 3}
   m_Name: Kukang
   m_EditorClassIdentifier: Assembly-CSharp::SODataHewan
-  animalID: 2
-  animalName: Kukang
-  animalDescription: ooo
+  animalID: 4
+  animalName: Rangkong
+  animalDescription: "Rangkong adalah burung dengan paruh besar dan unik yang hidup
+    di hutan Indonesia. Burung ini sering disebut sebagai \u201Cpenjaga hutan\u201D
+    karena membantu menyebarkan biji-bijian. Suaranya khas dan mudah dikenali."
   animalSprite: {fileID: 0}
