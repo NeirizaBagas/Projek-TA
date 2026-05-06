@@ -25,7 +25,7 @@ public class InteractToObject : MonoBehaviour
     private bool isUIHoveringActive = false;
 
     [Header("Bool Check")]
-    private bool isItemMenuActive = false;
+    public bool isItemMenuActive;
 
     public static event Action<bool> OnInteractionStarted;
     public static event Action<bool> OnUIHoverToggle;
@@ -51,6 +51,7 @@ public class InteractToObject : MonoBehaviour
         freeLook = GetComponent<FreeLook>();
         _snapshotSystem = GetComponent<SnapshotSystem>();
         camPos = Camera.main.transform;
+        isItemMenuActive = false;
     }
 
     private void OnEnable()
@@ -298,6 +299,7 @@ public class InteractToObject : MonoBehaviour
             Cursor.visible = true;
             OnItemMenuToggle?.Invoke(true);
             isItemMenuActive = true;
+            ItemManager.Instance.ResetExclusiveItemState();
         }
         else
         {

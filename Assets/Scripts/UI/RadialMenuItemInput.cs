@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] private RadialMenu menu;
+    public Sprite defaultSprite;
+    public Sprite hoverSprite;
     RadialMenuItem item;
     RectTransform rect;
     Image background;
@@ -39,7 +41,7 @@ public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerEnter(PointerEventData eventData)
     {
         targetScale = baseScale * menu.hoverScale;
-        if (background) background.color = menu.hoverColor;
+        if (background) background.sprite = hoverSprite;
 
         if (!menu || !menu.IsOpen) return;
 
@@ -55,7 +57,7 @@ public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerExit(PointerEventData eventData)
     {
         targetScale = baseScale;
-        if (background) background.color = menu.defaultColor;
+        if (background) background.sprite = defaultSprite;
         onHoverExitEvent.Invoke();
     }
 
@@ -68,7 +70,7 @@ public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointer
     private void Reset()
     {
         targetScale = baseScale;
-        if (background) background.color = menu.defaultColor;
+        if (background) background.sprite = defaultSprite;
         onHoverExitEvent?.Invoke();
     }
 }

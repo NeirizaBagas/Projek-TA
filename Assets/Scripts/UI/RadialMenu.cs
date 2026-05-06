@@ -15,9 +15,8 @@ public class RadialMenu : MonoBehaviour
     public GameObject RadialMenuObject;
 
     [Header("Button Design")]
-    public Sprite buttonBackground;
-    public Color defaultColor = Color.white;
-    public Color hoverColor = Color.cyan;
+    //public Sprite defaultSprite;
+    //public Sprite hoverSprite;
     public float hoverScale = 1.15f;
 
     [Header("Icon Settings")]
@@ -148,20 +147,19 @@ public class RadialMenu : MonoBehaviour
             if (!item) continue;
             RadialMenuItem menuItem = item.GetComponent<RadialMenuItem>();
             if (menuItem == null) continue;
-            ApplyDefaultsToItem(menuItem);
+            //ApplyDefaultsToItem(menuItem);
         }
     }
 
-    public void ApplyDefaultsToItem(RadialMenuItem item)
-    {
-        if (!item) return;
+    //public void ApplyDefaultsToItem(RadialMenuItem item)
+    //{
+    //    if (!item) return;
 
-        if (item.BackgroundImage)
-        {
-            item.BackgroundImage.sprite = buttonBackground;
-            item.BackgroundImage.color = defaultColor;
-        }
-    }
+    //    if (item.BackgroundImage)
+    //    {
+    //        item.BackgroundImage.sprite = defaultSprite;
+    //    }
+    //}
 
     public void ToggleItemMenu()
     {
