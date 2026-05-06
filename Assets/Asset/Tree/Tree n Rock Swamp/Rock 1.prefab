@@ -1,24 +1,120 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6116769962390437468
+--- !u!1 &763731798524437289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5600415531090878046}
+  - component: {fileID: 1552034960956925793}
+  - component: {fileID: 7350240004320431271}
+  m_Layer: 0
+  m_Name: Rock 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5600415531090878046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763731798524437289}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3292193230080915704}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &1552034960956925793
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763731798524437289}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.6
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 4466186065903141783}
+  - screenRelativeHeight: 0.3
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 4466186065903141783}
+  - screenRelativeHeight: 0.02649067
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 4466186065903141783}
+  m_Enabled: 1
+--- !u!136 &7350240004320431271
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763731798524437289}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6.8728943
+  m_Height: 13.745789
+  m_Direction: 1
+  m_Center: {x: -37.706573, y: -0.22825956, z: 97.52992}
+--- !u!1001 &3042886548721131283
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 5600415531090878046}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d8145a403df98ef4f811f81613c80101, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 299.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d8145a403df98ef4f811f81613c80101, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 299.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d8145a403df98ef4f811f81613c80101, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 299.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d8145a403df98ef4f811f81613c80101, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 680.32666
+      value: -38.11975
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d8145a403df98ef4f811f81613c80101, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.120665
+      value: -0.9722402
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d8145a403df98ef4f811f81613c80101, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 260.25534
+      value: 97.19348
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d8145a403df98ef4f811f81613c80101, type: 3}
       propertyPath: m_LocalRotation.w
@@ -48,6 +144,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d8145a403df98ef4f811f81613c80101, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d8145a403df98ef4f811f81613c80101, type: 3}
       propertyPath: m_Name
       value: Rock 1
@@ -57,3 +157,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8145a403df98ef4f811f81613c80101, type: 3}
+--- !u!4 &3292193230080915704 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d8145a403df98ef4f811f81613c80101, type: 3}
+  m_PrefabInstance: {fileID: 3042886548721131283}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4466186065903141783 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: d8145a403df98ef4f811f81613c80101, type: 3}
+  m_PrefabInstance: {fileID: 3042886548721131283}
+  m_PrefabAsset: {fileID: 0}
