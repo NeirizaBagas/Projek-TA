@@ -20,7 +20,6 @@ public class BedSystemInteract : MonoBehaviour, ITapInteractable
     }
     public void OnTap()
     {
-        Debug.Log("Tapped on " + this.name + "Reset Energy" + "TimeSkip");
         OnStartSleep?.Invoke();
         OnTimeSkip?.Invoke(skipTimeHours);
     }

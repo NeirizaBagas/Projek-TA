@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82ec268aed1b5ef49818cb3762145400, type: 3}
-  m_Name: Gajah
+  m_Name: Badak
   m_EditorClassIdentifier: Assembly-CSharp::SODataHewan
-  animalID: 2
-  animalName: Gajah Sumatera
-  animalDescription: Gajah Sumatra adalah gajah berukuran lebih kecil dibandingkan
-    gajah Afrika. Mereka hidup berkelompok dan sangat cerdas. Gajah ini membantu
-    menyebarkan biji tumbuhan di hutan, sehingga penting bagi lingkungan.
+  animalID: 4
+  animalName: Badak Jawa
+  animalDescription: Badak Jawa adalah salah satu hewan paling langka di dunia yang
+    hanya ditemukan di Indonesia. Badak ini memiliki satu cula kecil dan hidup di
+    hutan lebat. Populasinya sangat sedikit sehingga harus dilindungi.
   animalSprite: {fileID: 0}

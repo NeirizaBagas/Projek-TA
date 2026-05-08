@@ -57,7 +57,6 @@ public class TrapInteract : MonoBehaviour, IHoldInteractable
         if (isDefused) return;
         isHolding = true;
         OnToggleUIInteract?.Invoke(true);
-        Debug.Log("Hold Started");
 
         //OnTrapDefuseStarted?.Invoke();
     }

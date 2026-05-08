@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: AnimalDatabase
   m_EditorClassIdentifier: Assembly-CSharp::SODataJournal
   animalDatabase:
-  - {fileID: 11400000, guid: 18594e0e9dcff2b438618af28471ef28, type: 2}
   - {fileID: 11400000, guid: ae9743c73cfed1c40a51b98374f59435, type: 2}
-  - {fileID: 11400000, guid: cd5c2850727cf1a4a98409a4163f909c, type: 2}
   - {fileID: 11400000, guid: 6d6398eb575d4e9478d1ed202f136c56, type: 2}
+  - {fileID: 11400000, guid: 18594e0e9dcff2b438618af28471ef28, type: 2}
+  - {fileID: 11400000, guid: cd5c2850727cf1a4a98409a4163f909c, type: 2}
+  - {fileID: 11400000, guid: e4f9d6adc5d0815409b8f7a131832b8d, type: 2}
+  - {fileID: 11400000, guid: 88f4b7a9c30b9b343a93bfe26630f75d, type: 2}
+  - {fileID: 11400000, guid: 8198c48a6fa12fb498fca341e04615eb, type: 2}
+  - {fileID: 11400000, guid: 2797f002477ca6843906f7d31adf7580, type: 2}

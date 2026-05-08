@@ -25,7 +25,6 @@ public class EquippedItem : MonoBehaviour, ITapInteractable
 
     public void OnTap()
     {
-        Debug.Log("Tapped on " + this.name);
         OnItemPickedUp?.Invoke(itemType);
         this.gameObject.SetActive(false);
         ToggleUIItemEquippable?.Invoke(false);

@@ -27,7 +27,7 @@ public class ItemVisualHandler : MonoBehaviour
     {
         if (!ItemManager.Instance.CheckHasItem(ItemType)) return; // Cek dulu apakah player sudah punya item ini
         SetAllVisualsState(true);
-        Debug.Log("Preview Shown for " + gameObject.name);
+        //Debug.Log("Preview Shown for " + gameObject.name);
     }
 
     // --- Dipanggil oleh onHoverExitEvent di UI ---

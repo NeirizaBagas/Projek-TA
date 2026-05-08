@@ -170,7 +170,6 @@ public class InteractToObject : MonoBehaviour
 
         if (currentTarget is ITapInteractable tapObj && canInteract)
         {
-            Debug.Log("Tap Interaction Triggered");
             StartCoroutine(WaitForInteract());
             //TogglePlayerMovement(false);
             Cursor.lockState = CursorLockMode.Locked;
@@ -189,7 +188,6 @@ public class InteractToObject : MonoBehaviour
         {
             if (context.started)
             {
-                Debug.Log("Hold Interaction Detected");
                 TogglePlayerMovement(false);
                 OnInteractionStarted?.Invoke(true);
                 Cursor.lockState = CursorLockMode.Locked;
@@ -242,7 +240,6 @@ public class InteractToObject : MonoBehaviour
     {
         if (context.performed && UIManager.isPhotoModeOpen == true)
         {
-            Debug.Log("Cekrek");
             _snapshotSystem.CaptureSnapshot();
         }
         //else
@@ -269,24 +266,16 @@ public class InteractToObject : MonoBehaviour
 
     public void TogglePlayerMovement(bool isAllowed) // Kalau allow kondisi berkeliling, kalau false kondisi interaksi/journal/photo review
     {
-        //Debug.Log(isAllowed);
         playerMovement.isAllowToMove = isAllowed;
         freeLook.canLook = isAllowed;
         if (!isAllowed)
         {
-            //Cursor.lockState = CursorLockMode.None;
-            //Cursor.visible = true;
             isInteracting = true;
-            Debug.Log("Beku");
-            //isAnyUIActive = true;
         }
         else
         {
-            //Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
             isInteracting = false;
             currentTarget = null;
-            //isAnyUIActive = false;
         }
     }
 

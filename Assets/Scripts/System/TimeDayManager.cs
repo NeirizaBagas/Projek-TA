@@ -51,7 +51,7 @@ public class TimeDayManager : MonoBehaviour
     {
         if (dayText != null)
         {
-            dayText.text = $"Day {currentDay}";
+            dayText.text = $"DAY {currentDay}";
         }
     }
 }

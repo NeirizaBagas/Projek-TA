@@ -109,6 +109,6 @@ public class DayNightCycle : MonoBehaviour
         // Update GI hanya saat terjadi timeskip ekstrim, JANGAN di dalam Update()
         DynamicGI.UpdateEnvironment();
 
-        Debug.Log($"Waktu diskip sebanyak {hoursToSkip} jam. Sekarang jam: {currentTime}");
+        //Debug.Log($"Waktu diskip sebanyak {hoursToSkip} jam. Sekarang jam: {currentTime}");
     }
 }

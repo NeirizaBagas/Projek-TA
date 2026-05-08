@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,23 +27,72 @@ public class SnapshotSystem : MonoBehaviour
     [Header("Photo Fade Effect")]
     [SerializeField] private Animator fadingAnimation;
 
+    [Header("Detection Settings")]
+    [SerializeField] private float detectionRadius = 5f;
+    [SerializeField] private LayerMask animalLayer;
+    [SerializeField] private float detectionRange = 25f;
+    private Transform playerCamera;
+    private bool isAnimalInView = false;
+
     public static event Action<bool> OnPhotoModeReadyToCapture;
     public static event Action<bool> OnPhotoReadyToView;
     public static event Action OnAnimalPhotoUpdated;
 
+    private void Start()
+    {
+        playerCamera = Camera.main.transform;
+    }
+
     private void OnEnable()
     {
-        ItemManager.OnAnimalPhotoRequested += ChangeAnimalPhotoIndex;
+        //ItemManager.OnAnimalPhotoRequested += ChangeAnimalPhotoIndex;
     }
 
     private void OnDisable()
     {
-        ItemManager.OnAnimalPhotoRequested -= ChangeAnimalPhotoIndex;
+        //ItemManager.OnAnimalPhotoRequested -= ChangeAnimalPhotoIndex;
+    }
+
+    private void LateUpdate()
+    {
+
+        Debug.DrawRay(playerCamera.position, playerCamera.transform.forward * detectionRange, Color.red);
     }
 
     public void CaptureSnapshot() // Dipanggil dari skrip interacttoobject saat player menekan tombol foto(klik kanan mouse)
     {
+        isAnimalInView = TryDetectAnimal(out int detectedAnimalIndex);
+
+        if (isAnimalInView)
+        {
+            animalSnapshotIndex = detectedAnimalIndex;
+            Debug.Log($"Hewan terdeteksi dengan index {animalSnapshotIndex}. Mulai proses pengambilan snapshot...");
+        }
+        else
+        {
+            Debug.Log("Tidak ada hewan yang terdeteksi. Mulai proses pengambilan snapshot kosong...");
+            animalSnapshotIndex = -1; // Set
+        }
+
         StartCoroutine(TakeSnapshot());
+    }
+
+    private bool TryDetectAnimal(out int index)
+    {
+        index = -1;
+
+        if (Physics.SphereCast(playerCamera.position, detectionRadius, playerCamera.transform.forward, out RaycastHit hit, detectionRange, animalLayer))
+        {
+            AnimalPhotoTarget target = hit.collider.GetComponent<AnimalPhotoTarget>();
+            if (target != null)
+            {
+                index = target.animalID;
+                Debug.Log($"Hewan terdeteksi dengan index {index}");
+                return true;
+            }
+        }
+        Debug.Log("Tidak ada hewan yang terdeteksi dalam jangkauan.");
+        return false;
     }
 
     IEnumerator TakeSnapshot() // Coroutine untuk ngambil snapshot setelah frame selesai dirender
@@ -63,10 +113,10 @@ public class SnapshotSystem : MonoBehaviour
         isCapturingPhoto = false; // Reset flag setelah proses pengambilan snapshot selesai
     }
 
-    public void ChangeAnimalPhotoIndex(int index)
-    {
-        animalSnapshotIndex = index;
-    }
+    //public void ChangeAnimalPhotoIndex(int index)
+    //{
+    //    animalSnapshotIndex = index;
+    //}
 
     public void SavingPhoto(Texture2D capturedTex) // Fungsi untuk menyimpan snapshot ke database dan update UI, dipanggil setelah snapshot diambil
     {
@@ -93,6 +143,16 @@ public class SnapshotSystem : MonoBehaviour
 
     public void SavePhotoToJournal()
     {
+        if (!isAnimalInView || animalSnapshotIndex < 0)
+        {
+            Debug.Log("Tidak ada hewan yang terdeteksi atau index hewan tidak valid. Foto kosong tidak akan disimpan ke jurnal.");
+
+            OnPhotoReadyToView?.Invoke(false); // Beri tahu UI untuk tutup review snapshot setelah foto disimpan ke jurnal
+            OnPhotoModeReadyToCapture?.Invoke(false); // Beri tahu UI untuk tutup mode foto setelah foto disimpan ke jurnal
+            ItemManager.Instance.ResetExclusiveItemState(); // Reset state item eksklusif setelah menyimpan foto ke jurnal
+            return;
+        }
+
         SODataHewan targetHewan = journalDatabase.animalDatabase[animalSnapshotIndex];
 
         if (targetHewan != null)

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82ec268aed1b5ef49818cb3762145400, type: 3}
-  m_Name: Kukang
+  m_Name: Rangkong
   m_EditorClassIdentifier: Assembly-CSharp::SODataHewan
-  animalID: 4
+  animalID: 3
   animalName: Rangkong
   animalDescription: "Rangkong adalah burung dengan paruh besar dan unik yang hidup
     di hutan Indonesia. Burung ini sering disebut sebagai \u201Cpenjaga hutan\u201D

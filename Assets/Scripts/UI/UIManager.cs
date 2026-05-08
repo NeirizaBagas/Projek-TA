@@ -158,7 +158,7 @@ public class UIManager : MonoBehaviour
             }
         }
         isPhotoModeOpen = isVisible;
-        Debug.Log("Photo Mode " + (isVisible ? "Opened" : "Closed"));
+        //Debug.Log("Photo Mode " + (isVisible ? "Opened" : "Closed"));
     }
 
     public void ToggleReviewPhotoUI(bool isVisible)
@@ -173,7 +173,7 @@ public class UIManager : MonoBehaviour
         {
             playerIndicator.SetActive(isVisible);
         }
-        Debug.Log("Player Indicator " + (isVisible ? "Shown" : "Hidden"));
+        //Debug.Log("Player Indicator " + (isVisible ? "Shown" : "Hidden"));
     }
 
     public void ToggleItemMenu(bool isVisible)
@@ -191,14 +191,14 @@ public class UIManager : MonoBehaviour
                 CloseCurrentUI();
                 radialMenu.Close();
                 TogglePlayerIndicatorUI(true); 
-                Debug.Log("Closing Item Menu because it's already open");
+                //Debug.Log("Closing Item Menu because it's already open");
             }
              else
             {
                 TogglePlayerIndicatorUI(false);
                 OpenUi(itemMenuUI);
                 radialMenu.Open();
-                Debug.Log("Opening Item Menu and closing current UI: " + currentActiveUI.name);
+                //Debug.Log("Opening Item Menu and closing current UI: " + currentActiveUI.name);
             }
         }
         else
