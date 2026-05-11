@@ -8,11 +8,6 @@ public class TrapProgresTracker : MonoBehaviour
     [Header("Trap Settings UI")]
     [SerializeField] private Slider trapSliderProgres;
 
-    //private bool isDecreasing = false;
-    //private bool isIncreasing = false;
-
-    //public static event Action OnTrapDefuseComplete;
-
     private void Start()
     {
         
@@ -27,42 +22,6 @@ public class TrapProgresTracker : MonoBehaviour
     {
         TrapInteract.OnUpdateProgressTrapUI -= UpdateSlider;
     }
-
-    //private void StartProgress()
-    //{
-    //    isIncreasing = true;
-    //    isDecreasing = false;
-    //}
-
-    //private void DecreasProgress()
-    //{
-    //    isDecreasing = true;
-    //    isIncreasing = false;
-    //}
-
-    //private void Update()
-    //{
-    //    if (isIncreasing)
-    //    {
-    //        trapSliderProgres.value += fillSpeed * Time.deltaTime; // Mengisi slider secara bertahap
-    //        if (trapSliderProgres.value >= maxValue)
-    //        {
-    //            trapSliderProgres.value = minValue; // Reset slider setelah berhasil
-    //            isIncreasing = false;
-    //            OnTrapDefuseComplete?.Invoke();
-    //        }
-    //    }
-
-    //    if (isDecreasing && trapSliderProgres.value > minValue)
-    //    {
-    //        trapSliderProgres.value -= 1f * Time.deltaTime; // Mengurangi slider secara bertahap
-    //        if (trapSliderProgres.value <= minValue)
-    //        {
-    //            trapSliderProgres.value = minValue;
-    //            isDecreasing = false;
-    //        }
-    //    }
-    //}
 
     private void UpdateSlider(float currentProgress, float maxProgress)
     {

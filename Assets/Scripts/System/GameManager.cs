@@ -1,10 +1,12 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private SODataJournal journalDatabase;
     [SerializeField] private int targetPhotosToComplete = 5;
+    
 
     public static event Action onGameCompleted;
 
@@ -32,7 +34,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Jumlah foto yang sudah diambil: {currentPhotoCount}/{journalDatabase.animalDatabase.Length}");
 
-        if (currentPhotoCount >= journalDatabase.animalDatabase.Length)
+        if (currentPhotoCount >= targetPhotosToComplete)
         {
             Debug.Log("Selamat! Kamu telah menyelesaikan game dengan mengambil cukup foto hewan!");
             onGameCompleted?.Invoke();

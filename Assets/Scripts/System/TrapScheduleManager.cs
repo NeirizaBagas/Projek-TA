@@ -1,7 +1,9 @@
 using NUnit.Framework;
-using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
 // 1. Tambahkan Enum untuk melacak status dan jenis hewan
 public enum AnimalType { Harimau, Gajah, Orangutan, Rangkong, Badak, Bekantan, Tarsius, Lutung }
@@ -14,7 +16,7 @@ public class AnimalTrapZone
     [Tooltip("Hari terakhir pemain bisa men-defuse trap sebelum hewan ini hilang")]
     public int criticalDay;
     public Transform[] trapSpawnPoints;
-
+    //public TextMeshProUGUI animalStatusUpdate;
     [HideInInspector] public AnimalLocationState currentState = AnimalLocationState.AtRisk;
     [HideInInspector] public List<GameObject> spawnedTraps = new List<GameObject>();
 }
@@ -27,6 +29,7 @@ public class TrapScheduleManager : MonoBehaviour
 
     [Header("Animal Zones Setting")]
     public AnimalTrapZone[] animalZones;
+    public TextMeshProUGUI animalStatusUpdate;
 
     private int lostCount = 0;
     public static int totalAnimal { get; private set;}
@@ -89,15 +92,16 @@ public class TrapScheduleManager : MonoBehaviour
                 {
                     zone.currentState = AnimalLocationState.Safe;
                     OnAnimalSafe?.Invoke(zone.animalType);
-                    Debug.Log($"[Berhasil] Semua Trap di area {zone.animalType} sudah di-defuse! Hewan aman selamanya.");
+                    if (animalStatusUpdate != null) StartCoroutine(ShowStatusText(animalStatusUpdate, $"Semua Trap di area {zone.animalType} sudah di-defuse! Hewan aman selamanya.", 3f));
                 }
                 else
                 {
                     zone.currentState = AnimalLocationState.Lost;
                     lostCount++;
                     OnAnimalLost?.Invoke(zone.animalType);
-                    Debug.LogWarning($"[Gagal] Waktu habis! {zone.animalType} telah hilang/diburu.");
                     totalAnimal--; // Kurangi total hewan yang tersisa
+
+                    if (animalStatusUpdate != null) StartCoroutine(ShowStatusText(animalStatusUpdate, $"{zone.animalType} Hilang!", 3f));
                     // Matikan sisa trap di area ini agar tidak mengganggu area lain
                     foreach (var trap in zone.spawnedTraps)
                     {
@@ -128,5 +132,20 @@ public class TrapScheduleManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator ShowStatusText(TextMeshProUGUI statusText, string message, float displayDuration)
+    {
+        // 1. Ganti isi teksnya sesuai konteks
+        statusText.text = message;
+
+        // 2. Nyalakan GameObject teksnya agar terlihat di layar
+        statusText.gameObject.SetActive(true);
+
+        // 3. Tunggu selama beberapa detik (sesuai parameter displayDuration)
+        yield return new WaitForSeconds(displayDuration);
+
+        // 4. Matikan kembali GameObject teksnya
+        statusText.gameObject.SetActive(false);
     }
 }
