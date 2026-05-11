@@ -56,7 +56,7 @@ public class SnapshotSystem : MonoBehaviour
     private void LateUpdate()
     {
 
-        Debug.DrawRay(playerCamera.position, playerCamera.transform.forward * detectionRange, Color.red);
+
     }
 
     public void CaptureSnapshot() // Dipanggil dari skrip interacttoobject saat player menekan tombol foto(klik kanan mouse)
@@ -160,6 +160,7 @@ public class SnapshotSystem : MonoBehaviour
             snapshotSprite.name = "Snapshot_Review " + targetHewan.animalName; // Beri nama agar mudah diidentifikasi
             targetHewan.animalSprite = (UnityEngine.Sprite)snapshotSprite;
             OnAnimalPhotoUpdated?.Invoke();
+            Debug.Log("FOTO BERHASIL DISIMPAN KE JURNAL: " + targetHewan.animalName);
             Debug.Log($"Slot hewan index {animalSnapshotIndex} berhasil diisi");
         }
         else
@@ -181,6 +182,35 @@ public class SnapshotSystem : MonoBehaviour
     {
         OnPhotoModeReadyToCapture?.Invoke(true); // Beri tahu UI untuk buka mode foto saat mulai proses pengambilan snapshot
         OnPhotoReadyToView?.Invoke(false); // Beri tahu UI untuk tampilkan review snapshot yang baru diambil
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // Pastikan kamera tidak null agar tidak error saat di editor
+        if (playerCamera == null) return;
+
+        // Ubah warna gizmo agar mudah dilihat (misal: kuning transparan)
+        Gizmos.color = Color.yellow;
+
+        // Tentukan titik awal dan titik akhir tembakan
+        Vector3 startPos = playerCamera.position;
+        Vector3 endPos = startPos + (playerCamera.forward * detectionRange);
+
+        // 1. Gambar bola di titik awal dan titik maksimal
+        Gizmos.DrawWireSphere(startPos, detectionRadius);
+        Gizmos.DrawWireSphere(endPos, detectionRadius);
+
+        // 2. Gambar garis tengah (seperti laser)
+        Gizmos.DrawLine(startPos, endPos);
+
+        // 3. Gambar garis luar penutup tabung (atas, bawah, kiri, kanan)
+        Vector3 up = playerCamera.up * detectionRadius;
+        Vector3 right = playerCamera.right * detectionRadius;
+
+        Gizmos.DrawLine(startPos + up, endPos + up);       // Garis atas
+        Gizmos.DrawLine(startPos - up, endPos - up);       // Garis bawah
+        Gizmos.DrawLine(startPos + right, endPos + right); // Garis kanan
+        Gizmos.DrawLine(startPos - right, endPos - right); // Garis kiri
     }
 
 }

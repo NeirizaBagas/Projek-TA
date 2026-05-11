@@ -37,7 +37,7 @@ public class InteractToObject : MonoBehaviour
         canInteract = false;
         isInteracting = false;
         inputActions = new PlayerInputActions();
-        
+
         inputActions.UI.Disable();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

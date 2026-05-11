@@ -6,8 +6,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SODataJournal journalDatabase;
     [SerializeField] private int targetPhotosToComplete = 5;
 
-    private int currentPhotoCount = 0;
-
     public static event Action onGameCompleted;
 
     private void OnEnable()
@@ -22,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     private void CheckWinCondition()
     {
+        int currentPhotoCount = 0;
+
         foreach (var hewan in journalDatabase.animalDatabase)
         {
             if (hewan.animalSprite != null)
@@ -30,9 +30,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"Jumlah foto yang sudah diambil: {currentPhotoCount}/{targetPhotosToComplete}");
+        Debug.Log($"Jumlah foto yang sudah diambil: {currentPhotoCount}/{journalDatabase.animalDatabase.Length}");
 
-        if (currentPhotoCount >= targetPhotosToComplete)
+        if (currentPhotoCount >= journalDatabase.animalDatabase.Length)
         {
             Debug.Log("Selamat! Kamu telah menyelesaikan game dengan mengambil cukup foto hewan!");
             onGameCompleted?.Invoke();

@@ -11,8 +11,17 @@ public abstract class AnimalBase : MonoBehaviour, IAnimals
 
     [Header("Navmesh Agent")]
     protected NavMeshAgent agent;
-    public float walkSpeed = 2f;
+    public float patrolSpeed = 2f;
     public float runSpeed = 5f;
+    public float normalIdleDuration = 3f;
+    public float panicIdleDuration = 1.5f;
+
+    [Header("Detection")]
+    [SerializeField] private float dayDetectionRadius = 5f;
+    [SerializeField] private float nightDetectionRadius = 3f;
+    [SerializeField] private LayerMask playerLayer;
+
+    public bool isPlayerInRange;
 
     protected virtual void Awake()
     {
@@ -39,6 +48,38 @@ public abstract class AnimalBase : MonoBehaviour, IAnimals
     public void UpdateCurrentIndex(int index)
     {
         currentWaypointIndex = index;
+    }
+
+    protected float GetCurrentTime()
+    {   
+        return DayNightCycle.isNight ? nightDetectionRadius : dayDetectionRadius;
+    }
+
+    public bool IsPlayerInRange()
+    {
+        float detectionRadius = GetCurrentTime();
+        bool isInRange = Physics.CheckSphere(transform.position, detectionRadius, playerLayer);
+        if (isInRange && !PlayerMovement.isCrouching)
+        {
+            isPlayerInRange = true;
+            return true;
+        }
+        isPlayerInRange = false;
+        return false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (Application.isPlaying)
+        {
+            Gizmos.color = DayNightCycle.isNight ? Color.red : Color.green;
+            Gizmos.DrawWireSphere(transform.position, GetCurrentTime());
+        }
+        else
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, dayDetectionRadius);
+        }
     }
 
     public abstract void PerformIdle();

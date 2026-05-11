@@ -24,6 +24,8 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private float maxExposure = 1f;
     [SerializeField] private float minExposure = 0.2f;
 
+    public static bool isNight { get; private set; } // Properti untuk mengecek apakah saat ini malam
+
     private TimeDayManager timeDayManager; // Referensi ke TimeDayManager untuk mengupdate UI waktu
 
     public static event Action OnDayChanged; // Event untuk memberitahu pergantian hari
@@ -62,6 +64,9 @@ public class DayNightCycle : MonoBehaviour
             // TODO: Panggil Event Ganti Hari di sini
             OnDayChanged?.Invoke();
         }
+        
+        if (currentTime >= 17f || currentTime < 7f) isNight = true;
+        else isNight = false;
     }
 
     // Gabungkan rotasi dan warna di satu fungsi yang murni bergantung pada currentTime

@@ -10,6 +10,7 @@ public class TimeDayManager : MonoBehaviour
 
     private int currentDay = 1; // Hari awal
     private DayNightCycle dayNightCycle;
+    
 
     public static event Action<int> OnDayChanged; // Event untuk pergantian hari
 
