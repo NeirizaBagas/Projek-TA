@@ -37,7 +37,7 @@ MonoBehaviour:
     m_Value: {x: 1, y: 1, z: 1, w: 0}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 0.95048827, y: 0.9597189, z: 1, w: 0}
   gain:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
@@ -123,10 +123,10 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
+    m_Value: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
   highlights:
     m_OverrideState: 1
-    m_Value: {r: 0.6886792, g: 0.67893374, b: 0.67893374, a: 1}
+    m_Value: {r: 0.7169812, g: 0.7068352, b: 0.7068352, a: 1}
   balance:
     m_OverrideState: 1
     m_Value: -3
@@ -260,13 +260,13 @@ MonoBehaviour:
     m_Value: 0
   quality:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   intensity:
     m_OverrideState: 1
-    m_Value: 0.265
+    m_Value: 0.359
   clamp:
     m_OverrideState: 1
-    m_Value: 0.05
+    m_Value: 0.054
 --- !u!114 &-7274224791359825572
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -341,10 +341,10 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 1.64
+    m_Value: 1.33
   contrast:
     m_OverrideState: 1
-    m_Value: -5.53
+    m_Value: 9
   colorFilter:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -353,7 +353,7 @@ MonoBehaviour:
     m_Value: 0
   saturation:
     m_OverrideState: 1
-    m_Value: 2.4
+    m_Value: 20
 --- !u!114 &-6288072647309666549
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -372,7 +372,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.076
+    m_Value: 0.229
   response:
     m_OverrideState: 1
     m_Value: 0.8
@@ -664,10 +664,10 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 1.01
+    m_Value: 0.7
   intensity:
     m_OverrideState: 1
-    m_Value: 0.06
+    m_Value: 0.26
   scatter:
     m_OverrideState: 1
     m_Value: 0.7
@@ -708,10 +708,10 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: -13
+    m_Value: -18
   tint:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 3
 --- !u!114 &-581120513425526550
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1032,7 +1032,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 11.32
+    m_Value: 0.84
   tintColor:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -1099,13 +1099,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.9568592, z: 0.9833691, w: 0.060120247}
+    m_Value: {x: 1, y: 0.9565013, z: 0.83858645, w: 0}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 0.9307331, y: 0.93043756, z: 1, w: 0}
+    m_Value: {x: 0.8249806, y: 0.9264885, z: 1, w: 0}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 0.88392043, y: 0.9071117, z: 1, w: 0}
+    m_Value: {x: 1, y: 0.946262, z: 0.89999574, w: 0}
   shadowsStart:
     m_OverrideState: 1
     m_Value: 0
@@ -1361,28 +1361,28 @@ MonoBehaviour:
     m_Value: 1
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 0
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 30
+    m_Value: 180.47
   gaussianMaxRadius:
     m_OverrideState: 1
     m_Value: 1
   highQualitySampling:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   focusDistance:
     m_OverrideState: 1
-    m_Value: 6.36
+    m_Value: 10
   aperture:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 5.6
   focalLength:
     m_OverrideState: 1
-    m_Value: 78
+    m_Value: 50
   bladeCount:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 5
   bladeCurvature:
     m_OverrideState: 1
     m_Value: 1
@@ -1495,7 +1495,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.335
+    m_Value: 0.229
 --- !u!114 &5090677079066874949
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1577,10 +1577,10 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.346
+    m_Value: 0.246
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.628
+    m_Value: 0.359
   rounded:
     m_OverrideState: 1
     m_Value: 0
