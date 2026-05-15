@@ -139,6 +139,7 @@ public class TrapScheduleManager : MonoBehaviour
         // 1. Ganti isi teksnya sesuai konteks
         statusText.text = message;
 
+        AudioManager.Instance.PlaySFX(2); // Mainkan SFX status update (asumsi index 2 adalah suara status update)
         // 2. Nyalakan GameObject teksnya agar terlihat di layar
         statusText.gameObject.SetActive(true);
 

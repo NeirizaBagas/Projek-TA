@@ -1,23 +1,36 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private SODataJournal journalDatabase;
     [SerializeField] private int targetPhotosToComplete = 5;
-    
+    [SerializeField] private int winSceneIndex;
+    [SerializeField] private int loseSceneIndex;
+
+    public static event Action onGameStarted;
+
 
     public static event Action onGameCompleted;
+
+    private void Start()
+    {
+        AudioManager.Instance.PlayBGM(1); // Mainkan BGM gameplay (asumsi index 1 adalah BGM gameplay)
+        onGameStarted?.Invoke(); // Beri tahu sistem lain bahwa game telah dimulai
+    }
 
     private void OnEnable()
     {
         SnapshotSystem.OnAnimalPhotoUpdated += CheckWinCondition;
+        TrapScheduleManager.OnGameOver += LoseCondition;
     }
 
     private void OnDisable()
     {
         SnapshotSystem.OnAnimalPhotoUpdated -= CheckWinCondition;
+        TrapScheduleManager.OnGameOver -= LoseCondition;
     }
 
     private void CheckWinCondition()
@@ -38,6 +51,21 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Selamat! Kamu telah menyelesaikan game dengan mengambil cukup foto hewan!");
             onGameCompleted?.Invoke();
+            WinCondition();
         }
+    }
+
+    private void WinCondition()
+    {
+        AudioManager.Instance.StopBGM(); // Hentikan BGM saat masuk ke scene kemenangan
+        onGameCompleted?.Invoke(); // Beri tahu sistem lain bahwa game telah selesai
+        SceneManager.LoadScene(winSceneIndex);
+    }
+
+    private void LoseCondition()
+    {
+        AudioManager.Instance.StopBGM(); // Hentikan BGM saat masuk ke scene kekalahan
+        onGameCompleted?.Invoke(); // Beri tahu sistem lain bahwa game telah selesai
+        SceneManager.LoadScene(loseSceneIndex);
     }
 }

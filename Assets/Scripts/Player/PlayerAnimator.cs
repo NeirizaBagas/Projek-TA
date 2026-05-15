@@ -2,8 +2,15 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
-    
+    private Animator animator;
+    private AudioSource stepSound;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        stepSound = GetComponent<AudioSource>();
+    }
+
     public void HandlePlayerAnimator(bool isMoving, bool isSprinting)
     {
         if (!isMoving)
@@ -31,5 +38,10 @@ public class PlayerAnimator : MonoBehaviour
     public void HandleJumping(bool isJumping)
     {
         animator.SetBool("Jump", isJumping);
+    }
+
+    public void HandleWalkingSound()
+    {
+        stepSound.Play();
     }
 }

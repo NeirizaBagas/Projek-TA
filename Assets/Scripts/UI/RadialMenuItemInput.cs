@@ -63,6 +63,7 @@ public class RadialMenuItemInput : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        AudioManager.Instance.PlaySFX(0); // Mainkan SFX klik tombol (asumsi index 0 adalah suara klik)
         onClickAction?.Invoke();
         Reset();
     }

@@ -25,6 +25,7 @@ public class EquippedItem : MonoBehaviour, ITapInteractable
 
     public void OnTap()
     {
+        AudioManager.Instance.PlaySFX(3); // Mainkan SFX klik tombol (asumsi index 0 adalah suara klik)
         OnItemPickedUp?.Invoke(itemType);
         this.gameObject.SetActive(false);
         ToggleUIItemEquippable?.Invoke(false);

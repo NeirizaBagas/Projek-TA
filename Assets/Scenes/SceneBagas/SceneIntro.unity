@@ -304,7 +304,7 @@ MonoBehaviour:
   - artwork: {fileID: 21300000, guid: 5eea4a3feea8ed147bd8b53234341d49, type: 3}
   - artwork: {fileID: 21300000, guid: 458408a43f9f2924b8802f0d6e1db8e7, type: 3}
   - artwork: {fileID: 21300000, guid: 3adcfcb006751c548bbec7d18574d56e, type: 3}
-  nextSceneIndex: 1
+  nextSceneIndex: 2
 --- !u!4 &91005162
 Transform:
   m_ObjectHideFlags: 0

@@ -7,11 +7,11 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerInputActions inputActions;
     private EnergySystem energySystem;
-    private PlayerAnimator playerAnimator;
     private float currentSpeed;
     private Vector2 movementInput;
 
     [Header("Jumping & Moving")]
+    [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private bool isGrounded;
     [SerializeField] private bool isSprinting;
     [SerializeField] private float jumpForce = 5f;
@@ -46,7 +46,6 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
-        playerAnimator = GetComponent<PlayerAnimator>();
         isAllowToMove = true;
         energySystem = GetComponent<EnergySystem>();
         currentSpeed = walkSpeed;

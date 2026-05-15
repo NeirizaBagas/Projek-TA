@@ -69,6 +69,7 @@ public class InteractToObject : MonoBehaviour
         UIManager.OnNullCurrentUI += TogglePlayerMovement;
         //UIManager.OnNullCurrentUI += ToggleAnyUIActive;
         SnapshotSystem.OnPhotoReadyToView += ReviewPhoto;
+        GameManager.onGameCompleted += OpenCursorMode;
         //TrapInteract.OnCanDefuse += ToggleCanDefuse;
     }
 
@@ -80,11 +81,12 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.canceled -= OnHoldInteract;
         inputActions.Player.TakePhoto.performed -= TakePicture;
         inputActions.Player.OpenItemMenu.started -= ToggleItemMenu;
-        ItemManager .OnPhotoModeStarted -= ToggleTakePhotoAccess;
+        ItemManager.OnPhotoModeStarted -= ToggleTakePhotoAccess;
         ItemManager.OnReadyToDefuse -= ToggleCanDefuse;
         UIManager.OnStopInteract -= StopInteractObject;
         UIManager.OnTogglePhotoUI -= ToggleTakePhotoAccess;
         UIManager.OnNullCurrentUI -= TogglePlayerMovement;
+        GameManager.onGameCompleted -= OpenCursorMode;
         //UIManager.OnAnyUIActive -= ToggleAnyUIActive;
         //TrapInteract.OnCanDefuse -= ToggleCanDefuse;
     }
@@ -155,7 +157,7 @@ public class InteractToObject : MonoBehaviour
         canInteract = false;
         if (currentTarget != null)
         {
-            currentTarget.OnHoverExit();    
+            currentTarget.OnHoverExit();
             currentTarget = null;
         }
         if (isUIHoveringActive)
@@ -182,8 +184,8 @@ public class InteractToObject : MonoBehaviour
 
     public void OnHoldInteract(InputAction.CallbackContext context)
     {
-        
-        
+
+
         if (currentTarget is IHoldInteractable holdObj && canInteract)
         {
             if (context.started)
@@ -304,6 +306,13 @@ public class InteractToObject : MonoBehaviour
     {
         Debug.Log(isReadyToDefuse);
         canDefuse = isReadyToDefuse;
+    }
+
+    private void OpenCursorMode()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        TogglePlayerMovement(false);
     }
 
     private void OnDrawGizmos()

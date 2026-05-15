@@ -12,6 +12,7 @@ public class AnimalAIController : MonoBehaviour
 {
     private AnimalBase animal;
     public AnimalState currentState = AnimalState.Idle;
+    public bool isNocturnal = false;
 
     private float timer;
     private NavMeshAgent agent;
@@ -39,7 +40,15 @@ public class AnimalAIController : MonoBehaviour
                 }
                 animal.PerformIdle();
                 timer -= Time.deltaTime;
-                if (timer <= 0) TransitionToState(AnimalState.Walk);
+                if (timer <= 0)
+                {
+                    bool canPatrol = true;
+
+                    if (!isNocturnal && DayNightCycle.isNight) canPatrol = false;
+                    
+                    if (canPatrol) TransitionToState(AnimalState.Walk);
+                    else timer = animal.normalIdleDuration;
+                }
                 break;
             case AnimalState.Walk:
                 if (animal.IsPlayerInRange())

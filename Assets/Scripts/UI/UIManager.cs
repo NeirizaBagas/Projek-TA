@@ -133,6 +133,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
+            AudioManager.Instance.PlaySFX(0); // Mainkan SFX klik tombol (asumsi index 0 adalah suara klik)
             CloseCurrentUI();
             OnStopInteract?.Invoke();
             TogglePlayerIndicatorUI(true);

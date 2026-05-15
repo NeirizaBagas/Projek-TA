@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -137,6 +136,7 @@ public class SnapshotSystem : MonoBehaviour
     {
         // Audio efek suara foto
         flashlight.enabled = true;
+        AudioManager.Instance.PlaySFX(1); // Mainkan SFX kamera (asumsi index 1 adalah suara kamera)
         yield return new WaitForSeconds(flashTime);
         flashlight.enabled = false;
     }
