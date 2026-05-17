@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int targetPhotosToComplete = 5;
     [SerializeField] private int winSceneIndex;
     [SerializeField] private int loseSceneIndex;
+    private bool isGameOver = false;
+    private bool isGameWon = false;
 
     public static event Action onGameStarted;
 
@@ -47,11 +49,15 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Jumlah foto yang sudah diambil: {currentPhotoCount}/{journalDatabase.animalDatabase.Length}");
 
-        if (currentPhotoCount >= targetPhotosToComplete)
+        if (currentPhotoCount >= targetPhotosToComplete && TimeDayManager._currentDay == 12)
         {
             Debug.Log("Selamat! Kamu telah menyelesaikan game dengan mengambil cukup foto hewan!");
-            onGameCompleted?.Invoke();
             WinCondition();
+        }
+        else if (TimeDayManager._currentDay > 12)
+        {
+            Debug.Log("Waktu habis! Kamu gagal menyelesaikan game karena tidak cukup foto yang diambil.");
+            LoseCondition();
         }
     }
 

@@ -276,18 +276,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CutSceneManager
   displayImage: {fileID: 337584348}
+  displayText: {fileID: 0}
   slides:
   - artwork: {fileID: 21300000, guid: 27b66d6e4b390ab44bf3b53268af5f95, type: 3}
+    dialogueText: 
   - artwork: {fileID: 21300000, guid: 13d3f72ea9fc8de4dad410ba60281029, type: 3}
+    dialogueText: 
   - artwork: {fileID: 21300000, guid: db0440ae8515bdc4cb3eba8591af61ad, type: 3}
+    dialogueText: 
   - artwork: {fileID: 21300000, guid: c63f1fcaddffc3645b539e50b6ba60dc, type: 3}
+    dialogueText: 
   - artwork: {fileID: 21300000, guid: f86cf8a83664d5d46bf9f4a6f9726d5c, type: 3}
+    dialogueText: 
   - artwork: {fileID: 21300000, guid: 137e2d75a74697947b683e6bdc7f7b7f, type: 3}
+    dialogueText: 
   - artwork: {fileID: 21300000, guid: 4a221f003099dce4fa6d515399b55c35, type: 3}
+    dialogueText: 
   - artwork: {fileID: 21300000, guid: 9abb0a44b95345244a26b0ddf03eb58e, type: 3}
+    dialogueText: 
   - artwork: {fileID: 21300000, guid: 9a276bd3d7603ff4aa72575bfd4582c2, type: 3}
+    dialogueText: 
   - artwork: {fileID: 21300000, guid: 7700b1c800e184c40960fdd29f02ad42, type: 3}
+    dialogueText: 
   nextSceneIndex: 0
+  cutsceneType: 2
 --- !u!4 &91005162
 Transform:
   m_ObjectHideFlags: 0

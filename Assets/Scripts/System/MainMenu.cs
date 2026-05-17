@@ -39,8 +39,8 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        AudioManager.Instance.PlaySFX(0); 
-        AudioManager.Instance.StopBGM(); 
+        AudioManager.Instance.PlaySFX(0);
+        AudioManager.Instance.StopBGM();
         SceneManager.LoadScene(nextSceneIndex);
     }
 

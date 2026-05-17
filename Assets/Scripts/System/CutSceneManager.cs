@@ -12,6 +12,13 @@ public class StorySlide
     public string dialogueText;
 }
 
+public enum CutsceneType
+{
+    Intro,
+    Tutorial,
+    Outro
+}
+
 public class CutSceneManager : MonoBehaviour
 {
     [Header("UI Components")]
@@ -21,6 +28,7 @@ public class CutSceneManager : MonoBehaviour
     [Header("Story Content")]
     public List<StorySlide> slides = new List<StorySlide>();
     [SerializeField] private int nextSceneIndex;
+    public CutsceneType cutsceneType;
 
     private int currentSlideIndex = 0;
 
@@ -31,6 +39,14 @@ public class CutSceneManager : MonoBehaviour
         if (slides.Count > 0)
         {
             ShowSlide(0);
+        }
+        if (cutsceneType == CutsceneType.Intro)
+        {
+            AudioManager.Instance.PlayBGM(0); // Mainkan BGM intro (asumsi index 0 adalah BGM intro)
+        }
+        else 
+        {
+            AudioManager.Instance.PlayBGM(1); // Mainkan BGM tutorial (asumsi index 1 adalah BGM tutorial)
         }
     }
 
@@ -49,6 +65,11 @@ public class CutSceneManager : MonoBehaviour
     {
         AudioManager.Instance.PlaySFX(0); // Mainkan SFX klik tombol (asumsi index 0 adalah suara klik)
         currentSlideIndex++;
+        if (cutsceneType == CutsceneType.Intro && currentSlideIndex == 8)
+        {
+            AudioManager.Instance.StopBGM(); // Hentikan BGM intro saat mencapai slide terakhir
+            AudioManager.Instance.PlayBGM(1); // Mainkan BGM gameplay (asumsi index 1 adalah BGM gameplay)
+        }
 
         if (currentSlideIndex < slides.Count)
         {

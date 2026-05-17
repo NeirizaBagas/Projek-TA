@@ -9,6 +9,7 @@ public class TimeDayManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dayText;
 
     private int currentDay = 1; // Hari awal
+    public static int _currentDay;
     private DayNightCycle dayNightCycle;
     
 
@@ -17,6 +18,7 @@ public class TimeDayManager : MonoBehaviour
     private void Start()
     {
         dayNightCycle = GetComponent<DayNightCycle>();
+        _currentDay = currentDay; // Set nilai awal hari ke variabel statis
         DisplayDay(); // Tampilkan hari awal saat game mulai
     }
 
@@ -44,6 +46,7 @@ public class TimeDayManager : MonoBehaviour
     public void UpdateDay()
     {
         currentDay++;
+        _currentDay = currentDay; // Update nilai hari ke variabel statis
         DisplayDay();
         OnDayChanged?.Invoke(currentDay); // Trigger event pergantian hari
     }

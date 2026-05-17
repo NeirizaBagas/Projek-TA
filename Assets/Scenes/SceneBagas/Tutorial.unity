@@ -583,6 +583,7 @@ MonoBehaviour:
   - artwork: {fileID: 21300000, guid: ae52760715659ff4998bb3b9cc736cc3, type: 3}
     dialogueText: Arahkan ke Kasur Kemudian Tekan Tombol F Untuk Tidur
   nextSceneIndex: 3
+  cutsceneType: 1
 --- !u!114 &1282531487
 MonoBehaviour:
   m_ObjectHideFlags: 0
