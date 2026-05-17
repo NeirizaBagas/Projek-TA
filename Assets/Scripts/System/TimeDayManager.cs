@@ -7,12 +7,13 @@ public class TimeDayManager : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TextMeshProUGUI dayText;
+    [SerializeField] private int finalDay = 12; // Hari terakhir sebelum game over
 
     private int currentDay = 1; // Hari awal
     public static int _currentDay;
     private DayNightCycle dayNightCycle;
     
-
+    public static event Action OnFinalDayReached; // Event untuk mencapai hari terakhir
     public static event Action<int> OnDayChanged; // Event untuk pergantian hari
 
     private void Start()
@@ -47,6 +48,10 @@ public class TimeDayManager : MonoBehaviour
     {
         currentDay++;
         _currentDay = currentDay; // Update nilai hari ke variabel statis
+        if (currentDay == finalDay)
+        {
+            OnFinalDayReached?.Invoke(); // Trigger event mencapai hari terakhir
+        }
         DisplayDay();
         OnDayChanged?.Invoke(currentDay); // Trigger event pergantian hari
     }

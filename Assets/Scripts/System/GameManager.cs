@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int targetPhotosToComplete = 5;
     [SerializeField] private int winSceneIndex;
     [SerializeField] private int loseSceneIndex;
-    private bool isGameOver = false;
     private bool isGameWon = false;
 
     public static event Action onGameStarted;
@@ -26,13 +25,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         SnapshotSystem.OnAnimalPhotoUpdated += CheckWinCondition;
-        TrapScheduleManager.OnGameOver += LoseCondition;
+        TimeDayManager.OnFinalDayReached += CheckFinalCondition; // Subscribe ke event kehilangan hewan untuk cek kondisi akhir
     }
 
     private void OnDisable()
     {
         SnapshotSystem.OnAnimalPhotoUpdated -= CheckWinCondition;
-        TrapScheduleManager.OnGameOver -= LoseCondition;
+        TimeDayManager.OnFinalDayReached -= CheckFinalCondition; // Unsubscribe dari event kehilangan hewan saat tidak diperlukan
     }
 
     private void CheckWinCondition()
@@ -49,15 +48,23 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Jumlah foto yang sudah diambil: {currentPhotoCount}/{journalDatabase.animalDatabase.Length}");
 
-        if (currentPhotoCount >= targetPhotosToComplete && TimeDayManager._currentDay == 12)
+        if (currentPhotoCount >= targetPhotosToComplete)
         {
             Debug.Log("Selamat! Kamu telah menyelesaikan game dengan mengambil cukup foto hewan!");
-            WinCondition();
+            isGameWon = true; // Set flag kemenangan
         }
-        else if (TimeDayManager._currentDay > 12)
+    }
+
+    private void CheckFinalCondition()
+    {
+        if (TrapScheduleManager.isGameOver && !isGameWon) // Cek kondisi kekalahan jika game over dan belum menang
         {
-            Debug.Log("Waktu habis! Kamu gagal menyelesaikan game karena tidak cukup foto yang diambil.");
+            Debug.Log("Game Over! Terlalu banyak hewan yang hilang.");
             LoseCondition();
+        }
+        else
+        {
+            WinCondition(); // Jika tidak game over, berarti menang (asumsi semua kondisi lain sudah terpenuhi)
         }
     }
 

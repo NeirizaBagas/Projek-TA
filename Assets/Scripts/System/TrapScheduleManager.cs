@@ -33,14 +33,15 @@ public class TrapScheduleManager : MonoBehaviour
 
     private int lostCount = 0;
     public static int totalAnimal { get; private set;}
+    public static bool isGameOver { get; private set; }
 
     // Event untuk disambungkan ke UI atau sistem lain
     public static event Action<AnimalType> OnAnimalLost;
     public static event Action<AnimalType> OnAnimalSafe;
-    public static event Action OnGameOver;
 
     void Start()
     {
+        isGameOver = false;
         // 1. Spawn semua jebakan di awal, tapi masukkan ke dalam list masing-masing hewan
         foreach (var zone in animalZones)
         {
@@ -115,7 +116,7 @@ public class TrapScheduleManager : MonoBehaviour
         if (lostCount >= maxLostAnimalsForGameOver)
         {
             Debug.LogError("GAME OVER! 4 Hewan telah hilang!");
-            OnGameOver?.Invoke();
+            isGameOver = true;
             return; // Hentikan eksekusi, biarkan UIManager yang mengurus Game Over
         }
 
