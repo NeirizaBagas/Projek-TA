@@ -18,7 +18,6 @@ This project was developed using Unity and C#, with a focus on gameplay programm
 - Energy management system
 - Day-night cycle
 - Win and lose conditions
-- Animal rescue mechanics
 - Trap spawning and scheduling system
 - Wildlife journal system
 - Photo capture system
