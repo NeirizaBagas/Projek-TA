@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,15 +15,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject photoReviewUI;
     [SerializeField] private GameObject itemMenuUI;
     [SerializeField] private RadialMenu radialMenu;
+    [SerializeField] private CanvasGroup pauseMenu;
+    [SerializeField] private float fadeDuration = 0.5f;
 
     public bool isJournalOpen;
     public static bool isPhotoModeOpen { get; private set; }
     private GameObject currentActiveUI;
+    private Coroutine pauseFadeCoroutine;
 
     public static event Action OnStopInteract;
     public static event Action OnTriggerUpdateJournal;
     public static event Action<bool> OnTogglePhotoUI;
     public static event Action<bool> OnNullCurrentUI;
+    public static event Action<bool> OnPauseToggle;
+    public static event Action OnBackToMenu;
 
     private void Start()
     {
@@ -35,6 +42,7 @@ public class UIManager : MonoBehaviour
         InteractToObject.OnInteractionStarted += ToggleUIInteract;
         InteractToObject.OnUIHoverToggle += ToggleUIHovering;
         InteractToObject.OnItemMenuToggle += ToggleItemMenu;
+        InteractToObject.OnPauseMenuToggle += TogglePauseMenu;
         TrapInteract.OnToggleUIInteract += ToggleUIInteract;
         JournalManager.OnJournalPageOpenClose += ToggleJournalUI;
         ItemManager.OnPhotoUiTriggered += TogglePhotoUI;
@@ -50,6 +58,7 @@ public class UIManager : MonoBehaviour
         InteractToObject.OnInteractionStarted -= ToggleUIInteract;
         InteractToObject.OnUIHoverToggle -= ToggleUIHovering;
         InteractToObject.OnItemMenuToggle -= ToggleItemMenu;
+        InteractToObject.OnPauseMenuToggle -= TogglePauseMenu;
         TrapInteract.OnToggleUIInteract -= ToggleUIInteract;
         JournalManager.OnJournalPageOpenClose -= ToggleJournalUI;
         ItemManager.OnPhotoUiTriggered -= TogglePhotoUI;
@@ -91,7 +100,7 @@ public class UIManager : MonoBehaviour
 
     private void CloseAllUI()
     {
-        isJournalOpen = false;  
+        isJournalOpen = false;
         isPhotoModeOpen = false;
         foreach (GameObject ui in uiElements)
         {
@@ -128,7 +137,7 @@ public class UIManager : MonoBehaviour
         {
             CloseCurrentUI();
             OpenUi(journalContainer);
-            isJournalOpen= true;
+            isJournalOpen = true;
             TogglePlayerIndicatorUI(false);
         }
         else
@@ -191,10 +200,10 @@ public class UIManager : MonoBehaviour
             {
                 CloseCurrentUI();
                 radialMenu.Close();
-                TogglePlayerIndicatorUI(true); 
+                TogglePlayerIndicatorUI(true);
                 //Debug.Log("Closing Item Menu because it's already open");
             }
-             else
+            else
             {
                 TogglePlayerIndicatorUI(false);
                 OpenUi(itemMenuUI);
@@ -205,12 +214,66 @@ public class UIManager : MonoBehaviour
         else
         {
             radialMenu.Close();
-            
+
             if (currentActiveUI == itemMenuUI)
             {
                 CloseCurrentUI();
                 TogglePlayerIndicatorUI(true);
             }
         }
+    }
+
+    public void TogglePauseMenu(bool isPaused)
+    {
+        if (pauseFadeCoroutine != null)
+        {
+            StopCoroutine(pauseFadeCoroutine);
+        }
+
+        if (isPaused)
+        {
+            pauseFadeCoroutine = StartCoroutine(FadePauseMenu(1f, true));
+        }
+        else
+        {
+            pauseFadeCoroutine = StartCoroutine(FadePauseMenu(0f, false));
+        }
+    }
+
+    IEnumerator FadePauseMenu(float endAlpha, bool shouldInteract)
+    {
+        pauseMenu.interactable = false;
+        pauseMenu.blocksRaycasts = false;
+
+        float startAlpha = pauseMenu.alpha;
+        float timer = 0f;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.unscaledDeltaTime;
+            float alpha = Mathf.Lerp(startAlpha, endAlpha, timer / fadeDuration);
+            pauseMenu.alpha = alpha;
+            yield return null;
+        }
+
+        pauseMenu.alpha = endAlpha;
+
+        if (shouldInteract)
+        {
+            pauseMenu.interactable = true;
+            pauseMenu.blocksRaycasts = true;
+        }
+    }
+
+    public void ResumeGameMenu()
+    {
+        Time.timeScale = 1f;
+        OnPauseToggle?.Invoke(false);
+    }
+
+    public void BackToMenu()
+    {
+        OnBackToMenu?.Invoke();
+        SceneManager.LoadScene(0);
     }
 }

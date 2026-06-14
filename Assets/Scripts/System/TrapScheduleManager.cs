@@ -24,7 +24,8 @@ public class AnimalTrapZone
 public class TrapScheduleManager : MonoBehaviour
 {
     [Header("Trap Settings")]
-    [SerializeField] private GameObject trapPrefab;
+    [SerializeField] private GameObject basicTrapPrefab;
+    [SerializeField] private GameObject aviaryTrapPrefab;
     [SerializeField] private int maxLostAnimalsForGameOver = 4;
 
     [Header("Animal Zones Setting")]
@@ -47,7 +48,18 @@ public class TrapScheduleManager : MonoBehaviour
         {
             foreach (var point in zone.trapSpawnPoints)
             {
-                GameObject newTrap = Instantiate(trapPrefab, point.position, point.rotation, transform);
+                GameObject prefabToSpawn;
+                
+                if (zone.animalType == AnimalType.Rangkong)
+                {
+                    prefabToSpawn = aviaryTrapPrefab; // Gunakan prefab jebakan khusus untuk Rangkong
+                }
+                else
+                {
+                    prefabToSpawn = basicTrapPrefab; // Gunakan prefab jebakan biasa untuk hewan lainnya
+                }
+
+                GameObject newTrap = Instantiate(prefabToSpawn, point.position, point.rotation, transform);
                 newTrap.SetActive(false);
                 zone.spawnedTraps.Add(newTrap);
             }
