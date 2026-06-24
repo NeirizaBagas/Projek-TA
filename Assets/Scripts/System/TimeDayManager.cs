@@ -26,11 +26,15 @@ public class TimeDayManager : MonoBehaviour
     private void OnEnable()
     {
         DayNightCycle.OnDayChanged += UpdateDay; // Subscribe ke event pergantian hari
+        GameManager.onGameCompleted += ResetDay; // Subscribe ke event game selesai untuk reset hari
+        UIManager.OnBackToMenu += ResetDay; // Subscribe ke event kembali ke menu untuk reset hari
     }
 
     private void OnDisable()
     {
         DayNightCycle.OnDayChanged -= UpdateDay; // Unsubscribe dari event saat tidak diperlukan
+        GameManager.onGameCompleted -= ResetDay;
+        UIManager.OnBackToMenu -= ResetDay;
     }
 
     private void Update()
@@ -62,5 +66,12 @@ public class TimeDayManager : MonoBehaviour
         {
             dayText.text = $"DAY {currentDay}";
         }
+    }
+
+    private void ResetDay() 
+    {
+        currentDay = 1;
+        _currentDay = currentDay;
+        DisplayDay();
     }
 }

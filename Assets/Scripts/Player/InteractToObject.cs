@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class InteractToObject : MonoBehaviour
 {
@@ -26,10 +27,12 @@ public class InteractToObject : MonoBehaviour
 
     [Header("Bool Check")]
     public bool isItemMenuActive;
+    private bool isPaused;
 
     public static event Action<bool> OnInteractionStarted;
     public static event Action<bool> OnUIHoverToggle;
     public static event Action<bool> OnItemMenuToggle;
+    public static event Action<bool> OnPauseMenuToggle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -37,6 +40,7 @@ public class InteractToObject : MonoBehaviour
         canInteract = false;
         isInteracting = false;
         inputActions = new PlayerInputActions();
+        Time.timeScale = 1f;
 
         inputActions.UI.Disable();
         Cursor.lockState = CursorLockMode.Locked;
@@ -52,6 +56,7 @@ public class InteractToObject : MonoBehaviour
         _snapshotSystem = GetComponent<SnapshotSystem>();
         camPos = Camera.main.transform;
         isItemMenuActive = false;
+        SetPauseStated(false);
     }
 
     private void OnEnable()
@@ -62,11 +67,14 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.canceled += OnHoldInteract;
         inputActions.Player.TakePhoto.performed += TakePicture;
         inputActions.Player.OpenItemMenu.performed += ToggleItemMenu;
+        inputActions.Player.PauseMenu.performed += OnPause;
+        inputActions.UI.UnPauseMenu.performed += OnUnPause;
         ItemManager.OnPhotoModeStarted += ToggleTakePhotoAccess;
         ItemManager.OnReadyToDefuse += ToggleCanDefuse;
         UIManager.OnStopInteract += StopInteractObject;
         UIManager.OnTogglePhotoUI += ToggleTakePhotoAccess;
         UIManager.OnNullCurrentUI += TogglePlayerMovement;
+        UIManager.OnPauseToggle += SetPauseStated;
         //UIManager.OnNullCurrentUI += ToggleAnyUIActive;
         SnapshotSystem.OnPhotoReadyToView += ReviewPhoto;
         GameManager.onGameCompleted += OpenCursorMode;
@@ -81,11 +89,14 @@ public class InteractToObject : MonoBehaviour
         inputActions.Player.HoldInteract.canceled -= OnHoldInteract;
         inputActions.Player.TakePhoto.performed -= TakePicture;
         inputActions.Player.OpenItemMenu.started -= ToggleItemMenu;
+        inputActions.Player.PauseMenu.performed -= OnPause;
+        inputActions.UI.UnPauseMenu.performed -= OnUnPause;
         ItemManager.OnPhotoModeStarted -= ToggleTakePhotoAccess;
         ItemManager.OnReadyToDefuse -= ToggleCanDefuse;
         UIManager.OnStopInteract -= StopInteractObject;
         UIManager.OnTogglePhotoUI -= ToggleTakePhotoAccess;
         UIManager.OnNullCurrentUI -= TogglePlayerMovement;
+        UIManager.OnPauseToggle -= SetPauseStated;
         GameManager.onGameCompleted -= OpenCursorMode;
         //UIManager.OnAnyUIActive -= ToggleAnyUIActive;
         //TrapInteract.OnCanDefuse -= ToggleCanDefuse;
@@ -313,6 +324,51 @@ public class InteractToObject : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         TogglePlayerMovement(false);
+    }
+
+    private void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            SetPauseStated(true);
+            
+        }
+    }
+
+    private void OnUnPause(InputAction.CallbackContext context)
+    {
+        Debug.Log(context);
+        if (context.performed)
+        {
+            
+            SetPauseStated(false);
+        }
+    }
+
+    private void SetPauseStated(bool paused)
+    {
+        isPaused = paused;
+        if (isPaused)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Time.timeScale = 0f;
+            //playerInput.SwitchCurrentActionMap("UI");
+            OnPauseMenuToggle?.Invoke(true);
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Time.timeScale = 1f;
+            //playerInput.SwitchCurrentActionMap("Player");
+            OnPauseMenuToggle?.Invoke(false);
+        }
+    }
+
+    public void ResumeGameMenu()
+    {
+        SetPauseStated(false);
     }
 
     private void OnDrawGizmos()

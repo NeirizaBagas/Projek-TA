@@ -37,7 +37,7 @@ public class DayNightCycle : MonoBehaviour
 
     private void OnDisable()
     {
-        BedSystemInteract.OnTimeSkip += SkipTime; // Unsubscribe dari event saat tidak diperlukan
+        BedSystemInteract.OnTimeSkip -= SkipTime; // Unsubscribe dari event saat tidak diperlukan
     }
 
     private void Start()

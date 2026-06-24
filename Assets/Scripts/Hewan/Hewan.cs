@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HewanDarat : AnimalBase
+public class Hewan : AnimalBase
 {
     private Animator animator;
 
